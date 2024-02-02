@@ -16,16 +16,15 @@
   }
 }
 
-main {
+
+
+html, body {
+  height: 100%;
+  margin: 0;
   color: rgb(var(--foreground-rgb));
 }
 
-html {
-  height: 100%;
-}
-
-body {
-  height: 100%;
+body, .background {
   background: linear-gradient(
       to bottom,
       transparent,
