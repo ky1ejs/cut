@@ -1,0 +1,9 @@
+type Query {
+  movies: [Movie]
+}
+
+type Movie {
+  title: String
+  director: String
+}
+
