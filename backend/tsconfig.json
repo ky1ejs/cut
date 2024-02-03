@@ -5,11 +5,9 @@
       "src"
     ],
     "outDir": "dist",
-    "lib": [
-      "es2020"
-    ],
-    "target": "es2020",
-    "module": "esnext",
+    "target": "es2022",
+    "strict": true,
+    "module": "ES2022",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": [
@@ -18,10 +16,13 @@
   },
   "include": [
     "src/**/*",
-    // "graphql/**/*.graphql",
   ],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"
-  ]
+  ],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+  }
 }

@@ -6,15 +6,13 @@ import http from 'http';
 import cors from 'cors';
 import { Resolvers } from './generated/graphql';
 import { readFileSync } from 'fs';
+import movieResolver from './resolvers/movie-resolver';
 
 const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
 const resolvers: Resolvers = {
   Query: {
-    movies: () => [
-      { title: 'Inception', director: 'Christopher Nolan' },
-      { title: 'Interstellar', director: 'Christopher Nolan' },
-    ],
+    movies: movieResolver
   },
 };
 
