@@ -42,7 +42,7 @@ Options:
 * [Neon](https://neon.tech/)
 * [Fly.io Postres](https://fly.io/docs/postgres/)
 * [Crunchy](https://www.crunchydata.com/products/crunchy-high-availability-postgresql)
-* [Render](https://render.com/)
+* [~~Render~~](https://render.com/) – free tier db "expires" (shuts down until you pay) [after 90-days](https://docs.render.com/free#90-day-limit)
 * [~~Digital Ocean~~](https://www.digitalocean.com/pricing) - no free tier
 * [~~Cockroach DB~~](https://www.cockroachlabs.com/pricing/) sadly does not support LISTEN / NOTIFY, although has [it's own proprietary approach](https://www.cockroachlabs.com/docs/stable/changefeed-for)
 
