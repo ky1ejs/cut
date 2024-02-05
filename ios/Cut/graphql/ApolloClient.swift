@@ -12,7 +12,11 @@ class AuthorizedApolloClient {
     static let shared = AuthorizedApolloClient()
 
     private(set) lazy var client: ApolloClient = {
+        #if RELEASE
+        let url = URL(string: "https://cut-production.up.railway.app/graphql")!
+        #else
         let url = URL(string: "http://localhost:4000/graphql")!
+        #endif
         return ApolloClient(url: url)
     }()
 
