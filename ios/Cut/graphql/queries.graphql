@@ -1,0 +1,20 @@
+
+fragment MovieFragment on Movie {
+  title
+  id
+  poster_url
+  release_date
+  genres {
+    metadata {
+      name
+    }
+  }
+  metadata {
+    runtime
+  }
+}
+
+query ExampleQuery {
+  movies { ...MovieFragment }
+}
+

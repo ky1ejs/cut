@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct CutApp: App {
-    var body: some Scene {
+        var body: some Scene {
         WindowGroup {
             ContentView()
         }

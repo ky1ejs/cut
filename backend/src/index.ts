@@ -4,9 +4,10 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
-import { Resolvers } from './generated/graphql';
+import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
 import movieResolver from './resolvers/movie-resolver';
+import genreResolver from './resolvers/genre-resolver';
 
 const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
@@ -14,6 +15,12 @@ const resolvers: Resolvers = {
   Query: {
     movies: movieResolver
   },
+  Movie: {
+    metadata: () => ({ id: 1, runtime: 120 })
+  },
+  Genre: {
+    metadata: genreResolver
+  }
 };
 
 

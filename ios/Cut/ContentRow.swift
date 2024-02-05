@@ -13,19 +13,16 @@ protocol ImageLoader {
 
 struct ContentRowViewModel {
     private let imageLoader: ImageLoader
-    let movie: Movie
+    let movie: CutGraphQL.MovieFragment
 
-    var imageUrl: String { return movie.imageUrl }
+    var imageUrl: String { return movie.poster_url }
     var title: String { return movie.title }
-    var year: String { return movie.year }
-    var genre: String { return movie.genre }
-    var duration: String { return movie.duration }
 
     var subtitle: String {
-        return "\(year) • \(genre) • \(duration)"
+        return "\(movie.genres[0]!.metadata.name) • \(movie.metadata.runtime)"
     }
 
-    init(imageLoader: ImageLoader, movie: Movie) {
+    init(imageLoader: ImageLoader, movie: CutGraphQL.MovieFragment) {
         self.imageLoader = imageLoader
         self.movie = movie
     }
@@ -101,7 +98,44 @@ struct MoonMask: Shape {
 
 
 #Preview {
-    let movie = Movie(id: "1", imageUrl: "test", title: "Dune", year: "2021", genre: "Sci-fi", duration: "1hr 20mins")
+    let json = """
+        {
+        "__typename": "Movie",
+                "title": "Aquaman and the Lost Kingdom",
+                "id": 572802,
+                "metadata": {
+        "__typename": "MovieMetadata",
+                  "runtime": 120
+                },
+                "release_date": null,
+                "poster_url": "https://image.tmdb.org/t/p/w500/7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg",
+                "genres": [
+                  {
+            "__typename": "Genre",
+                    "metadata": {
+        "__typename": "GenreMetadata",
+                      "name": "Action"
+                    }
+                  },
+                  {
+                "__typename": "Genre",
+                    "metadata": {
+            "__typename": "GenreMetadata",
+                      "name": "Adventure"
+                    }
+                  },
+                  {
+                "__typename": "Genre",
+                    "metadata": {
+            "__typename": "GenreMetadata",
+                      "name": "Fantasy"
+                    }
+                  }
+                ]
+              }
+    """
+    let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
+    let movie = try! CutGraphQL.MovieFragment(data: jsonObject)
     let viewModel = ContentRowViewModel(
         imageLoader: FakeImageLoader(),
         movie: movie

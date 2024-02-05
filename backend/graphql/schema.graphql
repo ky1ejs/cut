@@ -1,9 +1,27 @@
 type Query {
-  movies: [Movie]
+  movies: [Movie!]!
 }
 
 type Movie {
-  title: String
-  director: String
+  id: Int!
+  title: String!
+  poster_url: String!
+  release_date: String
+  metadata: MovieMetadata!
+  genres: [Genre]!
+}
+
+type Genre {
+  id: Int!
+  metadata: GenreMetadata!
+}
+
+type GenreMetadata {
+  name: String!
+}
+
+type MovieMetadata {
+  id: Int!
+  runtime: Int!
 }
 

@@ -1,0 +1,30 @@
+{
+  "schemaNamespace" : "CutGraphQL",
+  "input" : {
+    "operationSearchPaths" : [
+      "**/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "../../../backend/graphql/schema.graphql"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./__generated__",
+      "moduleType" : {
+          "embeddedInTarget": {
+              "name" : "Cut",
+              "accessModifier" : "internal"
+          }
+      },
+    },
+    "operations" : {
+      "inSchemaModule" : {
+      }
+    }
+  }
+}

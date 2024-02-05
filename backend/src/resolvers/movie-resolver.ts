@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getImageBaseUrl } from '../tmbd/image_base';
 
 const movieResolver = async () => {
   try {
@@ -9,8 +10,12 @@ const movieResolver = async () => {
       }
     });
     return result.data.results.map((movie: any) => ({
+      id: movie.id,
       title: movie.title,
       director: movie.original_language,
+      poster_url: getImageBaseUrl() + movie.poster_path,
+      release_data: movie.release_date,
+      genres: movie.genre_ids.map((id: number) => ({ id })),
     }));
   } catch (error) {
     console.error(error);
