@@ -1,2 +1,9 @@
 __generated__
 apollo-ios-cli
+
+# iOS default ignores
+*.xcuserstate
+build/
+*.pbxuser
+*.perspective
+*.perspectivev3

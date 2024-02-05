@@ -6,13 +6,9 @@
 //
 
 import SwiftUI
-
-protocol ImageLoader {
-    func loadImage(_ url: String) async -> UIImage
-}
+import Kingfisher
 
 struct ContentRowViewModel {
-    private let imageLoader: ImageLoader
     let movie: CutGraphQL.MovieFragment
 
     var imageUrl: String { return movie.poster_url }
@@ -21,15 +17,6 @@ struct ContentRowViewModel {
     var subtitle: String {
         return "\(movie.genres[0]!.metadata.name) • \(movie.metadata.runtime)"
     }
-
-    init(imageLoader: ImageLoader, movie: CutGraphQL.MovieFragment) {
-        self.imageLoader = imageLoader
-        self.movie = movie
-    }
-
-    func image() async -> UIImage {
-        return await imageLoader.loadImage(imageUrl)
-    }
 }
 
 struct ContentRow: View {
@@ -37,7 +24,7 @@ struct ContentRow: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-                Rectangle()
+            UrlImage(url: URL(string: viewModel.imageUrl)!)
                     .foregroundStyle(.red)
                     .frame(height: 150)
                     .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
@@ -58,9 +45,21 @@ struct ContentRow: View {
     }
 }
 
-struct FakeImageLoader: ImageLoader {
-    func loadImage(_ url: String) async -> UIImage {
-        return UIImage()
+struct UrlImage: View {
+    let url: URL
+
+    var body: some View {
+        KFImage.url(url)
+            .placeholder { Color(.red) }
+                  .loadDiskFileSynchronously()
+                  .cacheMemoryOnly()
+                  .fade(duration: 0.25)
+                  .onProgress { receivedSize, totalSize in  }
+                  .onFailure { error in }
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+
+
     }
 }
 
@@ -136,10 +135,7 @@ struct MoonMask: Shape {
     """
     let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
     let movie = try! CutGraphQL.MovieFragment(data: jsonObject)
-    let viewModel = ContentRowViewModel(
-        imageLoader: FakeImageLoader(),
-        movie: movie
-    )
+    let viewModel = ContentRowViewModel(movie: movie)
     return ContentRow(viewModel: viewModel)
 }
 

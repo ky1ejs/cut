@@ -6,12 +6,7 @@
 //
 
 import SwiftUI
-
-struct ImageLoaderImpl: ImageLoader {
-    func loadImage(_ url: String) async -> UIImage {
-        return UIImage()
-    }
-}
+import Kingfisher
 
 struct ContentView: View {
     @State var data: [CutGraphQL.MovieFragment]?
@@ -20,7 +15,7 @@ struct ContentView: View {
         List {
             if let data = data {
                 ForEach(data, id: \.id) { m in
-                    ContentRow(viewModel: ContentRowViewModel(imageLoader: ImageLoaderImpl(), movie: m))
+                    ContentRow(viewModel: ContentRowViewModel(movie: m))
                 }
             }
         }
