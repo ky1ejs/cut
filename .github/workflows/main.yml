@@ -1,0 +1,16 @@
+name: Main Push
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/graphql/schema.graphql'
+      - 'ios/**'
+
+jobs:
+  deploy-ios:
+    uses: ./.github/workflows/ios-build.yaml
+    secrets: inherit
+    with:
+      skip: false
+      deploy: true

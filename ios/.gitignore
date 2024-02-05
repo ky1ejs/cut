@@ -1,6 +1,10 @@
 __generated__
 apollo-ios-cli
 
+## Fastlane
+Appfile
+report.xml
+
 # iOS default ignores
 *.xcuserstate
 build/

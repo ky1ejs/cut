@@ -1,0 +1,82 @@
+name: iOS Build
+
+on:
+  workflow_call:
+    inputs:
+      skip: 
+        type: boolean
+        required: true
+      # ugly way of reusing env prep for iOS. In the long term may make a composite action for this
+      # See here for a great breakdown of reusing steps:
+      #   https://stackoverflow.com/questions/59757355/reuse-portion-of-github-action-across-jobs/71570847#71570847
+      # The downside of this approach (as it is) is that deploy shows up as a test action in GitHub statuses and it probably
+      # hinders reusability.
+      deploy: 
+        type: boolean
+        required: true
+        default: false
+      audience:
+        type: string
+        required: false
+        default: "alpha"
+
+env:
+  MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+  MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+  ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+  ASC_KEY: ${{ secrets.ASC_KEY }}
+  ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+
+jobs:
+ build:
+   runs-on: macos-13
+   if: ${{ inputs.skip == false }}
+   defaults:
+      run:
+        working-directory: ./ios
+   steps:
+     - uses: actions/checkout@v2
+       with:
+        lfs: true
+
+     - name: "Set Xcode Version"
+       run: |
+         sudo xcode-select -s /Applications/Xcode_15.0.app/Contents/Developer/
+         sudo xcode-select -p
+
+     - name: Write Appfile
+       run: echo '${{ vars.FASTLANE_APPFILE }}' >> ./fastlane/Appfile
+
+     - name: Download Apollo CLI for iOS
+       run: |
+         curl -LJO https://github.com/apollographql/apollo-ios/releases/download/1.9.0/apollo-ios-cli.tar.gz
+         tar -xvf apollo-ios-cli.tar.gz
+
+     - name: Code gen
+       run: ./apollo-ios-cli generate -p Cut/graphql/apollo-codegen-config.json
+    
+     - name: Test
+       if: ${{ !inputs.deploy }}
+       run: fastlane build
+
+     - name: Build for alpha testers
+       if: ${{ inputs.deploy && inputs.audience == 'alpha' }}
+       run: fastlane build_for_alpha_testers
+
+     - name: Build for beta testers
+       if: ${{ inputs.deploy && inputs.audience == 'beta' }}
+       run: fastlane build_for_alpha_testers
+
+     - name: Upload .ipa
+       if: ${{ inputs.deploy }}
+       uses: actions/upload-artifact@v2
+       with:
+         name: .ipa
+         path: ./ios/Cut.ipa
+
+     - name: Upload dSYM
+       if: ${{ inputs.deploy }}
+       uses: actions/upload-artifact@v2
+       with:
+         name: dSYM
+         path: .ios/Cut.app.dSYM.zip

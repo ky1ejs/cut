@@ -1,0 +1,15 @@
+name: PR
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/graphql/schema.graphql'
+      - 'ios/**'
+
+jobs:
+  ios-test:
+    uses: ./.github/workflows/ios-build.yaml
+    with:
+      deploy: false
+      skip: false

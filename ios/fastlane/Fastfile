@@ -1,0 +1,108 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+certificate_ids = ["watch.cut"]
+
+platform :ios do
+  lane :build do
+    build_app(
+      scheme: "Cut",
+      skip_archive: true,
+      skip_package_ipa: true,
+      skip_codesigning: true
+    )
+  end
+
+  lane :renew_certs do
+    match(type: "development", app_identifier: certificate_ids)
+    match(type: "appstore", app_identifier: certificate_ids)
+  end
+
+  lane :certs do
+    if ENV['CI']
+      keychain_name = "signing"
+      keychain_password = "temp"
+      create_keychain(
+        name: keychain_name,
+        password: keychain_password,
+        default_keychain: true,
+        unlock: true,
+        timeout: 3600,
+        lock_when_sleeps: false
+      )
+      match(
+        keychain_name: keychain_name,
+        keychain_password: keychain_password,
+        type: "appstore",
+        app_identifier: certificate_ids,
+        readonly: true
+      )
+    else 
+      match(
+        type: "appstore",
+        app_identifier: certificate_ids,
+        readonly: true
+      )
+    end
+  end
+
+  lane :asc_key do
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY"],
+      is_key_content_base64: false,
+      in_house: false # detecting this via ASC private key not currently supported
+   )
+  end
+
+  desc "Bump build number based on most recent TestFlight build number"
+  lane :fetch_and_increment_build_number do
+    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+
+    current_version = get_version_number(
+      target: "Cut"
+    )
+    latest_build_number = latest_testflight_build_number(
+      api_key: api_key,
+      version: current_version,
+      app_identifier: app_identifier
+    )
+    increment_build_number(
+      build_number: latest_build_number + 1,
+      xcodeproj: "Cut.xcodeproj",
+    )
+  end
+
+  lane :build_for_testflight do
+    asc_key
+    certs
+    fetch_and_increment_build_number
+    build_app(scheme: "Cut", xcodebuild_formatter: "")
+  end
+
+  lane :build_for_alpha_testers do
+    build_for_testflight
+    upload_to_testflight(groups: "Alpha", submit_beta_review: false)
+  end
+
+  lane :build_for_beta_testers do
+    build_for_testflight
+    upload_to_testflight(groups: "Beta", submit_beta_review: false)
+  end
+end
