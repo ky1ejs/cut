@@ -5,11 +5,11 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pnpm"
+  - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
       interval: "daily"
-  - package-ecosystem: "pnpm"
+  - package-ecosystem: "npm"
     directory: "/web"
     schedule:
       interval: "daily"
