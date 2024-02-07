@@ -15,12 +15,12 @@ jobs:
       - id: check-paths-step
         uses: ky1ejs/check-diff-paths-action@v0.2.0
         with:
-          paths: |
+          paths: |-
             {
-              "backend": "^backend\/.*",
-              "graphql-schema": "backend\/graphql\/schema\.graphql",
-              "ios": "^ios\/.*",
-              "web": "^web\/.*"
+              "backend": "^backend\\\/.*",
+              "graphql-schema": "backend\\\/graphql\\\/schema\\.graphql",
+              "ios": "ios\\\/.*",
+              "web": "web\\\/.*"
             }
           github-token: ${{ secrets.GITHUB_TOKEN }}
   label_issues:
