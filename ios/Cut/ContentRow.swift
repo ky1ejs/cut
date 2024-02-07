@@ -52,7 +52,7 @@ struct UrlImage: View {
         KFImage.url(url)
             .placeholder { Color(.red) }
                   .loadDiskFileSynchronously()
-                  .cacheMemoryOnly()
+                  .cacheOriginalImage()
                   .fade(duration: 0.25)
                   .onProgress { receivedSize, totalSize in  }
                   .onFailure { error in }
