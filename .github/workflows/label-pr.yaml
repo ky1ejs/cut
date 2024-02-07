@@ -33,7 +33,7 @@ jobs:
       GH_REPO: ${{ github.repository }}
       NUMBER: ${{ github.event.pull_request.number }}
     permissions:
-      issues: write
+      pull-requests: write
     steps:
       - run: gh issue edit "$NUMBER" --add-label "backend"
         if: ${{ needs.check-changes.outputs.backend == 'true' }}
