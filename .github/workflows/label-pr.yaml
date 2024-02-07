@@ -1,0 +1,43 @@
+name: Label PRs
+on:
+  pull_request:
+    types:
+      - opened
+jobs:
+  check-changes: 
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.check-paths-step.outputs.backend }}
+      graphql-schema: ${{ steps.check-paths-step.outputs.graphql-schema }}
+      ios: ${{ steps.check-paths-step.outputs.ios }}
+      web: ${{ steps.check-paths-step.outputs.web }}
+    steps:
+      - id: check-paths-step
+        uses: ky1ejs/check-diff-paths-action@v0.2.0
+        with:
+          paths: |
+            {
+              "backend": "^backend\/.*",
+              "graphql-schema": "backend\/graphql\/schema\.graphql",
+              "ios": "^ios\/.*",
+              "web": "^web\/.*"
+            }
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  label_issues:
+    runs-on: ubuntu-latest
+    needs: check-changes
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      NUMBER: ${{ github.event.issue.number }}
+    permissions:
+      issues: write
+    steps:
+      - run: gh issue edit "$NUMBER" --add-label "backend"
+        if: ${{ needs.check-ios-changes.outputs.backend == 'true' }}
+      - run: gh issue edit "$NUMBER" --add-label "graphql-schema"
+        if: ${{ needs.check-ios-changes.outputs.graphql-schema == 'true' }}
+      - run: gh issue edit "$NUMBER" --add-label "ios"
+        if: ${{ needs.check-ios-changes.outputs.ios == 'true' }}
+      - run: gh issue edit "$NUMBER" --add-label "web"
+        if: ${{ needs.check-ios-changes.outputs.web == 'true' }}
