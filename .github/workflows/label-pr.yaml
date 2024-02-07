@@ -21,8 +21,8 @@ jobs:
             {
               "backend": "^backend\\\/.*",
               "graphql-schema": "backend\\\/graphql\\\/schema\\.graphql",
-              "ios": "ios\\\/.*",
-              "web": "web\\\/.*"
+              "ios": "^ios\\\/.*",
+              "web": "^web\\\/.*"
             }
           github-token: ${{ secrets.GITHUB_TOKEN }}
   label_issues:
