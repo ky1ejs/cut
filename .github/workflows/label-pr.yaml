@@ -36,10 +36,21 @@ jobs:
       issues: write
     steps:
       - run: gh issue edit "$NUMBER" --add-label "backend"
-        if: ${{ needs.check-ios-changes.outputs.backend == 'true' }}
+        if: ${{ needs.check-changes.outputs.backend == 'true' }}
+      - run: gh issue edit "$NUMBER" --remove-label "backend"
+        if: ${{ needs.check-changes.outputs.backend == 'false' }}
+      
       - run: gh issue edit "$NUMBER" --add-label "graphql-schema"
-        if: ${{ needs.check-ios-changes.outputs.graphql-schema == 'true' }}
+        if: ${{ needs.check-changes.outputs.graphql-schema == 'true' }}
+      - run: gh issue edit "$NUMBER" --remove-label "graphql-schema"
+        if: ${{ needs.check-changes.outputs.backend == 'false' }}
+      
       - run: gh issue edit "$NUMBER" --add-label "ios"
-        if: ${{ needs.check-ios-changes.outputs.ios == 'true' }}
+        if: ${{ needs.check-changes.outputs.ios == 'true' }}
+      - run: gh issue edit "$NUMBER" --remove-label "ios"
+        if: ${{ needs.check-changes.outputs.backend == 'false' }}
+
       - run: gh issue edit "$NUMBER" --add-label "web"
-        if: ${{ needs.check-ios-changes.outputs.web == 'true' }}
+        if: ${{ needs.check-changes.outputs.web == 'true' }}
+      - run: gh issue edit "$NUMBER" --remove-label "web"
+        if: ${{ needs.check-changes.outputs.backend == 'false' }}
