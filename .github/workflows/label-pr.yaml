@@ -43,14 +43,14 @@ jobs:
       - run: gh issue edit "$NUMBER" --add-label "graphql-schema"
         if: ${{ needs.check-changes.outputs.graphql-schema == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "graphql-schema"
-        if: ${{ needs.check-changes.outputs.backend == 'false' }}
+        if: ${{ needs.check-changes.outputs.graphql-schema == 'false' }}
       
       - run: gh issue edit "$NUMBER" --add-label "ios"
         if: ${{ needs.check-changes.outputs.ios == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "ios"
-        if: ${{ needs.check-changes.outputs.backend == 'false' }}
+        if: ${{ needs.check-changes.outputs.ios == 'false' }}
 
       - run: gh issue edit "$NUMBER" --add-label "web"
         if: ${{ needs.check-changes.outputs.web == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "web"
-        if: ${{ needs.check-changes.outputs.backend == 'false' }}
+        if: ${{ needs.check-changes.outputs.web == 'false' }}
