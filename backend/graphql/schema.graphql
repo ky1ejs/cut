@@ -3,6 +3,17 @@ type Query {
   search(term: String!): [Movie!]!
 }
 
+type Mutation {
+  signUp(deviceName: String!): Device!
+  logIn(username: String!, password: String!): Device!
+  addToWatchlist(movieId: Int!): Boolean!
+}
+
+type Device {
+  name: String!
+  session_id: String!
+}
+
 type Movie {
   id: Int!
   title: String!

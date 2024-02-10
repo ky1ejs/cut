@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Genre, GenreMetadata, Movie } from "../__generated__/graphql";
+import { Genre, GenreMetadata } from "../../__generated__/graphql";
 
 let GenreMap: Map<number, string> | undefined
 

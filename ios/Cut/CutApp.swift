@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct CutApp: App {
-        var body: some Scene {
+    @ObservedObject private var session = SessionManager.shared
+
+    var body: some Scene {
         WindowGroup {
-            ContentView()
+            if let _ = session.sessionId {
+                ContentView()
+            } else {
+                DeviceRegister()
+            }
         }
     }
 }

@@ -6,9 +6,10 @@ import http from 'http';
 import cors from 'cors';
 import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
-import movieResolver from './resolvers/movie-resolver';
-import genreResolver from './resolvers/genre-resolver';
-import searchResolver from './resolvers/search-resolver';
+import movieResolver from './resolvers/query/movie-resolver';
+import genreResolver from './resolvers/query/genre-resolver';
+import searchResolver from './resolvers/query/search-resolver';
+import signUp from './resolvers/mutation/signUp';
 
 const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
@@ -16,6 +17,9 @@ const resolvers: Resolvers = {
   Query: {
     movies: movieResolver,
     search: (_, args) => { return searchResolver(args) }
+  },
+  Mutation: {
+    signUp: (_, args) => { return signUp(args) }
   },
   Movie: {
     metadata: () => ({ id: 1, runtime: 120 })
