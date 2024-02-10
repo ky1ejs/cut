@@ -99,6 +99,7 @@ platform :ios do
   end
 
   lane :build_for_alpha_testers do |options|
+    puts "Building for Alpha testers with changelog: #{options[:changelog]}"
     build_for_testflight
     upload_to_testflight(
       groups: "Alpha", 
@@ -108,6 +109,7 @@ platform :ios do
   end
 
   lane :build_for_beta_testers do
+    puts "Building for Beta testers with changelog: #{options[:changelog]}"
     build_for_testflight
     upload_to_testflight(groups: "Beta", submit_beta_review: false)
   end
