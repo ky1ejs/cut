@@ -57,6 +57,8 @@ jobs:
 
      - id: build-release-notes
        uses: ky1ejs/release-notes-action@v0.0.1
+       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
       
      - id: write-changelog-to-file
        run: echo "${{ steps.build-release-notes.outputs.release-notes }}" > ./Resources/CHANGELOG.md
