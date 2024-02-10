@@ -61,7 +61,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
       
      - id: write-changelog-to-file
-       run: echo "${{ steps.build-release-notes.outputs.release-notes }}" > ${{github.workspace}}/ios/Resources/CHANGELOG.md
+       run: echo "${{ steps.build-release-notes.outputs.release-notes }}" > ./ios/Cut/Resources/CHANGELOG.md
     
      - name: Test
        if: ${{ !inputs.deploy }}
