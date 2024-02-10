@@ -1,9 +1,9 @@
 # Choosing the stack
 
 Choices to make (with answers as TL;DR;)
-* Hosting platform - TBD
+* Hosting platform - Railway
 * Language - TypeScript
-* Database Host - TBD
+* Database Host - Neon
 * ORM - Prisma
 * Wire format - GraphQL
 
@@ -13,6 +13,22 @@ Choices to make (with answers as TL;DR;)
 * Realtime support – following on from the previous point, realtime can make delightful moments (e.g. likes updating)
 
 ## Hosting platform
+
+Options:
+- Render
+- Fly.io
+- Railway
+- ~~DigtalOcean~~ - too expensive
+
+### Compare
+| Platform | Has free tier? | Cost | Resources | Support PR envs/previews? |
+| --- | --- | ---- | --- | --- | 
+| Render | Yes, but it shuts down upon innactivity and it takes 6 (!!!) mins to boot back up | $7 | 512mb RAM / 0.1 CPU  | Yes |
+| Railway | No | $5 | 8 GB RAM / 8 vCPU per Service | Yes | 
+| Fly.io | Yes | $5 free-credit, then depends on usage | Up to 3 shared-cpu-1x 256mb VMs  | Yes, via [GitHub Actions](https://github.com/superfly/fly-pr-review-apps) | 
+
+Some comparison links:
+https://www.reddit.com/r/webdev/comments/14pl5et/railway_free_developer_plan_will_be_gone_where_to/
 
 ### Options
 * Railway
@@ -40,8 +56,8 @@ The question is who hosts it? I want these features:
 
 Options:
 * [Neon](https://neon.tech/)
-* [Fly.io Postres](https://fly.io/docs/postgres/)
 * [Crunchy](https://www.crunchydata.com/products/crunchy-high-availability-postgresql)
+* [~~Fly.io Postres~~](https://fly.io/docs/postgres/) - [it's not managed](https://fly.io/docs/postgres/getting-started/what-you-should-know/)
 * [~~Render~~](https://render.com/) – free tier db "expires" (shuts down until you pay) [after 90-days](https://docs.render.com/free#90-day-limit)
 * [~~Digital Ocean~~](https://www.digitalocean.com/pricing) - no free tier
 * [~~Cockroach DB~~](https://www.cockroachlabs.com/pricing/) sadly does not support LISTEN / NOTIFY, although has [it's own proprietary approach](https://www.cockroachlabs.com/docs/stable/changefeed-for)
@@ -50,7 +66,6 @@ I'm going to go with Neon because:
 - it's what Vercel use for their Postgres product (quote from [here](https://neon.tech/docs/guides/vercel-postgres): Vercel Storage is a collection of managed storage products that you can integrate with your frontend framework. Included in this suite of products is Vercel Postgres, which is serverless Postgres powered by Neon.)
 - it's Postgres, where as CockroachDB is its own thing
 - I love its branching support -- could be super helpful for experimenting
-- 
 
 ## ORM
 Options: 
