@@ -25,6 +25,7 @@
 		933E5DF62B76DF4D00A83602 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 933E5DF52B76DF4D00A83602 /* MarkdownUI */; };
 		933E5DF92B76E19300A83602 /* Changelog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E5DF82B76E19300A83602 /* Changelog.swift */; };
 		933E5DFA2B76E24400A83602 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 933E5DF72B76E17300A83602 /* CHANGELOG.md */; };
+		933E5DFD2B76FDC600A83602 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E5DFC2B76FDC600A83602 /* Account.swift */; };
 		93898E502B6E0A970001D68F /* CutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E4F2B6E0A970001D68F /* CutApp.swift */; };
 		93898E522B6E0A970001D68F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E512B6E0A970001D68F /* ContentView.swift */; };
 		93898E542B6E0A980001D68F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93898E532B6E0A980001D68F /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		933E5DE12B707DA000A83602 /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
 		933E5DF72B76E17300A83602 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		933E5DF82B76E19300A83602 /* Changelog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Changelog.swift; sourceTree = "<group>"; };
+		933E5DFC2B76FDC600A83602 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		93898E4C2B6E0A970001D68F /* Cut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93898E4F2B6E0A970001D68F /* CutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutApp.swift; sourceTree = "<group>"; };
 		93898E512B6E0A970001D68F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				93898E512B6E0A970001D68F /* ContentView.swift */,
 				933A6AA32B6E0BF2004DE491 /* ContentRow.swift */,
 				933E5DF82B76E19300A83602 /* Changelog.swift */,
+				933E5DFC2B76FDC600A83602 /* Account.swift */,
 				933A6AA92B702DBB004DE491 /* graphql */,
 				933E5DFB2B76E7C500A83602 /* Resources */,
 				93898E552B6E0A980001D68F /* Preview Content */,
@@ -399,6 +402,7 @@
 				933E5DF92B76E19300A83602 /* Changelog.swift in Sources */,
 				933E5DEB2B707DA000A83602 /* SchemaMetadata.graphql.swift in Sources */,
 				933A6AA42B6E0BF2004DE491 /* ContentRow.swift in Sources */,
+				933E5DFD2B76FDC600A83602 /* Account.swift in Sources */,
 				93898E502B6E0A970001D68F /* CutApp.swift in Sources */,
 				933E5DE52B707DA000A83602 /* MovieMetadata.graphql.swift in Sources */,
 				933E5DE62B707DA000A83602 /* Movie.graphql.swift in Sources */,
