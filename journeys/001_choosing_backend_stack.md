@@ -19,6 +19,8 @@ Options:
 - Fly.io
 - Railway
 - ~~DigtalOcean~~ - too expensive
+- ~~Supabase~~ - I want to handle my database and auth myself for learning and control
+- ~~AWS, GCP etc.~~ (but no, pricy af)
 
 ### Compare
 | Platform | Has free tier? | Cost | Resources | Support PR envs/previews? |
@@ -30,11 +32,17 @@ Options:
 Some comparison links:
 https://www.reddit.com/r/webdev/comments/14pl5et/railway_free_developer_plan_will_be_gone_where_to/
 
-### Options
-* Railway
-* Fly.io
-* Supabase
-* AWS, GCP etc. (but no, pricy af)
+### Railway
+#### Pros
+* slick interface and GitHub integration
+* super generous resource allowance for 5$
+* interested in the idea of running postgres in Railway for speed, but if it's totally self managed (e.g. memory usage etc. etc.) then I'm not sure it's for me
+#### Cons
+* don't love that secrets are availble to view in your dashboard... wish these were only writable not readble. Followed up with Railway about this but they [didn't think it was a problem](https://discord.com/channels/713503345364697088/1082212195775029310/1204201807505784924).
+
+### Fly.io
+#### Reviews 
+https://www.reddit.com/r/devops/comments/10eg6a1/i_believe_i_can_fly_a_flyio_review/
 
 ## Language
 Really I'm only going to go with TypeScript because the toolchain is excellent and I find it so fast to work with. 

@@ -10,6 +10,9 @@ This isn't working right now, but it seems one of these things is the cause:
 
 I'll revist this another time, probably when I share the app to external testers.
 
+See `notes`, `what_new` and `changelog` in Fastlane Pilot docs: 
+https://docs.fastlane.tools/actions/pilot/
+
 
 ## 2. Changelog on iOS
 
