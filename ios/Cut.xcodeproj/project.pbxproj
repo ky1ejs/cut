@@ -22,6 +22,9 @@
 		933E5DEA2B707DA000A83602 /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E5DE02B707DA000A83602 /* SchemaConfiguration.swift */; };
 		933E5DEB2B707DA000A83602 /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E5DE12B707DA000A83602 /* SchemaMetadata.graphql.swift */; };
 		933E5DEE2B707E7500A83602 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 933E5DED2B707E7500A83602 /* Kingfisher */; };
+		933E5DF62B76DF4D00A83602 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 933E5DF52B76DF4D00A83602 /* MarkdownUI */; };
+		933E5DF92B76E19300A83602 /* Changelog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E5DF82B76E19300A83602 /* Changelog.swift */; };
+		933E5DFA2B76E24400A83602 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 933E5DF72B76E17300A83602 /* CHANGELOG.md */; };
 		93898E502B6E0A970001D68F /* CutApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E4F2B6E0A970001D68F /* CutApp.swift */; };
 		93898E522B6E0A970001D68F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E512B6E0A970001D68F /* ContentView.swift */; };
 		93898E542B6E0A980001D68F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93898E532B6E0A980001D68F /* Assets.xcassets */; };
@@ -63,6 +66,8 @@
 		933E5DDF2B707DA000A83602 /* GenreMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenreMetadata.graphql.swift; sourceTree = "<group>"; };
 		933E5DE02B707DA000A83602 /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
 		933E5DE12B707DA000A83602 /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
+		933E5DF72B76E17300A83602 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		933E5DF82B76E19300A83602 /* Changelog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Changelog.swift; sourceTree = "<group>"; };
 		93898E4C2B6E0A970001D68F /* Cut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93898E4F2B6E0A970001D68F /* CutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutApp.swift; sourceTree = "<group>"; };
 		93898E512B6E0A970001D68F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				933E5DF62B76DF4D00A83602 /* MarkdownUI in Frameworks */,
 				933E5DEE2B707E7500A83602 /* Kingfisher in Frameworks */,
 				933A6AA72B70251B004DE491 /* Apollo in Frameworks */,
 			);
@@ -177,6 +183,15 @@
 			path = Objects;
 			sourceTree = "<group>";
 		};
+		933E5DFB2B76E7C500A83602 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				933E5DF72B76E17300A83602 /* CHANGELOG.md */,
+				93898E532B6E0A980001D68F /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		93898E432B6E0A970001D68F = {
 			isa = PBXGroup;
 			children = (
@@ -204,8 +219,9 @@
 				93898E4F2B6E0A970001D68F /* CutApp.swift */,
 				93898E512B6E0A970001D68F /* ContentView.swift */,
 				933A6AA32B6E0BF2004DE491 /* ContentRow.swift */,
-				93898E532B6E0A980001D68F /* Assets.xcassets */,
+				933E5DF82B76E19300A83602 /* Changelog.swift */,
 				933A6AA92B702DBB004DE491 /* graphql */,
+				933E5DFB2B76E7C500A83602 /* Resources */,
 				93898E552B6E0A980001D68F /* Preview Content */,
 			);
 			path = Cut;
@@ -255,6 +271,7 @@
 			packageProductDependencies = (
 				933A6AA62B70251B004DE491 /* Apollo */,
 				933E5DED2B707E7500A83602 /* Kingfisher */,
+				933E5DF52B76DF4D00A83602 /* MarkdownUI */,
 			);
 			productName = Cut;
 			productReference = 93898E4C2B6E0A970001D68F /* Cut.app */;
@@ -331,6 +348,7 @@
 			packageReferences = (
 				933A6AA52B70251B004DE491 /* XCRemoteSwiftPackageReference "apollo-ios" */,
 				933E5DEC2B707E7500A83602 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				933E5DF42B76DF4D00A83602 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			productRefGroup = 93898E4D2B6E0A970001D68F /* Products */;
 			projectDirPath = "";
@@ -351,6 +369,7 @@
 				93898E572B6E0A980001D68F /* Preview Assets.xcassets in Resources */,
 				933A6AAB2B703690004DE491 /* queries.graphql in Resources */,
 				93898E542B6E0A980001D68F /* Assets.xcassets in Resources */,
+				933E5DFA2B76E24400A83602 /* CHANGELOG.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +396,7 @@
 			files = (
 				93898E522B6E0A970001D68F /* ContentView.swift in Sources */,
 				933E5DE32B707DA000A83602 /* CutGraphQL.graphql.swift in Sources */,
+				933E5DF92B76E19300A83602 /* Changelog.swift in Sources */,
 				933E5DEB2B707DA000A83602 /* SchemaMetadata.graphql.swift in Sources */,
 				933A6AA42B6E0BF2004DE491 /* ContentRow.swift in Sources */,
 				93898E502B6E0A970001D68F /* CutApp.swift in Sources */,
@@ -865,6 +885,14 @@
 				minimumVersion = 7.10.2;
 			};
 		};
+		933E5DF42B76DF4D00A83602 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -877,6 +905,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 933E5DEC2B707E7500A83602 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		933E5DF52B76DF4D00A83602 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 933E5DF42B76DF4D00A83602 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

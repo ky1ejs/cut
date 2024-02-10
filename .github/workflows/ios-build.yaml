@@ -54,6 +54,14 @@ jobs:
 
      - name: Code gen
        run: ./apollo-ios-cli generate -p Cut/graphql/apollo-codegen-config.json
+
+     - id: build-release-notes
+       uses: ky1ejs/release-notes-action@v0.0.1
+       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+     - id: write-changelog-to-file
+       run: echo "${{ steps.build-release-notes.outputs.release-notes }}" > ./Cut/Resources/CHANGELOG.md
     
      - name: Test
        if: ${{ !inputs.deploy }}
@@ -61,11 +69,11 @@ jobs:
 
      - name: Build for alpha testers
        if: ${{ inputs.deploy && inputs.audience == 'alpha' }}
-       run: fastlane build_for_alpha_testers
+       run: fastlane build_for_alpha_testers changelog:"${{ steps.build-release-notes.outputs.release-notes }}"
 
      - name: Build for beta testers
        if: ${{ inputs.deploy && inputs.audience == 'beta' }}
-       run: fastlane build_for_alpha_testers
+       run: fastlane build_for_alpha_testers changelog:"${{ steps.build-release-notes.outputs.release-notes }}"
 
      - name: Upload .ipa
        if: ${{ inputs.deploy }}
