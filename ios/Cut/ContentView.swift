@@ -30,6 +30,8 @@ struct ContentView: View {
             }.tabItem {
                 Label("Feed", systemImage: "film")
             }
+            Search()
+                .tabItem { Label("Search", systemImage: "magnifyingglass") }
             Account()
                 .tabItem {
                     Label("Account", systemImage: "person.crop.circle.fill")

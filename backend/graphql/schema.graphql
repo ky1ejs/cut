@@ -1,5 +1,6 @@
 type Query {
   movies: [Movie!]!
+  search(term: String!): [Movie!]!
 }
 
 type Movie {
@@ -8,7 +9,7 @@ type Movie {
   poster_url: String!
   release_date: String
   metadata: MovieMetadata!
-  genres: [Genre]!
+  genres: [Genre!]!
 }
 
 type Genre {
