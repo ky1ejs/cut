@@ -8,12 +8,14 @@ import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
 import movieResolver from './resolvers/movie-resolver';
 import genreResolver from './resolvers/genre-resolver';
+import searchResolver from './resolvers/search-resolver';
 
 const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
 const resolvers: Resolvers = {
   Query: {
-    movies: movieResolver
+    movies: movieResolver,
+    search: (_, args) => { return searchResolver(args) }
   },
   Movie: {
     metadata: () => ({ id: 1, runtime: 120 })

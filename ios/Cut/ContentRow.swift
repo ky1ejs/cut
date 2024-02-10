@@ -15,7 +15,11 @@ struct ContentRowViewModel {
     var title: String { return movie.title }
 
     var subtitle: String {
-        return "\(movie.genres[0]!.metadata.name) • \(movie.metadata.runtime)"
+        guard let genre = movie.genres.first else {
+            return "\(movie.metadata.runtime)"
+        }
+
+        return "\(genre.metadata.name) • \(movie.metadata.runtime)"
     }
 }
 

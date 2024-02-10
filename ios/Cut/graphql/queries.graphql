@@ -18,3 +18,7 @@ query ExampleQuery {
   movies { ...MovieFragment }
 }
 
+query Search($term: String!) {
+  search(term: $term) { ...MovieFragment }
+}
+
