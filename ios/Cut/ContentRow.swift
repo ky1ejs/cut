@@ -8,6 +8,22 @@
 import SwiftUI
 import Kingfisher
 
+extension Font {
+    static var cutTitle: Font {
+        Font.system(size: 18, weight: .bold, design: .rounded)
+    }
+
+    static var cutSubtitle: Font {
+        Font.system(size: 13, weight: .semibold, design: .rounded)
+    }
+}
+
+extension Color {
+    static var sub: Color {
+        return Color(white: 0, opacity: 0.5)
+    }
+}
+
 struct ContentRowViewModel {
     let movie: CutGraphQL.MovieFragment
 
@@ -30,18 +46,14 @@ struct ContentRow: View {
         HStack(alignment: .center, spacing: 16) {
             UrlImage(url: URL(string: viewModel.imageUrl)!)
                     .foregroundStyle(.red)
-                    .frame(height: 150)
-                    .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                    .frame(height: 140)
                     .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
             VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    ImageStack(urls: ["a", "b", "c"])
-                    Text("Fabiano & 6 others like this").font(.footnote)
-                }
                 Text(viewModel.title)
-                    .font(.title2)
+                    .font(.cutTitle)
                 Text(viewModel.subtitle)
-                    .font(.subheadline)
+                    .font(.cutSubtitle)
+                    .foregroundStyle(Color.sub)
             }
             Spacer()
         }
