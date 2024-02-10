@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { QuerySearchArgs } from '../__generated__/graphql';
-import { getImageBaseUrl } from '../tmbd/image_base';
+import { QuerySearchArgs } from '../../__generated__/graphql';
+import { getImageBaseUrl } from '../../tmbd/image_base';
 
 const searchResolver = async (query: Partial<QuerySearchArgs>) => {
   try {

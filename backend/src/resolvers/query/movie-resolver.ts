@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getImageBaseUrl } from '../tmbd/image_base';
+import { getImageBaseUrl } from '../../tmbd/image_base';
 
 const movieResolver = async () => {
   try {
