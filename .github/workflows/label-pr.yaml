@@ -6,7 +6,10 @@ on:
       - synchronize
 
 jobs:
+  check-paths:
+      uses: ./.github/workflows/check-diff.yaml
   label_pr:
+    needs: check-paths
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -15,34 +18,22 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - id: check-paths
-        uses: ky1ejs/check-diff-paths-action@v0.2.0
-        with:
-          paths: |-
-            {
-              "backend": "^backend\\\/.*",
-              "graphql-schema": "backend\\\/graphql\\\/schema\\.graphql",
-              "ios": "^ios\\\/.*",
-              "web": "^web\\\/.*"
-            }
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - run: gh issue edit "$NUMBER" --add-label "backend"
-        if: ${{ steps.check-paths.outputs.backend == 'true' }}
+        if: ${{ needs.check-paths.outputs.backend == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "backend"
-        if: ${{ steps.check-paths.outputs.backend == 'false' }}
+        if: ${{ needs.check-paths.outputs.backend == 'false' }}
       
       - run: gh issue edit "$NUMBER" --add-label "graphql-schema"
-        if: ${{ steps.check-paths.outputs.graphql-schema == 'true' }}
+        if: ${{ needs.check-paths.outputs.graphql-schema == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "graphql-schema"
-        if: ${{ steps.check-paths.outputs.graphql-schema == 'false' }}
+        if: ${{ needs.check-paths.outputs.graphql-schema == 'false' }}
       
       - run: gh issue edit "$NUMBER" --add-label "ios"
-        if: ${{ steps.check-paths.outputs.ios == 'true' }}
+        if: ${{ needs.check-paths.outputs.ios == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "ios"
-        if: ${{ steps.check-paths.outputs.ios == 'false' }}
+        if: ${{ needs.check-paths.outputs.ios == 'false' }}
 
       - run: gh issue edit "$NUMBER" --add-label "web"
-        if: ${{ steps.check-paths.outputs.web == 'true' }}
+        if: ${{ needs.check-paths.outputs.web == 'true' }}
       - run: gh issue edit "$NUMBER" --remove-label "web"
-        if: ${{ steps.check-paths.outputs.web == 'false' }}
+        if: ${{ needs.check-paths.outputs.web == 'false' }}

@@ -1,0 +1,34 @@
+name: check-diff
+
+on:
+  workflow_call:
+    outputs:
+      backend: 
+        value: ${{ jobs.check-diff.outputs.backend }}
+      graphql: 
+        value: ${{ jobs.check-diff.outputs.graphql }}
+      ios: 
+        value: ${{ jobs.check-diff.outputs.ios }}
+      web: 
+        value: ${{ jobs.check-diff.outputs.web }}
+
+jobs:
+  check-diff:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.check-paths.outputs.backend }}
+      ios: ${{ steps.check-paths.outputs.ios }}
+      web: ${{ steps.check-paths.outputs.web }}
+      graphql: ${{ steps.check-paths.outputs.graphql-schema }}
+    steps:
+      - id: check-paths
+        uses: ky1ejs/check-diff-paths-action@v0.2.0
+        with:
+          paths: |-
+            {
+              "backend": "^backend\\\/.*",
+              "graphql-schema": "backend\\\/graphql\\\/schema\\.graphql",
+              "ios": "^ios\\\/.*",
+              "web": "^web\\\/.*"
+            }
+          github-token: ${{ secrets.GITHUB_TOKEN }}
