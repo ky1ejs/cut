@@ -13,8 +13,7 @@ class AuthorizedApolloClient {
 
     private(set) lazy var client: ApolloClient = {
         #if PROD_API
-        let url = URL(string: "https://cut-api.fly.dev/graphql")!
-        print("USING PROD")
+        let url = URL(string: "https://cut-production.up.railway.app/graphql")!
         #elseif LOCAL_API
         let url = URL(string: "http://localhost:4000/graphql")!
         #endif
