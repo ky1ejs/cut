@@ -1,32 +1,10 @@
-FROM debian:bullseye as builder
-
-ARG NODE_VERSION=20.3.1
-
-RUN apt-get update; apt install -y curl
-RUN curl https://get.volta.sh | bash
-ENV VOLTA_HOME /root/.volta
-ENV PATH /root/.volta/bin:$PATH
-RUN volta install node@${NODE_VERSION}
-
-#######################################################################
-
-RUN mkdir /app
+FROM node:20-alpine3.18
+RUN npm install -g pnpm
 WORKDIR /app
-
-ENV NODE_ENV production
-
 COPY . .
-
 RUN pnpm install
-FROM debian:bullseye
-
-LABEL fly_launch_runtime="nodejs"
-
-COPY --from=builder /root/.volta /root/.volta
-COPY --from=builder /app /app
-
-WORKDIR /app
 ENV NODE_ENV production
-ENV PATH /root/.volta/bin:$PATH
-
-CMD ["bash", "-c", "pnpm run migrate && pnpm run start"]
+ENV PORT 3000
+EXPOSE 3000
+LABEL fly_launch_runtime="nodejs"
+CMD ["pnpm", "run", "migrate", "&&", "pnpm", "run", "start"]
