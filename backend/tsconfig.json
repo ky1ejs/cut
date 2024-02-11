@@ -1,14 +1,8 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "rootDirs": [
-      "src"
-    ],
     "outDir": "dist",
-    "target": "es2022",
     "strict": true,
-    "module": "ES2022",
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "types": [
       "node"
@@ -21,8 +15,4 @@
     "node_modules",
     "**/*.spec.ts"
   ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node",
-  }
 }

@@ -3,14 +3,21 @@ name: Main Push
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'backend/graphql/schema.graphql'
-      - 'ios/**'
 
 jobs:
+  check-diff:
+    uses: ./.github/workflows/check-diff.yaml
+    
+  deploy-backend:
+    needs: check-diff
+    uses: ./.github/workflows/backend-deploy.yaml
+    if: needs.check-diff.outputs.backend
+    secrets: inherit
+    
   deploy-ios:
+    needs: check-diff
     uses: ./.github/workflows/ios-build.yaml
     secrets: inherit
     with:
-      skip: false
+      skip: ${{ !needs.check-diff.outputs.ios }}
       deploy: true
