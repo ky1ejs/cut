@@ -7,4 +7,4 @@ ENV NODE_ENV production
 ENV PORT 3000
 EXPOSE 3000
 LABEL fly_launch_runtime="nodejs"
-CMD ["pnpm", "run", "migrate", "&&", "pnpm", "run", "start"]
+CMD ["pnpm", "run", "migrate-and-start"]
