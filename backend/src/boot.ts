@@ -7,7 +7,7 @@ import http from 'http';
 import cors from 'cors';
 import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
-import movieResolver from './resolvers/query/movie-resolver.js';
+import movieResolver from './resolvers/query/movie-resolver';
 import genreResolver from './resolvers/query/genre-resolver';
 import searchResolver from './resolvers/query/search-resolver';
 import signUp from './resolvers/mutation/signUp';
