@@ -11,7 +11,7 @@ jobs:
   deploy-backend:
     needs: check-diff
     uses: ./.github/workflows/backend-deploy.yaml
-    if: needs.check-diff.outputs.backend
+    if: needs.check-diff.outputs.backend == 'true'
     secrets: inherit
     
   deploy-ios:
