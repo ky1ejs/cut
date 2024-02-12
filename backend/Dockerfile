@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json .
 RUN pnpm install 
 COPY . .
-RUN pnpm run build
+RUN pnpm codegen:graphql && pnpm run build
 
 ###########################################
 # This stage installs production dependencies only.
