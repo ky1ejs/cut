@@ -6,7 +6,8 @@ type Query {
 type Mutation {
   signUp(deviceName: String!): Device!
   logIn(username: String!, password: String!): Device!
-  addToWatchlist(movieId: Int!): Boolean!
+  addToWatchList(movieId: String!): Boolean!
+  removeFromWatchList(movieId: String!): Boolean!
 }
 
 type Device {
@@ -21,6 +22,7 @@ type Movie {
   release_date: String
   metadata: MovieMetadata!
   genres: [Genre!]!
+  isOnWatchList: Boolean!
 }
 
 type Genre {

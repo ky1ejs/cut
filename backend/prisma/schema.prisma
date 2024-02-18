@@ -10,27 +10,176 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// -----------------------------------------------------------
+// User
+// -----------------------------------------------------------
 model User {
-  id        String      @id @default(uuid())
+  id        String      @id @default(dbgenerated("gen_random_uuid()"))
   createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  updatedAt DateTime    @default(now())
   Device    Device[]
   WatchList WatchList[]
 }
 
 model Device {
-  id        String   @id @default(uuid())
-  sessionId String   @unique @default(uuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  sessionId String   @unique @default(dbgenerated("gen_random_uuid()"))
   name      String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
 
+// -----------------------------------------------------------
+// Watch List
+// -----------------------------------------------------------
 model WatchList {
-  id     String @id @default(uuid())
-  tmdbId Int
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  movieId   String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([movieId, userId])
+}
+
+// -----------------------------------------------------------
+// Movie metadata
+// -----------------------------------------------------------
+model Movie {
+  id               String    @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+  releaseDate      DateTime? @db.Date
+  originalLanguage String
+  originalTitle    String
+  synopsis         String
+
+  mainGenreId Int
+
+  mainProviderId String?
+  mainProvider   MovieProvider? @relation(fields: [mainProviderId], references: [id])
+
+  genres MovieGenre[]
+  images MovieImage[]
+
+  WatchList        WatchList[]
+  MovieTranslation MovieTranslation[]
+  MovieCollection  MovieCollection[]
+}
+
+model MovieTranslation {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  title     String
+  synopsis  String
+  language  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  movieId   String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+}
+
+model MovieGenre {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  movieId   String
+  genreId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  movies    Movie    @relation(fields: [movieId], references: [id])
+  genres    Genre    @relation(fields: [genreId], references: [id])
+
+  @@unique([movieId, genreId])
+}
+
+enum ImageType {
+  POSTER
+  BACKDROP
+  STILL
+}
+
+model MovieImage {
+  id        String    @id @default(dbgenerated("gen_random_uuid()"))
+  url       String    @unique
+  type      ImageType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  movieId   String
+  movie     Movie     @relation(fields: [movieId], references: [id])
+}
+
+model Genre {
+  id                 Int                  @id @default(autoincrement())
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now())
+  MovieGenre         MovieGenre[]
+  ProviderMovieGenre ProviderMovieGenre[]
+  locales            LocalizedGenre[]
+}
+
+model LocalizedGenre {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  genreId   Int
+  language  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  genre     Genre    @relation(fields: [genreId], references: [id])
+
+  @@unique([genreId, language])
+}
+
+enum CollectionType {
+  POPULAR
+  TOP_RATED
+  UPCOMING
+  NOW_PLAYING
+  TRENDING_DAILY
+  TRENDING_WEEKLY
+}
+
+model MovieCollection {
+  id        String         @id @default(dbgenerated("gen_random_uuid()"))
+  type      CollectionType
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now())
+  movieId   String
+  movie     Movie          @relation(fields: [movieId], references: [id])
+
+  @@unique([type, movieId])
+}
+
+// -----------------------------------------------------------
+// Movie providers
+// -----------------------------------------------------------
+enum Provider {
+  TMDB
+  IMDB
+  FANDANGO
+}
+
+model ProviderMovieGenre {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  provider   Provider
+  externalID String
+  genreId    Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  genre      Genre    @relation(fields: [genreId], references: [id])
+
+  @@unique([externalID, provider])
+}
+
+model MovieProvider {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  movieId    String
+  provider   Provider
+  externalId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  movies     Movie[]
+
+  @@unique([externalId, provider])
 }

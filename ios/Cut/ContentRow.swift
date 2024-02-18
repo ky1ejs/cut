@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import Apollo
 
 extension Font {
     static var cutTitle: Font {
@@ -20,7 +21,7 @@ extension Font {
 
 extension Color {
     static var sub: Color {
-        return Color(white: 0, opacity: 0.5)
+        return Color(white: 0, opacity: 0.2)
     }
 }
 
@@ -39,15 +40,67 @@ struct ContentRowViewModel {
     }
 }
 
+class WatchListButtonViewModel: ObservableObject {
+    @Published var isOnWatchList: Bool
+    private let movieId: Int
+    private var currentRequest: Apollo.Cancellable?
+
+    init(isOnWatchList: Bool, movieId: Int) {
+        self.isOnWatchList = isOnWatchList
+        self.movieId = movieId
+    }
+
+    func watchListToggle() {
+        let original = isOnWatchList
+        isOnWatchList = !isOnWatchList
+        currentRequest?.cancel()
+        if original {
+            currentRequest = AuthorizedApolloClient.shared.client
+                .perform(mutation: CutGraphQL.RemoveFromWatchListMutation(movieId: movieId)) { [weak self] result in
+                    if case .failure = result {
+                        self?.isOnWatchList = original
+                    }
+                }
+        } else {
+            currentRequest = AuthorizedApolloClient.shared.client
+                .perform(mutation: CutGraphQL.AddToWatchListMutation(movieId: movieId)) { [weak self] result in
+                    if case .failure = result {
+                        self?.isOnWatchList = original
+                    }
+                }
+        }
+    }
+}
+
+struct WatchListButton: View {
+    @ObservedObject var viewModel: WatchListButtonViewModel
+
+    var body: some View {
+        Button(action: {
+            viewModel.watchListToggle()
+        }, label: {
+            label()
+        })
+        .frame(width: 36, height: 36)
+        .background(Circle().foregroundStyle(viewModel.isOnWatchList ? Color.black : Color.sub))
+    }
+
+    func label() -> some View {
+        let image: UIImage = viewModel.isOnWatchList ? .init(named: "check")! : .init(named: "plus")!
+        return Image(uiImage: image)
+            .tint(viewModel.isOnWatchList ? .black : .white)
+    }
+}
+
 struct ContentRow: View {
     let viewModel: ContentRowViewModel
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             UrlImage(url: URL(string: viewModel.imageUrl)!)
-                    .foregroundStyle(.red)
-                    .frame(height: 140)
-                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
+                .foregroundStyle(.red)
+                .frame(height: 140)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
             VStack(alignment: .leading, spacing: 6) {
                 Text(viewModel.title)
                     .font(.cutTitle)
@@ -56,6 +109,7 @@ struct ContentRow: View {
                     .foregroundStyle(Color.sub)
             }
             Spacer()
+            WatchListButton(viewModel: WatchListButtonViewModel(isOnWatchList: viewModel.movie.isOnWatchList, movieId: viewModel.movie.id))
         }
         .padding(0)
     }
@@ -67,13 +121,13 @@ struct UrlImage: View {
     var body: some View {
         KFImage.url(url)
             .placeholder { Color(.red) }
-                  .loadDiskFileSynchronously()
-                  .cacheOriginalImage()
-                  .fade(duration: 0.25)
-                  .onProgress { receivedSize, totalSize in  }
-                  .onFailure { error in }
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
+            .loadDiskFileSynchronously()
+            .cacheOriginalImage()
+            .fade(duration: 0.25)
+            .onProgress { receivedSize, totalSize in  }
+            .onFailure { error in }
+            .resizable()
+            .aspectRatio(contentMode: .fit)
 
 
     }
@@ -122,6 +176,7 @@ struct MoonMask: Shape {
         "__typename": "MovieMetadata",
                   "runtime": 120
                 },
+    "isOnWatchlist": false,
                 "release_date": null,
                 "poster_url": "https://image.tmdb.org/t/p/w500/7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg",
                 "genres": [

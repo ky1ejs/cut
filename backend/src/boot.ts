@@ -11,6 +11,20 @@ import movieResolver from './resolvers/query/movie-resolver';
 import genreResolver from './resolvers/query/genre-resolver';
 import searchResolver from './resolvers/query/search-resolver';
 import signUp from './resolvers/mutation/signUp';
+import prisma from './prisma';
+import { User } from '@prisma/client';
+import addToWatchlist from './resolvers/mutation/addToWatchlist';
+import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
+import WatchListDataSource from './dataloaders/watchListDataloader';
+import { GraphQLError } from 'graphql';
+import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
+
+export interface GraphQLContext {
+  user?: User
+  dataSources: {
+    watchList: WatchListDataSource
+  }
+}
 
 const boot = async () => {
   const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
@@ -18,28 +32,26 @@ const boot = async () => {
   const resolvers: Resolvers = {
     Query: {
       movies: movieResolver,
-      search: (_, args) => { return searchResolver(args) }
+      search: (_, args) => searchResolver(args)
     },
     Mutation: {
-      signUp: (_, args) => { return signUp(args) }
+      signUp: (_, args) => signUp(args),
+      addToWatchList: (_, args, context) => addToWatchlist(context, args),
+      removeFromWatchList: (_, args, context) => removeFromWatchList(context, args)
     },
     Movie: {
-      metadata: () => ({ id: 1, runtime: 120 })
+      metadata: () => ({ id: 1, runtime: 120 }),
+      isOnWatchList: (movie, _, context) => isOnWatchlistResolver(movie, context),
     },
     Genre: {
       metadata: genreResolver
-    }
+    },
   };
-
-
-  interface MyContext {
-    token?: string;
-  }
 
   const app = express();
   const httpServer = http.createServer(app);
 
-  const server = new ApolloServer<MyContext>({
+  const server = new ApolloServer<GraphQLContext>({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -52,7 +64,22 @@ const boot = async () => {
     cors<cors.CorsRequest>(),
     express.json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context: async ({ req }) => {
+        let context: GraphQLContext = {
+          dataSources: {
+            watchList: new WatchListDataSource(prisma)
+          }
+        }
+        const sessionId = req.headers.authorization;
+        if (sessionId) {
+          const user = await prisma.device.findUnique({ where: { sessionId }, include: { user: true } });
+          if (!user) {
+            throw new GraphQLError('Unauthorized', { extensions: { code: 'UNAUTHORIZED' } });
+          }
+          context.user = user.user;
+        }
+        return context
+      }
     }),
   );
 

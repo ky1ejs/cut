@@ -12,6 +12,7 @@ fragment MovieFragment on Movie {
   metadata {
     runtime
   }
+  isOnWatchList
 }
 
 query ExampleQuery {
@@ -26,4 +27,12 @@ mutation SignUp($deviceName: String!) {
   signUp(deviceName: $deviceName) {
     session_id
   }
+}
+
+mutation AddToWatchList($movieId: Int!) {
+  addToWatchList(movieId: $movieId)
+}
+
+mutation RemoveFromWatchList($movieId: Int!) {
+  removeFromWatchList(movieId: $movieId)
 }

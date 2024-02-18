@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "node --loader ts-node/esm -r dotenv/config src/index.ts",
+    "dev": "ts-node -r dotenv/config src/index.ts",
+    "dev:watch": "nodemon",
     "build": "tsc",
     "start": "node dist/index.js",
     "codegen:graphql": "gql-gen --config graphql-codegen.yaml",
@@ -33,6 +34,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.16",
     "dotenv": "^16.4.1",
+    "nodemon": "^3.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
