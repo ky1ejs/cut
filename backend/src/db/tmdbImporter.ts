@@ -1,67 +1,44 @@
-import { Provider, Prisma, ImageType, Movie, ProviderMovieGenre } from "@prisma/client";
+import { Prisma, ImageType, Movie, Genre } from "@prisma/client";
 import prisma from "../prisma"
 import { randomUUID } from "crypto";
 
 export default async function importTmbdMovie(movie: any): Promise<Movie> {
-  const tmdbId = movie.id.toString();
-  const cutProviderRecord = await prisma.movieProvider.findUnique({
+  let cutMovie = await prisma.movie.findUnique({
     where: {
-      externalId_provider: {
-        externalId: tmdbId,
-        provider: Provider.TMDB,
-      }
+      tmdbId: movie.id
     }
   });
 
-  const genreIds = parseGenreIds(movie);
-  const firstGenreId = genreIds.length > 0 ? genreIds[0] : null;
-  let mainGenre: ProviderMovieGenre | null = null;
-  if (firstGenreId) {
-    mainGenre = await prisma.providerMovieGenre.findUnique({
+  if (!cutMovie) {
+    const genreIds = movie.genre_ids || movie.genres.map((g: any) => g.id) || [];
+    const firstGenreId = genreIds.length > 0 ? genreIds[0] : null;
+    let mainGenre: Genre | null = null;
+    if (firstGenreId) {
+      mainGenre = await prisma.genre.findUnique({
+        where: {
+          tmdbId: firstGenreId
+        }
+      });
+    }
+
+    const posterUrl = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
+    const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+
+    const genres = genreIds.length > 0 ? await prisma.genre.findMany({
       where: {
-        externalID_provider: {
-          externalID: firstGenreId,
-          provider: Provider.TMDB
+        id: {
+          in: genreIds
         }
       }
-    });
-  }
+    }) : []
 
-  const cutMovie = tmdbMovieToCutMovie(movie, mainGenre ? movie.genreId : undefined);
-  const posterUrl = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
-  const backdropUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
-  const genres = await prisma.providerMovieGenre.findMany({
-    where: {
-      provider: Provider.TMDB,
-      externalID: {
-        in: genreIds
-      }
-    }
-  }).then((r) => r.map((g) => g.genreId));
-
-  let resultMovie: Movie
-  console.log(cutProviderRecord)
-  if (cutProviderRecord) {
-    resultMovie = await prisma.movie.update({
-      where: {
-        id: cutProviderRecord.movieId
-      },
-      data: cutMovie
-    });
-    // todo update imaage and genres
-  } else {
+    const parsedMovie = tmdbMovieToCutMovie(movie, mainGenre ? movie.genreId : undefined);
     const movieId = randomUUID().toString()
-    resultMovie = await prisma.movie.create({
+    cutMovie = await prisma.movie.create({
       data: {
-        ...cutMovie,
+        ...parsedMovie,
         id: movieId,
-        mainProvider: {
-          create: {
-            movieId: movieId,
-            externalId: tmdbId,
-            provider: Provider.TMDB,
-          }
-        },
+        tmdbId: movie.id,
         images: {
           createMany: {
             data: [
@@ -79,14 +56,14 @@ export default async function importTmbdMovie(movie: any): Promise<Movie> {
 
         },
         genres: {
-          create: genres.map((genreId) => ({
-            genreId
+          create: genres.map((genre) => ({
+            genreId: genre.id
           }))
         }
       },
     });
   }
-  return resultMovie
+  return cutMovie
 }
 
 function tmdbMovieToCutMovie(tmdbMovie: any, mainGenreId: number | undefined): Prisma.MovieCreateInput {
@@ -104,14 +81,4 @@ function tmdbMovieToCutMovie(tmdbMovie: any, mainGenreId: number | undefined): P
     }
   }
   return cutMovie;
-}
-
-function parseGenreIds(movie: any): string[] {
-  if (movie.genre_ids) {
-    return movie.genre_ids.map((id: number) => id.toString());
-  }
-  if (movie.genres) {
-    return movie.genres.map((genre: any) => genre.id.toString());
-  }
-  return []
 }

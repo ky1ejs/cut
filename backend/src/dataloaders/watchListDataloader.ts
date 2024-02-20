@@ -1,4 +1,4 @@
-import { PrismaClient, Provider } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
 
 export type WatchListCacheKey = {
@@ -18,36 +18,45 @@ export default class WatchListDataSource {
       {
         where: {
           OR: ids.map((id) => {
+            // fix this by putting the IDs for providers in the same row?
             const [provider, movieId] = id.movieId.split(':');
             console.log('provider', provider);
             console.log('movieId', movieId);
+            let movieWhere: Prisma.WatchListWhereInput = {
+              userId: id.userId,
+            };
             switch (provider) {
               case 'TMDB':
-                return {
-                  userId: id.userId,
+                movieWhere = {
+                  ...movieWhere,
                   movie: {
-                    providers: {
-                      some: {
-                        provider: Provider.TMDB,
-                        externalId: movieId
-                      }
-                    }
+                    tmdbId: parseInt(movieId)
                   }
                 };
+                break;
               case 'CUT':
-                return {
-                  userId: id.userId,
+                movieWhere = {
+                  ...movieWhere,
                   movieId: movieId
                 }
+                break;
               default:
                 throw new Error('Provider not supported');
             }
+            return movieWhere;
           }),
+        },
+        include: {
+          movie: true
         }
       }
     )
-    const presentKeys = result.map((w) => `${w.userId}:${w.movieId}`);
-    return ids.map((id) => presentKeys.includes(`${id.userId}:${id.movieId}`));
+    let movieIds = result.map((r) => r.movieId);
+    let tmdbIds = result.map((r) => r.movie.tmdbId);
+    return ids.map((id) => {
+      const [provider, movieId] = id.movieId.split(':');
+      return provider === 'TMDB' ? tmdbIds.includes(parseInt(movieId)) : movieIds.includes(movieId);
+    });
   })
 
   async getWatchlistStatusFor(key: WatchListCacheKey) {

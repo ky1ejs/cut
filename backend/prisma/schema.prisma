@@ -61,16 +61,17 @@ model Movie {
   mainGenreId Int?
   mainGenre   Genre? @relation(fields: [mainGenreId], references: [id])
 
-  mainProviderId String?
-  mainProvider   MovieProvider?  @relation(name: "main_provider_for_movie", fields: [mainProviderId], references: [id])
-  providers      MovieProvider[] @relation(name: "providers_for_movie")
+  // Providers
+  tmdbId     Int?    @unique
+  imdbId     String? @unique
+  fandangoId String? @unique
 
+  // Relations
   images           MovieImage[]
   WatchList        WatchList[]
   MovieTranslation MovieTranslation[]
   MovieCollection  MovieCollection[]
   genres           MovieGenre[]
-  MovieProvider    MovieProvider[]
 }
 
 model MovieTranslation {
@@ -114,13 +115,15 @@ model MovieImage {
 }
 
 model Genre {
-  id                 Int                  @id @default(autoincrement())
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now())
-  MovieGenre         MovieGenre[]
-  ProviderMovieGenre ProviderMovieGenre[]
-  locales            LocalizedGenre[]
-  mainMovies         Movie[]
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  tmdbId Int? @unique
+
+  MovieGenre MovieGenre[]
+  locales    LocalizedGenre[]
+  mainMovies Movie[]
 }
 
 model LocalizedGenre {
@@ -153,39 +156,4 @@ model MovieCollection {
   movie     Movie          @relation(fields: [movieId], references: [id])
 
   @@unique([type, movieId])
-}
-
-// -----------------------------------------------------------
-// Movie providers
-// -----------------------------------------------------------
-enum Provider {
-  TMDB
-  IMDB
-  FANDANGO
-}
-
-model ProviderMovieGenre {
-  id         String   @id @default(dbgenerated("gen_random_uuid()"))
-  provider   Provider
-  externalID String
-  genreId    Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
-  genre      Genre    @relation(fields: [genreId], references: [id])
-
-  @@unique([externalID, provider])
-}
-
-model MovieProvider {
-  id         String   @id @default(dbgenerated("gen_random_uuid()"))
-  movieId    String
-  movie      Movie    @relation(name: "providers_for_movie", fields: [movieId], references: [id])
-  provider   Provider
-  externalId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
-  mainMovies Movie[]  @relation(name: "main_provider_for_movie")
-  Movie      Movie[]
-
-  @@unique([externalId, provider])
 }

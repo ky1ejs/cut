@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Genre, MovieResolvers, QueryResolvers, QuerySearchArgs, Resolvers } from '../../__generated__/graphql';
 import { getImageBaseUrl } from '../../tmbd/image_base';
-import { Movie, Provider } from '@prisma/client';
+import { Movie } from '@prisma/client';
 import prisma from '../../prisma';
+import Provider from '../../types/providers';
 
 const searchResolver: QueryResolvers["search"] = async (_, args) => {
   try {
@@ -15,7 +16,7 @@ const searchResolver: QueryResolvers["search"] = async (_, args) => {
     const tmdbGenres = await fetchGenres();
     return result.data.results.map((movie: any) => {
       const genres: Genre[] = movie.genre_ids.map((id: number) =>
-        tmdbGenres.find((g) => g.externalId === id.toString()) ?? null
+        tmdbGenres.find((g) => g.tmdbId === id) ?? null
       ).filter((g: (Genre | null)) => g !== null);
       return {
         id: `${Provider.TMDB}:${movie.id.toString()}`,
@@ -32,33 +33,33 @@ const searchResolver: QueryResolvers["search"] = async (_, args) => {
   }
 }
 
-let genres: [{ id: number, externalId: string, name: string }] | undefined;
+let genres: { id: number, tmdbId: number, name: string }[] | undefined;
 
 async function fetchGenres() {
   if (genres) {
     return genres;
   }
-  const tmdbGenres = await prisma.providerMovieGenre.findMany({
+  const tmdbGenres = await prisma.genre.findMany({
     where: {
-      provider: Provider.TMDB
+      tmdbId: {
+        not: null
+      }
     },
     include: {
-      genre: {
-        include: {
-          locales: {
-            where: {
-              language: 'en'
-            }
-          }
+      locales: {
+        where: {
+          language: 'en'
         }
       }
     }
   });
-  return tmdbGenres.map((genre) => ({
-    id: genre.genreId,
-    externalId: genre.externalID,
-    name: genre.genre.locales[0].name
+  const mappedGenres = tmdbGenres.map((genre) => ({
+    id: genre.id,
+    tmdbId: genre.tmdbId!,
+    name: genre.locales[0].name
   }));
+  genres = mappedGenres;
+  return mappedGenres;
 }
 
 export default searchResolver;

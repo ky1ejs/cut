@@ -7,10 +7,10 @@
 
 */
 -- CreateEnum
-CREATE TYPE "Provider" AS ENUM ('TMDB', 'IMDB', 'FANDANGO');
+CREATE TYPE "ImageType" AS ENUM ('POSTER', 'BACKDROP', 'STILL');
 
 -- CreateEnum
-CREATE TYPE "ImageType" AS ENUM ('POSTER', 'BACKDROP', 'STILL');
+CREATE TYPE "CollectionType" AS ENUM ('POPULAR', 'TOP_RATED', 'UPCOMING', 'NOW_PLAYING', 'TRENDING_DAILY', 'TRENDING_WEEKLY');
 
 -- AlterTable
 ALTER TABLE "Device" ALTER COLUMN "id" SET DEFAULT gen_random_uuid(),
@@ -33,12 +33,14 @@ CREATE TABLE "Movie" (
     "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "releaseDate" DATE NOT NULL,
+    "releaseDate" DATE,
     "originalLanguage" TEXT NOT NULL,
     "originalTitle" TEXT NOT NULL,
     "synopsis" TEXT NOT NULL,
-    "mainGenreId" INTEGER NOT NULL,
-    "mainProviderId" TEXT,
+    "mainGenreId" INTEGER,
+    "tmdbId" INTEGER,
+    "imdbId" TEXT,
+    "fandangoId" TEXT,
 
     CONSTRAINT "Movie_pkey" PRIMARY KEY ("id")
 );
@@ -68,18 +70,6 @@ CREATE TABLE "MovieGenre" (
 );
 
 -- CreateTable
-CREATE TABLE "ProviderMovieGenre" (
-    "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
-    "provider" "Provider" NOT NULL,
-    "externalID" TEXT NOT NULL,
-    "genreId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "ProviderMovieGenre_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "MovieImage" (
     "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "url" TEXT NOT NULL,
@@ -96,6 +86,7 @@ CREATE TABLE "Genre" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "tmdbId" INTEGER,
 
     CONSTRAINT "Genre_pkey" PRIMARY KEY ("id")
 );
@@ -113,31 +104,39 @@ CREATE TABLE "LocalizedGenre" (
 );
 
 -- CreateTable
-CREATE TABLE "MovieProvider" (
+CREATE TABLE "MovieCollection" (
     "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
-    "movieId" TEXT NOT NULL,
-    "provider" "Provider" NOT NULL,
-    "externalId" TEXT NOT NULL,
+    "type" "CollectionType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "movieId" TEXT NOT NULL,
 
-    CONSTRAINT "MovieProvider_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MovieCollection_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Movie_tmdbId_key" ON "Movie"("tmdbId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Movie_imdbId_key" ON "Movie"("imdbId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Movie_fandangoId_key" ON "Movie"("fandangoId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MovieGenre_movieId_genreId_key" ON "MovieGenre"("movieId", "genreId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ProviderMovieGenre_externalID_provider_key" ON "ProviderMovieGenre"("externalID", "provider");
+CREATE UNIQUE INDEX "MovieImage_url_key" ON "MovieImage"("url");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "MovieImage_url_key" ON "MovieImage"("url");
+CREATE UNIQUE INDEX "Genre_tmdbId_key" ON "Genre"("tmdbId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "LocalizedGenre_genreId_language_key" ON "LocalizedGenre"("genreId", "language");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "MovieProvider_externalId_provider_key" ON "MovieProvider"("externalId", "provider");
+CREATE UNIQUE INDEX "MovieCollection_type_movieId_key" ON "MovieCollection"("type", "movieId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "WatchList_movieId_userId_key" ON "WatchList"("movieId", "userId");
@@ -146,7 +145,7 @@ CREATE UNIQUE INDEX "WatchList_movieId_userId_key" ON "WatchList"("movieId", "us
 ALTER TABLE "WatchList" ADD CONSTRAINT "WatchList_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Movie" ADD CONSTRAINT "Movie_mainProviderId_fkey" FOREIGN KEY ("mainProviderId") REFERENCES "MovieProvider"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Movie" ADD CONSTRAINT "Movie_mainGenreId_fkey" FOREIGN KEY ("mainGenreId") REFERENCES "Genre"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MovieTranslation" ADD CONSTRAINT "MovieTranslation_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -158,105 +157,88 @@ ALTER TABLE "MovieGenre" ADD CONSTRAINT "MovieGenre_movieId_fkey" FOREIGN KEY ("
 ALTER TABLE "MovieGenre" ADD CONSTRAINT "MovieGenre_genreId_fkey" FOREIGN KEY ("genreId") REFERENCES "Genre"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProviderMovieGenre" ADD CONSTRAINT "ProviderMovieGenre_genreId_fkey" FOREIGN KEY ("genreId") REFERENCES "Genre"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "MovieImage" ADD CONSTRAINT "MovieImage_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "LocalizedGenre" ADD CONSTRAINT "LocalizedGenre_genreId_fkey" FOREIGN KEY ("genreId") REFERENCES "Genre"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- AddForeignKey
+ALTER TABLE "MovieCollection" ADD CONSTRAINT "MovieCollection_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- Add all genres from TMDB
 -- Action
-INSERT INTO "Genre" ("id") VALUES (1);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (1, 28);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (1, 'en', 'Action');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '28', 1);
 
 -- Adventure
-INSERT INTO "Genre" ("id") VALUES (2);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (2, 12);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (2, 'en', 'Adventure');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '12', 2);
 
 -- Animation
-INSERT INTO "Genre" ("id") VALUES (3);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (3, 16);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (3, 'en', 'Animation');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '16', 3);
 
 -- Comedy
-INSERT INTO "Genre" ("id") VALUES (4);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (4, 35);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (4, 'en', 'Comedy');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '35', 4);
 
 -- Crime
-INSERT INTO "Genre" ("id") VALUES (5);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (5, 80);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (5, 'en', 'Crime');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '80', 5);
 
 -- Documentary
-INSERT INTO "Genre" ("id") VALUES (6);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (6, 99);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (6, 'en', 'Documentary');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '99', 6);
 
 -- Drama
-INSERT INTO "Genre" ("id") VALUES (7);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (7, 18);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (7, 'en', 'Drama');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '18', 7);
 
 -- Family
-INSERT INTO "Genre" ("id") VALUES (8);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (8, 10751);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (8, 'en', 'Family');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '10751', 8);
 
 -- Fantasy
-INSERT INTO "Genre" ("id") VALUES (9);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (9, 14);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (9, 'en', 'Fantasy');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '14', 9);
+
 
 -- History
-INSERT INTO "Genre" ("id") VALUES (10);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (10, 36);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (10, 'en', 'History');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '36', 10);
 
 -- Horror
-INSERT INTO "Genre" ("id") VALUES (11);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (11, 27);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (11, 'en', 'Horror');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '27', 11);
 
 -- Music
-INSERT INTO "Genre" ("id") VALUES (12);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (12, 10402);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (12, 'en', 'Music');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '10402', 12);
 
 -- Mystery
-INSERT INTO "Genre" ("id") VALUES (13);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (13, 9648);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (13, 'en', 'Mystery');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '9648', 13);
 
 -- Romance
-INSERT INTO "Genre" ("id") VALUES (14);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (14, 10749);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (14, 'en', 'Romance');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '10749', 14);
 
 -- Science Fiction
-INSERT INTO "Genre" ("id") VALUES (15);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (15, 878);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (15, 'en', 'Science Fiction');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '878', 15);
 
 -- TV Movie
-INSERT INTO "Genre" ("id") VALUES (16);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (16, 10770);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (16, 'en', 'TV Movie');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '10770', 16);
 
 -- Thriller
-INSERT INTO "Genre" ("id") VALUES (17);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (17, 53);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (17, 'en', 'Thriller');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '53', 17);
 
 -- War
-INSERT INTO "Genre" ("id") VALUES (18);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (18, 10752);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (18, 'en', 'War');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '10752', 18);
 
 -- Western
-INSERT INTO "Genre" ("id") VALUES (19);
+INSERT INTO "Genre" ("id", "tmdbId") VALUES (19, 37);
 INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (19, 'en', 'Western');
-INSERT INTO "ProviderMovieGenre" ("provider", "externalID", "genreId") VALUES ('TMDB', '37', 19);
