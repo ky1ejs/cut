@@ -58,17 +58,19 @@ model Movie {
   originalTitle    String
   synopsis         String
 
-  mainGenreId Int
+  mainGenreId Int?
+  mainGenre   Genre? @relation(fields: [mainGenreId], references: [id])
 
   mainProviderId String?
-  mainProvider   MovieProvider? @relation(fields: [mainProviderId], references: [id])
+  mainProvider   MovieProvider?  @relation(name: "main_provider_for_movie", fields: [mainProviderId], references: [id])
+  providers      MovieProvider[] @relation(name: "providers_for_movie")
 
-  genres MovieGenre[]
-  images MovieImage[]
-
+  images           MovieImage[]
   WatchList        WatchList[]
   MovieTranslation MovieTranslation[]
   MovieCollection  MovieCollection[]
+  genres           MovieGenre[]
+  MovieProvider    MovieProvider[]
 }
 
 model MovieTranslation {
@@ -83,13 +85,14 @@ model MovieTranslation {
 }
 
 model MovieGenre {
-  id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  movieId   String
-  genreId   Int
+  id      String @id @default(dbgenerated("gen_random_uuid()"))
+  movieId String
+  genreId Int
+  movie   Movie  @relation(fields: [movieId], references: [id])
+  genre   Genre  @relation(fields: [genreId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  movies    Movie    @relation(fields: [movieId], references: [id])
-  genres    Genre    @relation(fields: [genreId], references: [id])
 
   @@unique([movieId, genreId])
 }
@@ -117,6 +120,7 @@ model Genre {
   MovieGenre         MovieGenre[]
   ProviderMovieGenre ProviderMovieGenre[]
   locales            LocalizedGenre[]
+  mainMovies         Movie[]
 }
 
 model LocalizedGenre {
@@ -175,11 +179,13 @@ model ProviderMovieGenre {
 model MovieProvider {
   id         String   @id @default(dbgenerated("gen_random_uuid()"))
   movieId    String
+  movie      Movie    @relation(name: "providers_for_movie", fields: [movieId], references: [id])
   provider   Provider
   externalId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
-  movies     Movie[]
+  mainMovies Movie[]  @relation(name: "main_provider_for_movie")
+  Movie      Movie[]
 
   @@unique([externalId, provider])
 }

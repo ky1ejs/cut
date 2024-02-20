@@ -32,20 +32,16 @@ struct ContentRowViewModel {
     var title: String { return movie.title }
 
     var subtitle: String {
-        guard let genre = movie.genres.first else {
-            return "\(movie.metadata.runtime)"
-        }
-
-        return "\(genre.metadata.name) • \(movie.metadata.runtime)"
+        return movie.mainGenre?.name ?? ""
     }
 }
 
 class WatchListButtonViewModel: ObservableObject {
     @Published var isOnWatchList: Bool
-    private let movieId: Int
+    private let movieId: String
     private var currentRequest: Apollo.Cancellable?
 
-    init(isOnWatchList: Bool, movieId: Int) {
+    init(isOnWatchList: Bool, movieId: String) {
         self.isOnWatchList = isOnWatchList
         self.movieId = movieId
     }

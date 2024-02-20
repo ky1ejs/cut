@@ -1,11 +1,13 @@
-import { Movie } from "../../__generated__/graphql";
-import { GraphQLContext } from "../../boot";
+import { MovieResolvers } from "../../__generated__/graphql";
 
-const isOnWatchlistResolver = async (movie: Movie, context: GraphQLContext) => {
+const isOnWatchlistResolver: MovieResolvers["isOnWatchList"] = async (movie, _, context) => {
   if (!context.user) {
-    return false;
+    return false
   }
-  return context.dataSources.watchList.getWatchlistStatusFor({ tmdbId: movie.id, userId: context.user.id });
+  if (!movie.id) {
+    return false
+  }
+  return context.dataSources.watchList.getWatchlistStatusFor({ movieId: movie.id, userId: context.user.id });
 }
 
 export default isOnWatchlistResolver;

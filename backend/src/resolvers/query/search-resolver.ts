@@ -1,27 +1,64 @@
 import axios from 'axios';
-import { QuerySearchArgs } from '../../__generated__/graphql';
+import { Genre, MovieResolvers, QueryResolvers, QuerySearchArgs, Resolvers } from '../../__generated__/graphql';
 import { getImageBaseUrl } from '../../tmbd/image_base';
+import { Movie, Provider } from '@prisma/client';
+import prisma from '../../prisma';
 
-const searchResolver = async (query: Partial<QuerySearchArgs>) => {
+const searchResolver: QueryResolvers["search"] = async (_, args) => {
   try {
-    const result = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${query.term}&include_adult=true&language=en-US&page=1`, {
+    const result = await axios.get(`https://api.themoviedb.org/3/search/movie?query=${args.term}&include_adult=true&language=en-US&page=1`, {
       headers: {
         Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
         accept: 'application/json',
       }
     });
-    return result.data.results.map((movie: any) => ({
-      id: movie.id,
-      title: movie.title,
-      director: movie.original_language,
-      poster_url: getImageBaseUrl() + movie.poster_path,
-      release_data: movie.release_date,
-      genres: movie.genre_ids.map((id: number) => ({ id })),
-    }));
+    const tmdbGenres = await fetchGenres();
+    return result.data.results.map((movie: any) => {
+      const genres: Genre[] = movie.genre_ids.map((id: number) =>
+        tmdbGenres.find((g) => g.externalId === id.toString()) ?? null
+      ).filter((g: (Genre | null)) => g !== null);
+      return {
+        id: `${Provider.TMDB}:${movie.id.toString()}`,
+        title: movie.title,
+        poster_url: getImageBaseUrl() + movie.poster_path,
+        release_data: movie.release_date,
+        genres,
+        mainGenre: genres[0],
+      }
+    });
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+let genres: [{ id: number, externalId: string, name: string }] | undefined;
+
+async function fetchGenres() {
+  if (genres) {
+    return genres;
+  }
+  const tmdbGenres = await prisma.providerMovieGenre.findMany({
+    where: {
+      provider: Provider.TMDB
+    },
+    include: {
+      genre: {
+        include: {
+          locales: {
+            where: {
+              language: 'en'
+            }
+          }
+        }
+      }
+    }
+  });
+  return tmdbGenres.map((genre) => ({
+    id: genre.genreId,
+    externalId: genre.externalID,
+    name: genre.genre.locales[0].name
+  }));
 }
 
 export default searchResolver;

@@ -1,26 +1,60 @@
-import axios from 'axios';
-import { getImageBaseUrl } from '../../tmbd/image_base';
+import { QueryResolvers } from '../../__generated__/graphql';
+import prisma from '../../prisma';
 
-const movieResolver = async () => {
-  try {
-    const result = await axios.get('https://api.themoviedb.org/3/trending/movie/week', {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-        accept: 'application/json',
+const movieResolver: QueryResolvers["movies"] = async (_, args) => {
+  const movies = await prisma.movieCollection.findMany({
+    where: {
+      type: args.collection
+    },
+    include: {
+      movie: {
+        include: {
+          images: true,
+          mainGenre: {
+            include: {
+              locales: {
+                where: {
+                  language: "en"
+                }
+              }
+            }
+          },
+          genres: {
+            include: {
+              genre: {
+                include: {
+                  locales: {
+                    where: {
+                      language: "en"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-    });
-    return result.data.results.map((movie: any) => ({
-      id: movie.id,
-      title: movie.title,
-      director: movie.original_language,
-      poster_url: getImageBaseUrl() + movie.poster_path,
-      release_data: movie.release_date,
-      genres: movie.genre_ids.map((id: number) => ({ id })),
+    }
+  });
+  return movies.map((movie) => {
+    const genres = movie.movie.genres.map((genre) => ({
+      id: genre.genre.id,
+      name: genre.genre.locales[0].name
     }));
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+    const mainGenre = movie.movie.mainGenre ? {
+      id: movie.movie.mainGenre.id,
+      name: movie.movie.mainGenre.locales[0].name
+    } : null
+    return {
+      id: `CUT:${movie.movie.id}`,
+      title: movie.movie.originalTitle,
+      poster_url: movie.movie.images[0].url,
+      release_date: movie.movie.releaseDate?.toString(),
+      genres: genres,
+      mainGenre,
+      isOnWatchList: true
+    }
+  });
 }
 
 export default movieResolver;

@@ -1,6 +1,7 @@
 type Query {
-  movies: [Movie!]!
+  movies(collection: Collection!): [Movie!]!
   search(term: String!): [Movie!]!
+  watchList: [Movie!]!
 }
 
 type Mutation {
@@ -10,24 +11,34 @@ type Mutation {
   removeFromWatchList(movieId: String!): Boolean!
 }
 
+enum Collection {
+  POPULAR
+  TOP_RATED
+  UPCOMING
+  NOW_PLAYING
+  TRENDING_DAILY
+  TRENDING_WEEKLY
+}
+
 type Device {
   name: String!
   session_id: String!
 }
 
 type Movie {
-  id: Int!
+  id: String!
   title: String!
   poster_url: String!
   release_date: String
   metadata: MovieMetadata!
+  mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
 }
 
 type Genre {
   id: Int!
-  metadata: GenreMetadata!
+  name: String!
 }
 
 type GenreMetadata {

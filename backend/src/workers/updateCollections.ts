@@ -14,7 +14,9 @@ const CollectionEndpoints: Map<CollectionType, string> = new Map([
 
 export async function updateAllCollections() {
   const collectionTypes = Array.from(CollectionEndpoints.keys());
-  return await Promise.all(collectionTypes.map((collection) => updateCollection(collection)));
+  for (const collection of collectionTypes) {
+    await updateCollection(collection);
+  }
 }
 
 async function updateCollection(collection: CollectionType) {

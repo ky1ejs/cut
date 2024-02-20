@@ -17,6 +17,9 @@ dependencies:
   cors:
     specifier: ^2.8.5
     version: 2.8.5
+  dataloader:
+    specifier: ^2.2.2
+    version: 2.2.2
   express:
     specifier: ^4.18.2
     version: 4.18.2
@@ -2383,7 +2386,6 @@ packages:
 
   /dataloader@2.2.2:
     resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
-    dev: true
 
   /debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}

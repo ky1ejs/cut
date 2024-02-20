@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Provider } from '@prisma/client';
 import DataLoader from 'dataloader';
 
 export type WatchListCacheKey = {
-  tmdbId: number;
+  movieId: string;
   userId: string;
 };
 
@@ -14,22 +14,40 @@ export default class WatchListDataSource {
   }
 
   private batchWatchList = new DataLoader<WatchListCacheKey, boolean>(async (ids) => {
-    console.log('Fetching watchlist status for', ids);
     const result = await this.prisma.watchList.findMany(
       {
         where: {
-          OR: ids.map((id) => ({
-            userId: id.userId,
-            tmdbId: id.tmdbId,
-          })),
+          OR: ids.map((id) => {
+            const [provider, movieId] = id.movieId.split(':');
+            console.log('provider', provider);
+            console.log('movieId', movieId);
+            switch (provider) {
+              case 'TMDB':
+                return {
+                  userId: id.userId,
+                  movie: {
+                    providers: {
+                      some: {
+                        provider: Provider.TMDB,
+                        externalId: movieId
+                      }
+                    }
+                  }
+                };
+              case 'CUT':
+                return {
+                  userId: id.userId,
+                  movieId: movieId
+                }
+              default:
+                throw new Error('Provider not supported');
+            }
+          }),
         }
       }
     )
-    console.log('Fetched watchlist status for', result);
-    // Dataloader expects you to return a list with the results ordered just like the list in the arguments were
-    // Since the database might return the results in a different order the following code sorts the results accordingly
     const presentKeys = result.map((w) => `${w.userId}:${w.movieId}`);
-    return ids.map((id) => presentKeys.includes(`${id.userId}:${id.tmdbId}`));
+    return ids.map((id) => presentKeys.includes(`${id.userId}:${id.movieId}`));
   })
 
   async getWatchlistStatusFor(key: WatchListCacheKey) {

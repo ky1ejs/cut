@@ -4,19 +4,19 @@ fragment MovieFragment on Movie {
   id
   poster_url
   release_date
-  genres {
-    metadata {
-      name
-    }
+  mainGenre {
+    id
+    name
   }
-  metadata {
-    runtime
+  genres {
+    name
+    id
   }
   isOnWatchList
 }
 
-query ExampleQuery {
-  movies { ...MovieFragment }
+query Movies($collection: Collection!) {
+  movies(collection: $collection) { ...MovieFragment }
 }
 
 query Search($term: String!) {
@@ -29,10 +29,10 @@ mutation SignUp($deviceName: String!) {
   }
 }
 
-mutation AddToWatchList($movieId: Int!) {
+mutation AddToWatchList($movieId: String!) {
   addToWatchList(movieId: $movieId)
 }
 
-mutation RemoveFromWatchList($movieId: Int!) {
+mutation RemoveFromWatchList($movieId: String!) {
   removeFromWatchList(movieId: $movieId)
 }

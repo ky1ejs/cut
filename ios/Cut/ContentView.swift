@@ -22,7 +22,7 @@ struct ContentView: View {
             }
             .listStyle(.plain)
             .task {
-                AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.ExampleQuery(), resultHandler: { result in
+                AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MoviesQuery(collection: .case(.popular)), resultHandler: { result in
                     guard let data = try? result.get().data?.movies else { return }
                     let movies = data.map { $0.fragments.movieFragment }
                     self.data = movies

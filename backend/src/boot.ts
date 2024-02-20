@@ -18,13 +18,8 @@ import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataSource from './dataloaders/watchListDataloader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
-
-export interface GraphQLContext {
-  user?: User
-  dataSources: {
-    watchList: WatchListDataSource
-  }
-}
+import watchList from './resolvers/query/watchList';
+import { GraphQLContext } from './graphql/GraphQLContext';
 
 const boot = async () => {
   const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
@@ -32,7 +27,8 @@ const boot = async () => {
   const resolvers: Resolvers = {
     Query: {
       movies: movieResolver,
-      search: (_, args) => searchResolver(args)
+      search: searchResolver,
+      watchList: (_, __, context) => watchList(context)
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
@@ -41,10 +37,7 @@ const boot = async () => {
     },
     Movie: {
       metadata: () => ({ id: 1, runtime: 120 }),
-      isOnWatchList: (movie, _, context) => isOnWatchlistResolver(movie, context),
-    },
-    Genre: {
-      metadata: genreResolver
+      isOnWatchList: isOnWatchlistResolver,
     },
   };
 
