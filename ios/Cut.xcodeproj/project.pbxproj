@@ -32,6 +32,12 @@
 		933B789C2B86E274009CBC27 /* Genre.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78892B86E274009CBC27 /* Genre.graphql.swift */; };
 		933B789D2B86E274009CBC27 /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B788A2B86E274009CBC27 /* SchemaConfiguration.swift */; };
 		933B789E2B86E274009CBC27 /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B788B2B86E274009CBC27 /* SchemaMetadata.graphql.swift */; };
+		933B78A02B87E4B1009CBC27 /* ContentRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B789F2B87E4B1009CBC27 /* ContentRowViewModel.swift */; };
+		933B78A22B87E4E0009CBC27 /* WatchListButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78A12B87E4E0009CBC27 /* WatchListButton.swift */; };
+		933B78A42B87E721009CBC27 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78A32B87E721009CBC27 /* Color.swift */; };
+		933B78A62B87E736009CBC27 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78A52B87E736009CBC27 /* Font.swift */; };
+		933B78A82B87E757009CBC27 /* URLImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78A72B87E757009CBC27 /* URLImage.swift */; };
+		933B78AC2B87E77B009CBC27 /* ImageStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78AB2B87E77B009CBC27 /* ImageStack.swift */; };
 		933E5DEE2B707E7500A83602 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 933E5DED2B707E7500A83602 /* Kingfisher */; };
 		933E5DF62B76DF4D00A83602 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 933E5DF52B76DF4D00A83602 /* MarkdownUI */; };
 		933E5DF92B76E19300A83602 /* Changelog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E5DF82B76E19300A83602 /* Changelog.swift */; };
@@ -93,6 +99,12 @@
 		933B78892B86E274009CBC27 /* Genre.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Genre.graphql.swift; sourceTree = "<group>"; };
 		933B788A2B86E274009CBC27 /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
 		933B788B2B86E274009CBC27 /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
+		933B789F2B87E4B1009CBC27 /* ContentRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRowViewModel.swift; sourceTree = "<group>"; };
+		933B78A12B87E4E0009CBC27 /* WatchListButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListButton.swift; sourceTree = "<group>"; };
+		933B78A32B87E721009CBC27 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		933B78A52B87E736009CBC27 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		933B78A72B87E757009CBC27 /* URLImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImage.swift; sourceTree = "<group>"; };
+		933B78AB2B87E77B009CBC27 /* ImageStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStack.swift; sourceTree = "<group>"; };
 		933E5DF72B76E17300A83602 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		933E5DF82B76E19300A83602 /* Changelog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Changelog.swift; sourceTree = "<group>"; };
 		933E5DFC2B76FDC600A83602 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -249,6 +261,39 @@
 			path = Objects;
 			sourceTree = "<group>";
 		};
+		933B78AD2B87EBE6009CBC27 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				933B78AE2B87EBFC009CBC27 /* ContentRow */,
+				933B78AB2B87E77B009CBC27 /* ImageStack.swift */,
+				933B78A72B87E757009CBC27 /* URLImage.swift */,
+				933B78A52B87E736009CBC27 /* Font.swift */,
+				933B78A32B87E721009CBC27 /* Color.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		933B78AE2B87EBFC009CBC27 /* ContentRow */ = {
+			isa = PBXGroup;
+			children = (
+				933A6AA32B6E0BF2004DE491 /* ContentRow.swift */,
+				933B78A12B87E4E0009CBC27 /* WatchListButton.swift */,
+				933B789F2B87E4B1009CBC27 /* ContentRowViewModel.swift */,
+			);
+			path = ContentRow;
+			sourceTree = "<group>";
+		};
+		933B78AF2B87EC10009CBC27 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				933E5DF82B76E19300A83602 /* Changelog.swift */,
+				933E5DFC2B76FDC600A83602 /* Account.swift */,
+				933E5E022B77A76000A83602 /* DeviceRegister.swift */,
+				933E5E082B77F1D900A83602 /* SessionManager.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		933E5DFB2B76E7C500A83602 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,19 +328,16 @@
 			isa = PBXGroup;
 			children = (
 				933E5E072B77EF9100A83602 /* Cut.entitlements */,
-				93898E4F2B6E0A970001D68F /* CutApp.swift */,
 				933B77612B856F57009CBC27 /* Browse.swift */,
+				93898E4F2B6E0A970001D68F /* CutApp.swift */,
 				93898E512B6E0A970001D68F /* Root.swift */,
-				933B77632B857009009CBC27 /* WatchList.swift */,
 				933E5DFE2B77137500A83602 /* Search.swift */,
-				933A6AA32B6E0BF2004DE491 /* ContentRow.swift */,
-				933E5DF82B76E19300A83602 /* Changelog.swift */,
-				933E5DFC2B76FDC600A83602 /* Account.swift */,
-				933E5E022B77A76000A83602 /* DeviceRegister.swift */,
-				933E5E082B77F1D900A83602 /* SessionManager.swift */,
+				933B77632B857009009CBC27 /* WatchList.swift */,
+				933B78AF2B87EC10009CBC27 /* Account */,
 				933A6AA92B702DBB004DE491 /* graphql */,
-				933E5DFB2B76E7C500A83602 /* Resources */,
 				93898E552B6E0A980001D68F /* Preview Content */,
+				933E5DFB2B76E7C500A83602 /* Resources */,
+				933B78AD2B87EBE6009CBC27 /* UI */,
 			);
 			path = Cut;
 			sourceTree = "<group>";
@@ -471,14 +513,17 @@
 			files = (
 				933B789C2B86E274009CBC27 /* Genre.graphql.swift in Sources */,
 				933B78912B86E274009CBC27 /* SignUpMutation.graphql.swift in Sources */,
+				933B78A42B87E721009CBC27 /* Color.swift in Sources */,
 				933B788E2B86E274009CBC27 /* MutableMovieFragment.graphql.swift in Sources */,
 				933B78992B86E274009CBC27 /* Query.graphql.swift in Sources */,
 				933B78962B86E274009CBC27 /* Collection.graphql.swift in Sources */,
 				933B789D2B86E274009CBC27 /* SchemaConfiguration.swift in Sources */,
 				93898E522B6E0A970001D68F /* Root.swift in Sources */,
 				933E5DF92B76E19300A83602 /* Changelog.swift in Sources */,
+				933B78A02B87E4B1009CBC27 /* ContentRowViewModel.swift in Sources */,
 				933E5E032B77A76000A83602 /* DeviceRegister.swift in Sources */,
 				933B78942B86E274009CBC27 /* WatchListQuery.graphql.swift in Sources */,
+				933B78A62B87E736009CBC27 /* Font.swift in Sources */,
 				933B78932B86E274009CBC27 /* SearchQuery.graphql.swift in Sources */,
 				933B788F2B86E274009CBC27 /* WatchListMutationLocalCacheMutation.graphql.swift in Sources */,
 				933E5DFF2B77137500A83602 /* Search.swift in Sources */,
@@ -494,11 +539,14 @@
 				933B77642B857009009CBC27 /* WatchList.swift in Sources */,
 				933B77622B856F57009CBC27 /* Browse.swift in Sources */,
 				933B788C2B86E274009CBC27 /* MovieFragment.graphql.swift in Sources */,
+				933B78A82B87E757009CBC27 /* URLImage.swift in Sources */,
 				933B78952B86E274009CBC27 /* MoviesQuery.graphql.swift in Sources */,
 				933B78922B86E274009CBC27 /* RemoveFromWatchListMutation.graphql.swift in Sources */,
 				933B78982B86E274009CBC27 /* Mutation.graphql.swift in Sources */,
+				933B78AC2B87E77B009CBC27 /* ImageStack.swift in Sources */,
 				933B789E2B86E274009CBC27 /* SchemaMetadata.graphql.swift in Sources */,
 				933B789B2B86E274009CBC27 /* WatchListMutationResult.graphql.swift in Sources */,
+				933B78A22B87E4E0009CBC27 /* WatchListButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
