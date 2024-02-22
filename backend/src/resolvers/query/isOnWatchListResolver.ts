@@ -7,6 +7,9 @@ const isOnWatchlistResolver: MovieResolvers["isOnWatchList"] = async (movie, _, 
   if (!movie.id) {
     return false
   }
+  if (movie.isOnWatchList !== undefined) {
+    return movie.isOnWatchList
+  }
   return context.dataSources.watchList.getWatchlistStatusFor({ movieId: movie.id, userId: context.user.id });
 }
 

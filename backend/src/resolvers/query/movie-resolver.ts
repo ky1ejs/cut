@@ -46,13 +46,12 @@ const movieResolver: QueryResolvers["movies"] = async (_, args) => {
       name: movie.movie.mainGenre.locales[0].name
     } : null
     return {
-      id: `CUT:${movie.movie.id}`,
+      id: movie.movie.id,
       title: movie.movie.originalTitle,
       poster_url: movie.movie.images[0].url,
       release_date: movie.movie.releaseDate?.toString(),
       genres: genres,
       mainGenre,
-      isOnWatchList: true
     }
   });
 }

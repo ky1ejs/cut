@@ -27,6 +27,12 @@ extension Color {
 
 struct ContentRowViewModel {
     let movie: CutGraphQL.MovieFragment
+    let index: Int?
+
+    init(movie: CutGraphQL.MovieFragment, index: Int? = nil) {
+        self.movie = movie
+        self.index = index
+    }
 
     var imageUrl: String { return movie.poster_url }
     var title: String { return movie.title }
@@ -34,16 +40,22 @@ struct ContentRowViewModel {
     var subtitle: String {
         return movie.mainGenre?.name ?? ""
     }
+
+    func watchListButtonViewModel() -> WatchListButtonViewModel {
+        WatchListButtonViewModel(movie: movie, index: index)
+    }
 }
 
 class WatchListButtonViewModel: ObservableObject {
     @Published var isOnWatchList: Bool
-    private let movieId: String
+    private let index: Int?
+    private let movie: Movie
     private var currentRequest: Apollo.Cancellable?
 
-    init(isOnWatchList: Bool, movieId: String) {
-        self.isOnWatchList = isOnWatchList
-        self.movieId = movieId
+    init(movie: Movie, index: Int? = nil) {
+        isOnWatchList = movie.isOnWatchList
+        self.movie = movie
+        self.index = index
     }
 
     func watchListToggle() {
@@ -52,18 +64,62 @@ class WatchListButtonViewModel: ObservableObject {
         currentRequest?.cancel()
         if original {
             currentRequest = AuthorizedApolloClient.shared.client
-                .perform(mutation: CutGraphQL.RemoveFromWatchListMutation(movieId: movieId)) { [weak self] result in
-                    if case .failure = result {
-                        self?.isOnWatchList = original
+                .perform(mutation: CutGraphQL.RemoveFromWatchListMutation(movieId: movie.id)) { [weak self] result in
+                    guard let self = self else { return }
+                    guard case .success(let data) = result, let newId = data.data?.removeFromWatchList.id else {
+                        self.isOnWatchList = original
+                        return
                     }
+                    let movie = self.movie
+                    let index = self.index
+                    AuthorizedApolloClient.shared.client.store.withinReadWriteTransaction { txn in
+                        do {
+                            let findIndex = {
+                                let existing = try txn.read(query: CutGraphQL.WatchListQuery())
+                                return existing.watchList.firstIndex{ item in
+                                    item.id == movie.id
+                                }!
+                            }
+                            let finalIndex = try index ?? findIndex()
+                            try! txn.update(CutGraphQL.WatchListMutationLocalCacheMutation()) { set in
+                                set.watchList.remove(at: finalIndex)
+                            }
+                        } catch {
+                            print(error)
+                        }
+                        try! txn.updateObject(ofType: CutGraphQL.MutableMovieFragment.self, withKey: "Movie:\(newId)", { set in
+                            set.isOnWatchList = false
+                        })
+                        }
                 }
         } else {
-            currentRequest = AuthorizedApolloClient.shared.client
-                .perform(mutation: CutGraphQL.AddToWatchListMutation(movieId: movieId)) { [weak self] result in
-                    if case .failure = result {
-                        self?.isOnWatchList = original
+            currentRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.AddToWatchListMutation(movieId: movie.id)) { [weak self] result in
+                guard let self = self else { return }
+                guard case .success(let data) = result, let newId = data.data?.addToWatchList.id else {
+                    self.isOnWatchList = original
+                    return
+                }
+                let movie = self.movie
+                AuthorizedApolloClient.shared.client.store.withinReadWriteTransaction { txn in
+                    let mutation = CutGraphQL.WatchListMutationLocalCacheMutation()
+                    try! txn.updateObject(ofType: CutGraphQL.MutableMovieFragment.self, withKey: "Movie:\(newId)", { set in
+                        set.isOnWatchList = true
+                    })
+                    do {
+                        try txn.update(mutation) { set in
+                            set.watchList.append(CutGraphQL.WatchListMutationLocalCacheMutation.Data.WatchList(
+                                title: movie.title,
+                                id: newId,
+                                poster_url: movie.poster_url,
+                                genres: movie.genres,
+                                isOnWatchList: true
+                            ))
+                        }
+                    } catch {
+                        print(error)
                     }
                 }
+            }
         }
     }
 }
@@ -71,25 +127,37 @@ class WatchListButtonViewModel: ObservableObject {
 struct WatchListButton: View {
     @ObservedObject var viewModel: WatchListButtonViewModel
 
+    init(viewModel: WatchListButtonViewModel) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
         Button(action: {
             viewModel.watchListToggle()
         }, label: {
-            label()
+            let image: UIImage = viewModel.isOnWatchList ? .init(named: "check")! : .init(named: "plus")!
+            Image(uiImage: image)
+                .tint(viewModel.isOnWatchList ? .black : .white)
         })
         .frame(width: 36, height: 36)
         .background(Circle().foregroundStyle(viewModel.isOnWatchList ? Color.black : Color.sub))
     }
+}
 
-    func label() -> some View {
-        let image: UIImage = viewModel.isOnWatchList ? .init(named: "check")! : .init(named: "plus")!
-        return Image(uiImage: image)
-            .tint(viewModel.isOnWatchList ? .black : .white)
+extension ContentRowViewModel: Equatable {
+    static func == (lhs: ContentRowViewModel, rhs: ContentRowViewModel) -> Bool {
+        return lhs.movie.id == rhs.movie.id && lhs.movie.isOnWatchList == rhs.movie.isOnWatchList
     }
 }
 
 struct ContentRow: View {
-    let viewModel: ContentRowViewModel
+    var viewModel: ContentRowViewModel
+    let index: Int?
+
+    init(viewModel: ContentRowViewModel, index: Int? = nil) {
+        self.viewModel = viewModel
+        self.index = index
+    }
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
@@ -105,7 +173,7 @@ struct ContentRow: View {
                     .foregroundStyle(Color.sub)
             }
             Spacer()
-            WatchListButton(viewModel: WatchListButtonViewModel(isOnWatchList: viewModel.movie.isOnWatchList, movieId: viewModel.movie.id))
+            WatchListButton(viewModel: viewModel.watchListButtonViewModel())
         }
         .padding(0)
     }
@@ -203,7 +271,7 @@ struct MoonMask: Shape {
     let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
     let movie = try! CutGraphQL.MovieFragment(data: jsonObject)
     let viewModel = ContentRowViewModel(movie: movie)
-    return ContentRow(viewModel: viewModel)
+    return ContentRow(viewModel: viewModel, index: 0)
 }
 
 #Preview {

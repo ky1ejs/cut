@@ -7,8 +7,13 @@ type Query {
 type Mutation {
   signUp(deviceName: String!): Device!
   logIn(username: String!, password: String!): Device!
-  addToWatchList(movieId: String!): Boolean!
-  removeFromWatchList(movieId: String!): Boolean!
+  addToWatchList(movieId: String!): WatchListMutationResult!
+  removeFromWatchList(movieId: String!): WatchListMutationResult!
+}
+
+type WatchListMutationResult {
+  success: Boolean!
+  id: String!
 }
 
 enum Collection {

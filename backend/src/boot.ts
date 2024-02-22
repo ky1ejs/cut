@@ -13,7 +13,7 @@ import searchResolver from './resolvers/query/search-resolver';
 import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
 import { User } from '@prisma/client';
-import addToWatchlist from './resolvers/mutation/addToWatchlist';
+import addToWatchList from './resolvers/mutation/addToWatchlist';
 import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataSource from './dataloaders/watchListDataloader';
 import { GraphQLError } from 'graphql';
@@ -32,8 +32,8 @@ const boot = async () => {
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
-      addToWatchList: (_, args, context) => addToWatchlist(context, args),
-      removeFromWatchList: (_, args, context) => removeFromWatchList(context, args)
+      addToWatchList,
+      removeFromWatchList
     },
     Movie: {
       metadata: () => ({ id: 1, runtime: 120 }),

@@ -15,12 +15,28 @@ fragment MovieFragment on Movie {
   isOnWatchList
 }
 
+fragment MutableMovieFragment on Movie @apollo_client_ios_localCacheMutation {
+  isOnWatchList
+}
+
 query Movies($collection: Collection!) {
   movies(collection: $collection) { ...MovieFragment }
 }
 
 query Search($term: String!) {
   search(term: $term) { ...MovieFragment }
+}
+
+query WatchList {
+  watchList {
+    ...MovieFragment
+  }
+}
+
+query WatchListMutation	@apollo_client_ios_localCacheMutation {
+  watchList {
+    ...MovieFragment
+  }
 }
 
 mutation SignUp($deviceName: String!) {
@@ -30,9 +46,13 @@ mutation SignUp($deviceName: String!) {
 }
 
 mutation AddToWatchList($movieId: String!) {
-  addToWatchList(movieId: $movieId)
+  addToWatchList(movieId: $movieId) {
+    id
+  }
 }
 
 mutation RemoveFromWatchList($movieId: String!) {
-  removeFromWatchList(movieId: $movieId)
+  removeFromWatchList(movieId: $movieId) {
+    id
+  }
 }

@@ -20,8 +20,6 @@ export default class WatchListDataSource {
           OR: ids.map((id) => {
             // fix this by putting the IDs for providers in the same row?
             const [provider, movieId] = id.movieId.split(':');
-            console.log('provider', provider);
-            console.log('movieId', movieId);
             let movieWhere: Prisma.WatchListWhereInput = {
               userId: id.userId,
             };
@@ -34,14 +32,12 @@ export default class WatchListDataSource {
                   }
                 };
                 break;
-              case 'CUT':
+              default:
                 movieWhere = {
                   ...movieWhere,
                   movieId: movieId
                 }
                 break;
-              default:
-                throw new Error('Provider not supported');
             }
             return movieWhere;
           }),
@@ -55,7 +51,8 @@ export default class WatchListDataSource {
     let tmdbIds = result.map((r) => r.movie.tmdbId);
     return ids.map((id) => {
       const [provider, movieId] = id.movieId.split(':');
-      return provider === 'TMDB' ? tmdbIds.includes(parseInt(movieId)) : movieIds.includes(movieId);
+      const parsedMovieId = movieId || provider;
+      return provider === 'TMDB' ? tmdbIds.includes(parseInt(parsedMovieId)) : movieIds.includes(parsedMovieId);
     });
   })
 

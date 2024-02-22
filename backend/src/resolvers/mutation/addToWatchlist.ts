@@ -1,45 +1,43 @@
 import { Movie } from "@prisma/client";
-import { MutationAddToWatchListArgs } from "../../__generated__/graphql";
+import { MutationAddToWatchListArgs, MutationResolvers, Resolvers } from "../../__generated__/graphql";
 import { GraphQLContext } from "../../graphql/GraphQLContext";
 import fetchTmdbMovie from "../../datasources/fetchTmdbMovie";
 import importTmbdMovie from "../../db/tmdbImporter";
 import prisma from "../../prisma";
+import { markAsUntransferable } from "worker_threads";
 
-export default async function addToWatchList(context: GraphQLContext, args: MutationAddToWatchListArgs) {
+const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, context) => {
   if (!context.user) {
     throw new Error('Unauthorized');
   }
 
-  const [provider, movieId] = args.movieId.split(':');
+  const [providerOrCutId, parsedId] = args.movieId.split(':');
+  console.log("Provider: ", providerOrCutId);
+  console.log("ParsedId: ", parsedId);
 
-  let cutMovie: Movie
-  switch (provider) {
+  let movieId: string
+  switch (providerOrCutId) {
     case 'TMDB':
-      const movie = await fetchTmdbMovie(movieId);
+      const movie = await fetchTmdbMovie(parsedId);
       console.log("Movie");
-      cutMovie = await importTmbdMovie(movie);
+      movieId = (await importTmbdMovie(movie)).id;
       console.log("Added");
       break;
-    case 'CUT':
-      const m = await prisma.movie.findUnique({
-        where: {
-          id: movieId
-        }
-      });
-      if (!m) {
-        throw new Error('Movie not found');
-      }
-      cutMovie = m;
-      break;
     default:
-      throw new Error('Provider not supported');
+      movieId = parsedId ?? providerOrCutId;
+      break;
   }
 
   await prisma.watchList.upsert({
-    where: { movieId_userId: { movieId: cutMovie.id, userId: context.user.id } },
-    create: { userId: context.user.id, movieId: cutMovie.id },
+    where: { movieId_userId: { movieId, userId: context.user.id } },
+    create: { userId: context.user.id, movieId },
     update: {}
   });
 
-  return true
+  return {
+    true: true,
+    id: movieId
+  }
 }
+
+export default addToWatchList;
