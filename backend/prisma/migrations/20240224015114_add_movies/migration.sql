@@ -50,7 +50,8 @@ CREATE TABLE "MovieTranslation" (
     "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
     "synopsis" TEXT NOT NULL,
-    "language" TEXT NOT NULL,
+    "language_ISO_639_1" TEXT NOT NULL,
+    "country_ISO_3166_1" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "movieId" TEXT NOT NULL,
@@ -76,6 +77,8 @@ CREATE TABLE "MovieImage" (
     "type" "ImageType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "language_ISO_639_1" TEXT NOT NULL,
+    "country_ISO_3166_1" TEXT NOT NULL,
     "movieId" TEXT NOT NULL,
 
     CONSTRAINT "MovieImage_pkey" PRIMARY KEY ("id")
@@ -95,7 +98,8 @@ CREATE TABLE "Genre" (
 CREATE TABLE "LocalizedGenre" (
     "id" TEXT NOT NULL DEFAULT gen_random_uuid(),
     "genreId" INTEGER NOT NULL,
-    "language" TEXT NOT NULL,
+    "language_ISO_639_1" TEXT NOT NULL,
+    "country_ISO_3166_1" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -133,7 +137,7 @@ CREATE UNIQUE INDEX "MovieImage_url_key" ON "MovieImage"("url");
 CREATE UNIQUE INDEX "Genre_tmdbId_key" ON "Genre"("tmdbId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "LocalizedGenre_genreId_language_key" ON "LocalizedGenre"("genreId", "language");
+CREATE UNIQUE INDEX "LocalizedGenre_genreId_language_ISO_639_1_country_ISO_3166__key" ON "LocalizedGenre"("genreId", "language_ISO_639_1", "country_ISO_3166_1");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MovieCollection_type_movieId_key" ON "MovieCollection"("type", "movieId");
@@ -168,77 +172,108 @@ ALTER TABLE "MovieCollection" ADD CONSTRAINT "MovieCollection_movieId_fkey" FORE
 -- Add all genres from TMDB
 -- Action
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (1, 28);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (1, 'en', 'Action');
-
 -- Adventure
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (2, 12);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (2, 'en', 'Adventure');
-
 -- Animation
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (3, 16);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (3, 'en', 'Animation');
-
 -- Comedy
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (4, 35);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (4, 'en', 'Comedy');
-
 -- Crime
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (5, 80);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (5, 'en', 'Crime');
-
 -- Documentary
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (6, 99);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (6, 'en', 'Documentary');
-
 -- Drama
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (7, 18);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (7, 'en', 'Drama');
-
 -- Family
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (8, 10751);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (8, 'en', 'Family');
-
 -- Fantasy
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (9, 14);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (9, 'en', 'Fantasy');
-
-
 -- History
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (10, 36);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (10, 'en', 'History');
-
 -- Horror
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (11, 27);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (11, 'en', 'Horror');
-
 -- Music
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (12, 10402);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (12, 'en', 'Music');
-
 -- Mystery
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (13, 9648);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (13, 'en', 'Mystery');
-
 -- Romance
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (14, 10749);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (14, 'en', 'Romance');
-
 -- Science Fiction
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (15, 878);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (15, 'en', 'Science Fiction');
-
 -- TV Movie
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (16, 10770);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (16, 'en', 'TV Movie');
-
 -- Thriller
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (17, 53);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (17, 'en', 'Thriller');
-
 -- War
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (18, 10752);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (18, 'en', 'War');
-
 -- Western
 INSERT INTO "Genre" ("id", "tmdbId") VALUES (19, 37);
-INSERT INTO "LocalizedGenre" ("genreId", "language", "name") VALUES (19, 'en', 'Western');
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW."updatedAt" = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_movies_updated_at
+BEFORE UPDATE ON "Movie"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_movie_translations_updated_at
+BEFORE UPDATE ON "MovieTranslation"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_movie_genres_updated_at
+BEFORE UPDATE ON "MovieGenre"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_movie_images_updated_at
+BEFORE UPDATE ON "MovieImage"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_genres_updated_at
+BEFORE UPDATE ON "Genre"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_localized_genres_updated_at
+BEFORE UPDATE ON "LocalizedGenre"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_movie_collections_updated_at
+BEFORE UPDATE ON "MovieCollection"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_watch_list_updated_at
+BEFORE UPDATE ON "WatchList"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_devices_updated_at
+BEFORE UPDATE ON "Device"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_users_updated_at
+BEFORE UPDATE ON "User"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();

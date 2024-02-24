@@ -2,7 +2,7 @@ import { Prisma, ImageType, Movie, Genre } from "@prisma/client";
 import prisma from "../prisma"
 import { randomUUID } from "crypto";
 
-export default async function importTmbdMovie(movie: any): Promise<Movie> {
+export default async function importTmbdMovie(movie: any, lang: string, country: string): Promise<Movie> {
   let cutMovie = await prisma.movie.findUnique({
     where: {
       tmdbId: movie.id
@@ -10,7 +10,7 @@ export default async function importTmbdMovie(movie: any): Promise<Movie> {
   });
 
   if (!cutMovie) {
-    const genreIds = movie.genre_ids || movie.genres.map((g: any) => g.id) || [];
+    const genreIds: number[] = movie.genre_ids || movie.genres.map((g: any) => g.id) || [];
     const firstGenreId = genreIds.length > 0 ? genreIds[0] : null;
     let mainGenre: Genre | null = null;
     if (firstGenreId) {
@@ -26,13 +26,13 @@ export default async function importTmbdMovie(movie: any): Promise<Movie> {
 
     const genres = genreIds.length > 0 ? await prisma.genre.findMany({
       where: {
-        id: {
+        tmdbId: {
           in: genreIds
         }
       }
     }) : []
 
-    const parsedMovie = tmdbMovieToCutMovie(movie, mainGenre ? movie.genreId : undefined);
+    const parsedMovie = tmdbMovieToCutMovie(movie, mainGenre ? mainGenre.id : undefined);
     const movieId = randomUUID().toString()
     cutMovie = await prisma.movie.create({
       data: {
@@ -44,11 +44,15 @@ export default async function importTmbdMovie(movie: any): Promise<Movie> {
             data: [
               {
                 type: ImageType.POSTER,
-                url: posterUrl
+                url: posterUrl,
+                language_ISO_639_1: lang,
+                country_ISO_3166_1: country
               },
               {
                 type: ImageType.BACKDROP,
-                url: backdropUrl
+                url: backdropUrl,
+                language_ISO_639_1: lang,
+                country_ISO_3166_1: country
               }
             ],
             skipDuplicates: true
@@ -56,9 +60,10 @@ export default async function importTmbdMovie(movie: any): Promise<Movie> {
 
         },
         genres: {
-          create: genres.map((genre) => ({
-            genreId: genre.id
-          }))
+          createMany: {
+            data: genres.map((genre) => ({ genreId: genre.id })),
+            skipDuplicates: false
+          }
         }
       },
     });

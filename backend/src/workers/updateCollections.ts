@@ -7,8 +7,8 @@ const CollectionEndpoints: Map<CollectionType, string> = new Map([
   [CollectionType.TRENDING_WEEKLY, 'https://api.themoviedb.org/3/trending/movie/week'],
   [CollectionType.TRENDING_DAILY, 'https://api.themoviedb.org/3/trending/movie/day'],
   [CollectionType.NOW_PLAYING, 'https://api.themoviedb.org/3/movie/now_playing'],
-  [CollectionType.POPULAR, 'https://api.themoviedb.org/3/movie/top_rated'],
-  [CollectionType.TOP_RATED, 'https://api.themoviedb.org/3/movie/popular'],
+  [CollectionType.POPULAR, 'https://api.themoviedb.org/3/movie/popular'],
+  [CollectionType.TOP_RATED, 'https://api.themoviedb.org/3/movie/top_rated'],
   [CollectionType.UPCOMING, 'https://api.themoviedb.org/3/movie/upcoming'],
 ]);
 
@@ -31,7 +31,7 @@ async function updateCollection(collection: CollectionType) {
         accept: 'application/json',
       }
     });
-    const storeMovies: Promise<Movie>[] = result.data.results.map((movie: any) => importTmbdMovie(movie));
+    const storeMovies: Promise<Movie>[] = result.data.results.map((movie: any) => importTmbdMovie(movie, "en", "US"));
     const latestCollectionIds = (await Promise.all(storeMovies)).map((movie) => movie.id);
 
     const currentCollectionIds = await prisma.movieCollection.findMany({

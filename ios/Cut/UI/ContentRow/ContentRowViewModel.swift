@@ -71,9 +71,11 @@ class ContentRowViewModel: ObservableObject {
                 let movie = self.movie
                 AuthorizedApolloClient.shared.client.store.withinReadWriteTransaction { txn in
                     let mutation = CutGraphQL.WatchListMutationLocalCacheMutation()
-                    try! txn.updateObject(ofType: CutGraphQL.MutableMovieFragment.self, withKey: "Movie:\(newId)", { set in
-                        set.isOnWatchList = true
-                    })
+                    do {
+                        try txn.updateObject(ofType: CutGraphQL.MutableMovieFragment.self, withKey: "Movie:\(newId)", { set in
+                            set.isOnWatchList = true
+                        })
+                    } catch {}
                     do {
                         try txn.update(mutation) { set in
                             set.watchList.append(CutGraphQL.WatchListMutationLocalCacheMutation.Data.WatchList(

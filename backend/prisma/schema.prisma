@@ -75,14 +75,15 @@ model Movie {
 }
 
 model MovieTranslation {
-  id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  title     String
-  synopsis  String
-  language  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  movieId   String
-  movie     Movie    @relation(fields: [movieId], references: [id])
+  id                 String   @id @default(dbgenerated("gen_random_uuid()"))
+  title              String
+  synopsis           String
+  language_ISO_639_1 String
+  country_ISO_3166_1 String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  movieId            String
+  movie              Movie    @relation(fields: [movieId], references: [id])
 }
 
 model MovieGenre {
@@ -105,13 +106,16 @@ enum ImageType {
 }
 
 model MovieImage {
-  id        String    @id @default(dbgenerated("gen_random_uuid()"))
-  url       String    @unique
-  type      ImageType
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  movieId   String
-  movie     Movie     @relation(fields: [movieId], references: [id])
+  id                 String    @id @default(dbgenerated("gen_random_uuid()"))
+  url                String    @unique
+  type               ImageType
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
+  language_ISO_639_1 String
+  country_ISO_3166_1 String
+
+  movieId String
+  movie   Movie  @relation(fields: [movieId], references: [id])
 }
 
 model Genre {
@@ -127,15 +131,16 @@ model Genre {
 }
 
 model LocalizedGenre {
-  id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  genreId   Int
-  language  String
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  genre     Genre    @relation(fields: [genreId], references: [id])
+  id                 String   @id @default(dbgenerated("gen_random_uuid()"))
+  genreId            Int
+  language_ISO_639_1 String
+  country_ISO_3166_1 String
+  name               String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  genre              Genre    @relation(fields: [genreId], references: [id])
 
-  @@unique([genreId, language])
+  @@unique([genreId, language_ISO_639_1, country_ISO_3166_1])
 }
 
 enum CollectionType {

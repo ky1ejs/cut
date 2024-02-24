@@ -20,7 +20,7 @@ const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, cont
     case 'TMDB':
       const movie = await fetchTmdbMovie(parsedId);
       console.log("Movie");
-      movieId = (await importTmbdMovie(movie)).id;
+      movieId = (await importTmbdMovie(movie, "en", "US")).id;
       console.log("Added");
       break;
     default:

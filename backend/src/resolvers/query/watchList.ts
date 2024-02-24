@@ -21,7 +21,7 @@ export default async function watchList(context: GraphQLContext) {
                 include: {
                   locales: {
                     where: {
-                      language: "en"
+                      language_ISO_639_1: "en"
                     }
                   }
                 }

@@ -14,7 +14,7 @@ const movieResolver: QueryResolvers["movies"] = async (_, args) => {
             include: {
               locales: {
                 where: {
-                  language: "en"
+                  language_ISO_639_1: "en"
                 }
               }
             }
@@ -25,7 +25,7 @@ const movieResolver: QueryResolvers["movies"] = async (_, args) => {
                 include: {
                   locales: {
                     where: {
-                      language: "en"
+                      language_ISO_639_1: "en"
                     }
                   }
                 }

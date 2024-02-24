@@ -8,11 +8,9 @@ import cors from 'cors';
 import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
 import movieResolver from './resolvers/query/movie-resolver';
-import genreResolver from './resolvers/query/genre-resolver';
 import searchResolver from './resolvers/query/search-resolver';
 import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
-import { User } from '@prisma/client';
 import addToWatchList from './resolvers/mutation/addToWatchlist';
 import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataSource from './dataloaders/watchListDataloader';
@@ -20,8 +18,11 @@ import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
 import watchList from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
+import importGenres from './tmbd/import-genres';
 
 const boot = async () => {
+  await importGenres();
+
   const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
   const resolvers: Resolvers = {
