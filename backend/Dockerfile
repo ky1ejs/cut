@@ -4,6 +4,7 @@ FROM node:20-alpine3.18 AS builder
 RUN npm install -g pnpm
 WORKDIR /app
 COPY package*.json .
+COPY prisma ./prisma
 RUN pnpm install 
 COPY . .
 RUN pnpm codegen:graphql && pnpm run build
