@@ -39,10 +39,32 @@ https://www.reddit.com/r/webdev/comments/14pl5et/railway_free_developer_plan_wil
 * interested in the idea of running postgres in Railway for speed, but if it's totally self managed (e.g. memory usage etc. etc.) then I'm not sure it's for me
 #### Cons
 * don't love that secrets are availble to view in your dashboard... wish these were only writable not readble. Followed up with Railway about this but they [didn't think it was a problem](https://discord.com/channels/713503345364697088/1082212195775029310/1204201807505784924).
+* Defaults to Oregon region unless you pay for pro, which is $20. Since Fly.io offers east coast regions on all tiers, it makes it hard to choose Fly.io. 
+* Their postgres set-up didn't boot up with root CA trusted certs and I couldn't be bothered to spend time fixing this
+
 
 ### Fly.io
 #### Reviews 
 https://www.reddit.com/r/devops/comments/10eg6a1/i_believe_i_can_fly_a_flyio_review/
+
+#### Pros
+* Forced docker, so a nice side-effect is that you're prepped to eject and move to another platform right away
+* Loads of regions in the base tier
+* Simple
+
+#### Cons
+* Wrestling with a Dockerfile can be super frustrating when you just want to get up and running
+* The same service consumes double the RAM than on Railway (which isn't using Docker)
+
+#### Helpful docs
+* https://dev.to/jacobsamro/building-a-minimalist-docker-images-with-node-typescript-and-pnpm-109j
+* https://github.com/JacobSamro/docker-typescript-pnpm
+* https://dev.to/dnsmnds/node-with-docker-jsts-55a6
+* https://github.com/fly-apps/dockerfile-node/blob/main/templates/Dockerfile.ejs
+* https://notiz.dev/blog/prisma-migrate-deploy-with-docker
+* https://snyk.io/blog/choosing-the-best-node-js-docker-image/
+* https://pnpm.io/docker
+* https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/#api-tokens
 
 ## Language
 Really I'm only going to go with TypeScript because the toolchain is excellent and I find it so fast to work with. 

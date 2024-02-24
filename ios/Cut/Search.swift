@@ -12,6 +12,7 @@ import Apollo
 typealias Movie = CutGraphQL.MovieFragment
 
 class SearchViewModel: ObservableObject {
+    // inspired by: https://designcode.io/swiftui-advanced-handbook-search-feature
     @Published var searchTerm = ""
     @Published var results: [Movie] = []
     private var searchCancellable: AnyCancellable?

@@ -1,12 +1,28 @@
 type Query {
-  movies: [Movie!]!
+  movies(collection: Collection!): [Movie!]!
   search(term: String!): [Movie!]!
+  watchList: [Movie!]!
 }
 
 type Mutation {
   signUp(deviceName: String!): Device!
   logIn(username: String!, password: String!): Device!
-  addToWatchlist(movieId: Int!): Boolean!
+  addToWatchList(movieId: String!): WatchListMutationResult!
+  removeFromWatchList(movieId: String!): WatchListMutationResult!
+}
+
+type WatchListMutationResult {
+  success: Boolean!
+  id: String!
+}
+
+enum Collection {
+  POPULAR
+  TOP_RATED
+  UPCOMING
+  NOW_PLAYING
+  TRENDING_DAILY
+  TRENDING_WEEKLY
 }
 
 type Device {
@@ -15,17 +31,19 @@ type Device {
 }
 
 type Movie {
-  id: Int!
+  id: String!
   title: String!
   poster_url: String!
   release_date: String
   metadata: MovieMetadata!
+  mainGenre: Genre
   genres: [Genre!]!
+  isOnWatchList: Boolean!
 }
 
 type Genre {
   id: Int!
-  metadata: GenreMetadata!
+  name: String!
 }
 
 type GenreMetadata {

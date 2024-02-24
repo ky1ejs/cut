@@ -1,0 +1,60 @@
+[
+  {
+    "name": "English",
+    "iso_639_1": "en",
+    "default_country": {
+      "name": "United States",
+      "iso_3166_1": "US"
+    },
+    "countries": [
+      {
+        "name": "United States",
+        "iso_3166_1": "US"
+      }
+    ]
+  },
+  {
+    "name": "Português",
+    "iso_639_1": "pt",
+    "default_country": {
+      "name": "Portugal",
+      "iso_3166_1": "PT"
+    },
+    "countries": [
+      {
+        "name": "Brasil",
+        "iso_3166_1": "BR"
+      }
+    ]
+  },
+  {
+    "name": "Español",
+    "iso_639_1": "es",
+    "default_country": {
+      "name": "España",
+      "iso_3166_1": "ES"
+    },
+    "countries": [
+      {
+        "name": "México",
+        "iso_3166_1": "MX"
+      },
+      {
+        "name": "Argentina",
+        "iso_3166_1": "AR"
+      },
+      {
+        "name": "Colombia",
+        "iso_3166_1": "CO"
+      },
+      {
+        "name": "Chile",
+        "iso_3166_1": "CL"
+      },
+      {
+        "name": "Uraguay",
+        "iso_3166_1": "UY"
+      }
+    ]
+  }
+]

@@ -1,18 +1,18 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "strict": true,
+    "outDir": "./dist",
+    "preserveConstEnums": true,
     "esModuleInterop": true,
     "types": [
       "node"
     ]
   },
   "include": [
-    "src/**/*",
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"
-  ],
+  ]
 }

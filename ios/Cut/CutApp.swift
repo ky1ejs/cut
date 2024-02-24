@@ -14,7 +14,7 @@ struct CutApp: App {
     var body: some Scene {
         WindowGroup {
             if let _ = session.sessionId {
-                ContentView()
+                Root()
             } else {
                 DeviceRegister()
             }
