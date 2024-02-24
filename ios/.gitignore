@@ -1,4 +1,4 @@
-__generated__
+*.graphql.swift
 apollo-ios-cli
 
 ## Fastlane
