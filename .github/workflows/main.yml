@@ -17,7 +17,8 @@ jobs:
   deploy-ios:
     needs: check-diff
     uses: ./.github/workflows/ios-build.yaml
+    if: needs.check-diff.outputs.ios == 'true'
     secrets: inherit
     with:
-      skip: ${{ !needs.check-diff.outputs.ios }}
+      skip: false
       deploy: true
