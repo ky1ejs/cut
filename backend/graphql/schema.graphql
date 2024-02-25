@@ -2,6 +2,7 @@ type Query {
   movies(collection: Collection!): [Movie!]!
   search(term: String!): [Movie!]!
   watchList: [Movie!]!
+  movie(id: String!): ExtendedMovie!
 }
 
 type Mutation {
@@ -30,15 +31,95 @@ type Device {
   session_id: String!
 }
 
-type Movie {
+interface MovieInterface {
   id: String!
   title: String!
   poster_url: String!
   release_date: String
-  metadata: MovieMetadata!
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
+}
+
+type Movie implements MovieInterface {
+  id: String!
+  title: String!
+  poster_url: String!
+  release_date: String
+  mainGenre: Genre
+  genres: [Genre!]!
+  isOnWatchList: Boolean!
+}
+
+type ExtendedMovie implements MovieInterface {
+  # MovieInterface fields
+  id: String!
+  title: String!
+  poster_url: String!
+  release_date: String
+  mainGenre: Genre
+  genres: [Genre!]!
+  isOnWatchList: Boolean!
+
+  # ExtendedMovie fields
+  overview: String!
+  backdrop_url: String!
+  runtime: Int!
+  watchProviders: WatchProviders!
+  cast: [Actor!]!
+  crew: [Person!]!
+  userRating: Float!
+  productionCountries: [ProductionCountry!]!
+  trailerUrl: String
+  director: Person!
+}
+
+type ProductionCountry {
+  iso_3166_1: String!
+  name: String!
+  emoji: String!
+}
+
+type WatchProviders {
+  stream: [WatchProvider!]!
+  rent: [WatchProvider!]!
+  buy: [WatchProvider!]!
+}
+
+type WatchProvider {
+  provider_id: Int!
+  provider_name: String!
+  logo_url: String!
+  link: String!
+}
+
+enum PersonRole {
+  DIRECTOR
+  WRITER
+  EXECUTIVE_PRODUCER
+  PRODUCER
+}
+
+interface PersonInterface {
+  id: String!
+  name: String!
+  profile_url: String
+}
+
+type Person implements PersonInterface {
+  id: String!
+  name: String!
+  profile_url: String
+
+  role: PersonRole!
+}
+
+type Actor implements PersonInterface {
+  id: String!
+  name: String!
+  profile_url: String
+
+  character: String!
 }
 
 type Genre {
@@ -48,10 +129,5 @@ type Genre {
 
 type GenreMetadata {
   name: String!
-}
-
-type MovieMetadata {
-  id: Int!
-  runtime: Int!
 }
 

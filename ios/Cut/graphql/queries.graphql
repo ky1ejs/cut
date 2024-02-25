@@ -1,5 +1,5 @@
 
-fragment MovieFragment on Movie {
+fragment MovieFragment on MovieInterface {
   title
   id
   poster_url
@@ -54,5 +54,70 @@ mutation AddToWatchList($movieId: String!) {
 mutation RemoveFromWatchList($movieId: String!) {
   removeFromWatchList(movieId: $movieId) {
     id
+  }
+}
+
+fragment WatchProviderFragment on WatchProvider {
+  provider_id
+  provider_name
+  link
+  logo_url
+}
+
+fragment PersonInterfaceFragment on PersonInterface {
+  id
+  name
+  profile_url
+}
+
+fragment ActorFragment on Actor {
+  ...PersonInterfaceFragment
+  character
+}
+
+fragment PersonFragment on Person {
+  ...PersonInterfaceFragment
+  role
+}
+fragment ProductionCountryFragment on ProductionCountry {
+  iso_3166_1
+  name
+  emoji
+}
+
+fragment ExtendedMovieFragment on ExtendedMovie {
+  ...MovieFragment
+  overview
+  backdrop_url
+  runtime
+  trailerUrl
+  userRating
+  watchProviders {
+    buy {
+      ...WatchProviderFragment
+    }
+    stream {
+      ...WatchProviderFragment
+    }
+    rent {
+      ...WatchProviderFragment
+    }
+  }
+  cast {
+    ...ActorFragment
+  }
+  crew {
+    ...PersonFragment
+  }
+  productionCountries {
+    ...ProductionCountryFragment
+  }
+  director {
+     ...PersonFragment
+  }
+}
+query Movie($movieId: String!) {
+  movie(id: $movieId) {
+    ...ExtendedMovieFragment
   }
 }

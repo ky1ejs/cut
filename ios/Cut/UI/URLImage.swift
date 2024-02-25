@@ -14,12 +14,9 @@ struct URLImage: View {
 
     var body: some View {
         KFImage.url(url)
-            .placeholder { Color(.red) }
-            .loadDiskFileSynchronously()
             .cacheOriginalImage()
+            .placeholder { Color.gray }
             .fade(duration: 0.25)
-            .onProgress { receivedSize, totalSize in  }
-            .onFailure { error in }
             .resizable()
             .aspectRatio(contentMode: .fit)
 
