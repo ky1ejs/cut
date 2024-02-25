@@ -399,6 +399,7 @@
 				93898E512B6E0A970001D68F /* Root.swift */,
 				933E5DFE2B77137500A83602 /* Search.swift */,
 				933B77632B857009009CBC27 /* WatchList.swift */,
+				933B79202B8AC6E9009CBC27 /* Mocks.swift */,
 				933B78AF2B87EC10009CBC27 /* Account */,
 				933A6AA92B702DBB004DE491 /* graphql */,
 				93898E552B6E0A980001D68F /* Preview Content */,
@@ -412,7 +413,6 @@
 			isa = PBXGroup;
 			children = (
 				93898E562B6E0A980001D68F /* Preview Assets.xcassets */,
-				933B79202B8AC6E9009CBC27 /* Mocks.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
