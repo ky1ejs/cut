@@ -39,26 +39,6 @@ struct ContentRow: View {
 }
 
 #Preview {
-    let json = """
-        {
-          "__typename": "Movie",
-          "title": "The Godfather",
-          "id": "1e42a292-91c9-447a-adf5-2e3d7811e405",
-          "poster_url": "https://image.tmdb.org/t/p/original/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-          "release_date": "Mon Mar 13 1972 19:00:00 GMT-0500 (Eastern Standard Time)",
-          "mainGenre": null,
-          "genres": [
-            {
-              "__typename": "Genre",
-              "name": "War",
-              "id": 18
-            }
-          ],
-          "isOnWatchList": true
-        }
-    """
-    let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-    let movie = try! CutGraphQL.MovieFragment(data: jsonObject)
-    let viewModel = ContentRowViewModel(movie: movie)
+    let viewModel = ContentRowViewModel(movie: Mocks.movie)
     return ContentRow(viewModel: viewModel, index: 0)
 }

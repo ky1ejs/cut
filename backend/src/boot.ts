@@ -5,9 +5,9 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
-import { Resolvers } from './__generated__/graphql';
+import { Resolvers, ExtendedMovie } from './__generated__/graphql';
 import { readFileSync } from 'fs';
-import movieResolver from './resolvers/query/movie-resolver';
+import moviesResolver from './resolvers/query/movie-resolver';
 import searchResolver from './resolvers/query/search-resolver';
 import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
@@ -19,6 +19,7 @@ import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
 import watchList from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
 import importGenres from './tmbd/import-genres';
+import movieResolver from './resolvers/query/movie';
 
 const boot = async () => {
   await importGenres();
@@ -27,19 +28,31 @@ const boot = async () => {
 
   const resolvers: Resolvers = {
     Query: {
-      movies: movieResolver,
+      movies: moviesResolver,
       search: searchResolver,
-      watchList: (_, __, context) => watchList(context)
+      watchList: (_, __, context) => watchList(context),
+      movie: movieResolver,
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
       addToWatchList,
       removeFromWatchList
     },
-    Movie: {
-      metadata: () => ({ id: 1, runtime: 120 }),
-      isOnWatchList: isOnWatchlistResolver,
+    MovieInterface: {
+      __resolveType: (movie) => {
+        if (movie.__typename === 'ExtendedMovie') {
+          return 'ExtendedMovie';
+        }
+        return 'Movie';
+      },
+      isOnWatchList: isOnWatchlistResolver
     },
+    ExtendedMovie: {
+      isOnWatchList: isOnWatchlistResolver
+    },
+    Movie: {
+      isOnWatchList: isOnWatchlistResolver
+    }
   };
 
   const app = express();

@@ -1,11 +1,37 @@
 import { Prisma, ImageType, Movie, Genre } from "@prisma/client";
 import prisma from "../prisma"
 import { randomUUID } from "crypto";
+import { ResolvedMovie } from "../resolvers/helpers/dbMovieToGqlMovie";
 
-export default async function importTmbdMovie(movie: any, lang: string, country: string): Promise<Movie> {
+export default async function importTmbdMovie(movie: any, lang: string, country: string): Promise<ResolvedMovie> {
   let cutMovie = await prisma.movie.findUnique({
     where: {
       tmdbId: movie.id
+    },
+    include: {
+      images: true,
+      mainGenre: {
+        include: {
+          locales: {
+            where: {
+              language_ISO_639_1: "en"
+            }
+          }
+        }
+      },
+      genres: {
+        include: {
+          genre: {
+            include: {
+              locales: {
+                where: {
+                  language_ISO_639_1: "en"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   });
 
@@ -66,6 +92,31 @@ export default async function importTmbdMovie(movie: any, lang: string, country:
           }
         }
       },
+      include: {
+        images: true,
+        mainGenre: {
+          include: {
+            locales: {
+              where: {
+                language_ISO_639_1: "en"
+              }
+            }
+          }
+        },
+        genres: {
+          include: {
+            genre: {
+              include: {
+                locales: {
+                  where: {
+                    language_ISO_639_1: "en"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     });
   }
   return cutMovie

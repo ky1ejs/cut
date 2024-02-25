@@ -1,8 +1,9 @@
 import { QueryResolvers } from '../../__generated__/graphql';
 import prisma from '../../prisma';
+import dbMovieToGqlMovie from '../helpers/dbMovieToGqlMovie';
 
-const movieResolver: QueryResolvers["movies"] = async (_, args) => {
-  const movies = await prisma.movieCollection.findMany({
+const moviesResolver: QueryResolvers["movies"] = async (_, args) => {
+  const result = await prisma.movieCollection.findMany({
     where: {
       type: args.collection
     },
@@ -36,24 +37,7 @@ const movieResolver: QueryResolvers["movies"] = async (_, args) => {
       }
     }
   });
-  return movies.map((movie) => {
-    const genres = movie.movie.genres.map((genre) => ({
-      id: genre.genre.id,
-      name: genre.genre.locales[0].name
-    }));
-    const mainGenre = movie.movie.mainGenre ? {
-      id: movie.movie.mainGenre.id,
-      name: movie.movie.mainGenre.locales[0].name
-    } : null
-    return {
-      id: movie.movie.id,
-      title: movie.movie.originalTitle,
-      poster_url: movie.movie.images[0].url,
-      release_date: movie.movie.releaseDate?.toString(),
-      genres: genres,
-      mainGenre,
-    }
-  });
+  return result.map((collectionEntry) => dbMovieToGqlMovie(collectionEntry.movie));
 }
 
-export default movieResolver;
+export default moviesResolver;
