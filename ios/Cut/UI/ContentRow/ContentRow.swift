@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct ContentRow: View {
-    var viewModel: ContentRowViewModel
+    let viewModel: ContentRowViewModel
+    var watchListViewModel: WatchListViewModel
     let index: Int?
 
     init(viewModel: ContentRowViewModel, index: Int? = nil) {
         self.viewModel = viewModel
+        self.watchListViewModel = WatchListViewModel(movie: viewModel.movie, index: index)
         self.index = index
     }
 
@@ -30,8 +32,8 @@ struct ContentRow: View {
                     .foregroundStyle(Color.sub)
             }
             Spacer()
-            WatchListButton(isOnWatchList: viewModel.isOnWatchList) {
-                viewModel.toggleWatchList()
+            WatchListButton(isOnWatchList: watchListViewModel.isOnWatchList) {
+                watchListViewModel.toggleWatchList()
             }
         }
         .padding(0)

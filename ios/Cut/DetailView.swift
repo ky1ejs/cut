@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Apollo
 
 func formatTime(minutes: Int) -> String {
     let hours = minutes / 60
@@ -28,7 +29,14 @@ private extension CutGraphQL.ExtendedMovieFragment {
 
 struct DetailView: View {
     let movie: Movie
+    var watchListViewModel: WatchListViewModel
     @State var extendedMovie: CutGraphQL.ExtendedMovieFragment?
+    @State var watched: Apollo.GraphQLQueryWatcher<CutGraphQL.MovieQuery>?
+
+    init(movie: Movie) {
+        self.movie = movie
+        self.watchListViewModel = WatchListViewModel(movie: movie, index: nil)
+    }
 
     var body: some View {
         ScrollView {
@@ -49,8 +57,8 @@ struct DetailView: View {
                     if let em  = extendedMovie {
                         RatingCirlce(rating: em.userRating)
                     }
-                    WatchListButton(isOnWatchList: true) {
-
+                    WatchListButton(isOnWatchList: watchListViewModel.isOnWatchList) {
+                        watchListViewModel.toggleWatchList()
                     }
                     Spacer()
                 }
@@ -107,8 +115,9 @@ struct DetailView: View {
 
         }
         .scrollBounceBehavior(.basedOnSize)
-        .task {
-            AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MovieQuery(movieId: movie.id)) { result in
+        .onAppear {
+            watched?.cancel()
+            watched = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.MovieQuery(movieId: movie.id)) { result in
                 guard case .success(let data) = result, let em = data.data?.movie.fragments.extendedMovieFragment else {
                     return
                 }

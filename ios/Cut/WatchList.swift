@@ -13,18 +13,22 @@ struct WatchList: View {
     @State private var watcher: GraphQLQueryWatcher<CutGraphQL.WatchListQuery>?
 
     var body: some View {
-        List {
-            ForEach(viewModels, id: \.movie.id) { vm in
-                ContentRow(viewModel: vm)
+        NavigationStack {
+            List {
+                ForEach(viewModels, id: \.movie.id) { vm in
+                    NavigationLink(destination: DetailView(movie: vm.movie)) {
+                        ContentRow(viewModel: vm)
+                    }
+                }
             }
+            .listStyle(.plain)
         }
-        .listStyle(.plain)
         .task {
             self.watcher?.cancel()
             self.watcher = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.WatchListQuery(), resultHandler: { result in
                 guard let data = try? result.get().data?.watchList else { return }
-                self.viewModels = data.enumerated().map { index, movie in ContentRowViewModel(movie: movie.fragments.movieFragment, index: index) }
                 print(data.first?.isOnWatchList)
+                self.viewModels = data.enumerated().map { index, movie in ContentRowViewModel(movie: movie.fragments.movieFragment, index: index) }
             })
         }
     }

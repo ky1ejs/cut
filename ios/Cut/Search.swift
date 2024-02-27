@@ -43,7 +43,11 @@ struct Search: View {
         NavigationStack {
             List {
                 ForEach(viewModel.results, id: \.id) { movie in
-                    ContentRow(viewModel: ContentRowViewModel(movie: movie))
+                    NavigationLink {
+                        DetailView(movie: movie)
+                    } label: {
+                        ContentRow(viewModel: ContentRowViewModel(movie: movie))
+                    }
                 }
             }
             .listStyle(.plain)

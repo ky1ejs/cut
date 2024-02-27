@@ -19,6 +19,7 @@ struct WatchListButton: View {
             Image(uiImage: image)
                 .tint(isOnWatchList ? .black : .white)
         })
+        .buttonStyle(PlainButtonStyle())
         .frame(width: 36, height: 36)
         .background(Circle().foregroundStyle(isOnWatchList ? Color.black : Color.sub))
     }

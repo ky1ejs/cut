@@ -15,33 +15,35 @@ struct Browse: View {
     @State private var watched: GraphQLQueryWatcher<CutGraphQL.MoviesQuery>?
 
     var body: some View {
-        ScrollView {
-            VStack {
-                PosterCarousel(title: "Trending", movies: trending, style: .ordered)
-                PosterCarousel(title: "New", movies: new, style: .unordered)
-                PosterCarousel(title: "Top Rated", movies: topRated, style: .unordered)
-                Spacer()
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    PosterCarousel(title: "Trending", movies: trending, style: .ordered)
+                    PosterCarousel(title: "New", movies: new, style: .unordered)
+                    PosterCarousel(title: "Top Rated", movies: topRated, style: .unordered)
+                    Spacer()
+                }
+                .scrollClipDisabled()
+                .scrollBounceBehavior(.basedOnSize)
+                .onAppear {
+                    watched = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.MoviesQuery(collection: .case(.trendingWeekly)), resultHandler: { result in
+                        guard let data = try? result.get().data?.movies else { return }
+                        let movies = data.map { $0.fragments.movieFragment }
+                        self.trending = movies
+                    })
+                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MoviesQuery(collection: .case(.nowPlaying)), resultHandler: { result in
+                        guard let data = try? result.get().data?.movies else { return }
+                        let movies = data.map { $0.fragments.movieFragment }
+                        self.new = movies
+                    })
+                    AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.MoviesQuery(collection: .case(.topRated)), resultHandler: { result in
+                        guard let data = try? result.get().data?.movies else { return }
+                        let movies = data.map { $0.fragments.movieFragment }
+                        self.topRated = movies
+                    })
+                }
+                .padding(.leading, 10)
             }
-            .scrollClipDisabled()
-            .scrollBounceBehavior(.basedOnSize)
-            .onAppear {
-                watched = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.MoviesQuery(collection: .case(.trendingWeekly)), resultHandler: { result in
-                    guard let data = try? result.get().data?.movies else { return }
-                    let movies = data.map { $0.fragments.movieFragment }
-                    self.trending = movies
-                })
-                AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MoviesQuery(collection: .case(.nowPlaying)), resultHandler: { result in
-                    guard let data = try? result.get().data?.movies else { return }
-                    let movies = data.map { $0.fragments.movieFragment }
-                    self.new = movies
-                })
-                AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.MoviesQuery(collection: .case(.topRated)), resultHandler: { result in
-                    guard let data = try? result.get().data?.movies else { return }
-                    let movies = data.map { $0.fragments.movieFragment }
-                    self.topRated = movies
-                })
-            }
-            .padding(.leading, 10)
         }
         .onDisappear {
             watched?.cancel()

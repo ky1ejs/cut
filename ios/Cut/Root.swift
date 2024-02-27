@@ -11,9 +11,7 @@ import Kingfisher
 struct Root: View {
     var body: some View {
         TabView {
-            NavigationStack {
-                Browse()
-            }.tabItem { Label("Feed", systemImage: "film")}
+            Browse().tabItem { Label("Feed", systemImage: "film")}
             Search()
                 .tabItem { Label("Search", systemImage: "magnifyingglass") }
             WatchList()

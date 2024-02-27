@@ -79,6 +79,7 @@ fragment PersonFragment on Person {
   ...PersonInterfaceFragment
   role
 }
+
 fragment ProductionCountryFragment on ProductionCountry {
   iso_3166_1
   name
@@ -116,6 +117,11 @@ fragment ExtendedMovieFragment on ExtendedMovie {
      ...PersonFragment
   }
 }
+
+fragment MutableExtendedMovieFragment on ExtendedMovie @apollo_client_ios_localCacheMutation {
+  isOnWatchList
+}
+
 query Movie($movieId: String!) {
   movie(id: $movieId) {
     ...ExtendedMovieFragment
