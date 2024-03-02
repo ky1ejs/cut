@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["X2TBSUCASC.watch.cut"],
+        "paths": [
+           "/verify-email"
+         ]
+      }
+    ]
+  },
+  "webcredentials": {
+      "apps": [ "X2TBSUCASC.watch.cut" ],
+      "action": "webcredentials"
+   }
+}
