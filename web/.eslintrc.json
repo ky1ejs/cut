@@ -10,5 +10,8 @@
   "rules": {
     "prefer-const": "error",
     "prettier/prettier": "error"
+  },
+  "globals": {
+    "React": "readonly"
   }
 }
