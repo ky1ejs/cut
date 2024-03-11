@@ -11,7 +11,7 @@ export default function Page({
   if (!token) {
     redirect("/");
   }
-  const url = `cut://confirm-email?token=${token}`;
+  const url = `cut://verify-email?token=${token}`;
   return (
     <CenterScreen>
       <div className="m-auto">
@@ -19,7 +19,7 @@ export default function Page({
       </div>
       <a href={url}>
         <div className="shadow-m rounded-md bg-gray-700 px-4 py-2 text-white shadow-md shadow-gray-700">
-          Confirm Email
+          Verify Email
         </div>
       </a>
     </CenterScreen>
