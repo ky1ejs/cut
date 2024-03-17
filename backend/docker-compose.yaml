@@ -7,3 +7,5 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+    volumes:
+      - ./tests/init-test-db.sql:/docker-entrypoint-initdb.d/init.sql

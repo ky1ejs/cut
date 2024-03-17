@@ -1,0 +1,55 @@
+
+fragment OtherAccountFragment on OtherAccount {
+  id
+  username
+  profileUrl
+}
+
+fragment CompleteAccountFragment on CompleteAccount {
+  id
+  username
+  name
+  bio
+  url
+  followerCount
+  followingCount
+  watchList {
+    ...MovieFragment
+  }
+  followers {
+    ...OtherAccountFragment
+  }
+  following {
+    ...OtherAccountFragment
+  }
+}
+
+mutation CompleteAccount($params: CompleteAccountInput!) {
+  completeAccount(params: $params) {
+    completeAccount {
+      ...CompleteAccountFragment
+    }
+    updatedDevice {
+      session_id
+    }
+  }
+}
+
+query InitiateEmailVerification($email: String!) {
+  initiateEmailVerification(email: $email)
+}
+
+query CheckUsernameAvailability($username: String!) {
+  isUsernameAvailable(username: $username)
+}
+
+query GetAccount {
+  account {
+    ... on IncompleteAccount {
+      id
+    }
+    ... on CompleteAccount {
+      ...CompleteAccountFragment
+    }
+  }
+}

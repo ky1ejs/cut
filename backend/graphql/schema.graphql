@@ -3,13 +3,71 @@ type Query {
   search(term: String!): [Movie!]!
   watchList: [Movie!]!
   movie(id: String!): ExtendedMovie!
+
+  account: AccountUnion!
+  isUsernameAvailable(username: String!): Boolean!
+  initiateEmailVerification(email: String!): Boolean!
+
+  # activityFeed: [Activity!]!
+  # notifications: [Notification!]!
 }
 
 type Mutation {
   signUp(deviceName: String!): Device!
   logIn(username: String!, password: String!): Device!
+  completeAccount(params: CompleteAccountInput!): CompleteAccountResult!
+
+  follow(userId: String!): Boolean!
+  unfollow(userId: String!): Boolean!
+
   addToWatchList(movieId: String!): WatchListMutationResult!
   removeFromWatchList(movieId: String!): WatchListMutationResult!
+}
+
+union AccountUnion = IncompleteAccount | CompleteAccount
+
+input CompleteAccountInput {
+  username: String!
+  name: String!
+  password: String!
+  emailToken: String!
+}
+
+interface Account {
+  id: String!
+  watchList: [Movie!]!
+}
+
+type IncompleteAccount implements Account {
+  # Account
+  id: String!
+  watchList: [Movie!]!
+}
+
+type OtherAccount {
+  id: String!
+  username: String!
+  profileUrl: String
+}
+
+type CompleteAccount {
+  # Account
+  id: String!
+  watchList: [Movie!]!
+
+  username: String!
+  name: String!
+  bio: String
+  url: String
+  followers: [OtherAccount!]!
+  following: [OtherAccount!]!
+  followerCount: Int!
+  followingCount: Int!
+}
+
+type CompleteAccountResult {
+  completeAccount: CompleteAccount!
+  updatedDevice: Device!
 }
 
 type WatchListMutationResult {

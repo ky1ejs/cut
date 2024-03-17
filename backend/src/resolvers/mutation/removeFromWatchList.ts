@@ -1,11 +1,9 @@
-import exp from "constants";
-import { MutationRemoveFromWatchListArgs, MutationResolvers } from "../../__generated__/graphql";
-import { GraphQLContext } from "../../graphql/GraphQLContext";
+import { MutationResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
-import { Prisma } from "@prisma/client";
+import { GraphQLError } from "graphql";
 
 const removeFromWatchList: MutationResolvers["addToWatchList"] = async (_, args, context) => {
-  if (!context.user) {
+  if (!context.userDevice && !context.annonymousUserDevice) {
     throw new Error('Unauthorized');
   }
 
@@ -32,14 +30,27 @@ const removeFromWatchList: MutationResolvers["addToWatchList"] = async (_, args,
       break;
   }
 
-  await prisma.watchList.delete({
-    where: {
-      movieId_userId: {
-        movieId: resolvedMovieId,
-        userId: context.user.id
+  if (context.userDevice) {
+    await prisma.watchList.delete({
+      where: {
+        movieId_userId: {
+          movieId: resolvedMovieId,
+          userId: context.userDevice.user.id
+        }
       }
-    }
-  })
+    })
+  } else if (context.annonymousUserDevice) {
+    await prisma.annonymousWatchList.delete({
+      where: {
+        movieId_userId: {
+          movieId: resolvedMovieId,
+          userId: context.annonymousUserDevice.user.id
+        }
+      }
+    })
+  } else {
+    throw new GraphQLError('Runtime error');
+  }
 
   return {
     true: true,

@@ -1,9 +1,12 @@
-import { User } from "@prisma/client"
-import WatchListDataSource from "../dataloaders/watchListDataloader"
+import { AnnonymousDevice, AnonymousUser, Device, User } from "@prisma/client"
+import WatchListDataLoader from "../dataloaders/watchListDataLoader"
+import AnnonymousWatchListDataLoader from "../dataloaders/annonymousWatchListDataLoader"
 
 export interface GraphQLContext {
-  user?: User
+  annonymousUserDevice?: AnnonymousDevice & { user: AnonymousUser }
+  userDevice?: Device & { user: User }
   dataSources: {
-    watchList: WatchListDataSource
+    watchList: WatchListDataLoader
+    annonymousWatchList: AnnonymousWatchListDataLoader
   }
 }

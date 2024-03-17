@@ -29,7 +29,7 @@ private extension CutGraphQL.ExtendedMovieFragment {
 
 struct DetailView: View {
     let movie: Movie
-    var watchListViewModel: WatchListViewModel
+    @State var watchListViewModel: WatchListViewModel
     @State var extendedMovie: CutGraphQL.ExtendedMovieFragment?
     @State var watched: Apollo.GraphQLQueryWatcher<CutGraphQL.MovieQuery>?
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentRow: View {
     let viewModel: ContentRowViewModel
-    var watchListViewModel: WatchListViewModel
+    @State var watchListViewModel: WatchListViewModel
     let index: Int?
 
     init(viewModel: ContentRowViewModel, index: Int? = nil) {
@@ -26,9 +26,9 @@ struct ContentRow: View {
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
             VStack(alignment: .leading, spacing: 6) {
                 Text(viewModel.title)
-                    .font(.cutTitle)
+                    .font(.title3)
                 Text(viewModel.subtitle)
-                    .font(.cutSubtitle)
+                    .font(.subheadline)
                     .foregroundStyle(Color.sub)
             }
             Spacer()
