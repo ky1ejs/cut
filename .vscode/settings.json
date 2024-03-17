@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": false,
+  "eslint.workingDirectories": [
+    "backend",
+    "web"
+  ]
+}
