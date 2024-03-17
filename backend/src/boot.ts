@@ -5,7 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
-import { Resolvers, ExtendedMovie } from './__generated__/graphql';
+import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
 import moviesResolver from './resolvers/query/movie-resolver';
 import searchResolver from './resolvers/query/search-resolver';
