@@ -2,33 +2,75 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [citext]
 }
 
 // -----------------------------------------------------------
 // User
 // -----------------------------------------------------------
+model AnonymousUser {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  devices   AnnonymousDevice[]
+  watchList AnnonymousWatchList[]
+}
+
 model User {
-  id        String      @id @default(dbgenerated("gen_random_uuid()"))
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now())
-  Device    Device[]
-  WatchList WatchList[]
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  username  String   @unique @db.Citext
+  password  String
+  email     String   @unique @db.Citext
+  name      String
+  bio       String?
+  url       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  devices   Device[]
+  watchList WatchList[]
+  followers Follow[]    @relation(name: "follower_user_id")
+  following Follow[]    @relation(name: "following_user_id")
+}
+
+model Follow {
+  id          String   @id @default(dbgenerated("gen_random_uuid()"))
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User     @relation(name: "follower_user_id", fields: [followerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  following   User     @relation(name: "following_user_id", fields: [followingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([followerId, followingId])
 }
 
 model Device {
-  id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  sessionId String   @unique @default(dbgenerated("gen_random_uuid()"))
+  id              String   @id @default(dbgenerated("gen_random_uuid()"))
+  sessionId       String   @unique @default(dbgenerated("gen_random_uuid()"))
+  name            String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  anonymousUserId String?
+}
+
+model AnnonymousDevice {
+  id        String        @id @default(dbgenerated("gen_random_uuid()"))
+  sessionId String        @unique @default(dbgenerated("gen_random_uuid()"))
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      AnonymousUser @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 // -----------------------------------------------------------
@@ -36,12 +78,28 @@ model Device {
 // -----------------------------------------------------------
 model WatchList {
   id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  movieId   String
-  movie     Movie    @relation(fields: [movieId], references: [id])
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  movieId String
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([movieId, userId])
+}
+
+model AnnonymousWatchList {
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  movieId String
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  userId String
+  user   AnonymousUser @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([movieId, userId])
 }
@@ -59,7 +117,7 @@ model Movie {
   synopsis         String
 
   mainGenreId Int?
-  mainGenre   Genre? @relation(fields: [mainGenreId], references: [id])
+  mainGenre   Genre? @relation(fields: [mainGenreId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   // Providers
   tmdbId     Int?    @unique
@@ -67,11 +125,12 @@ model Movie {
   fandangoId String? @unique
 
   // Relations
-  images           MovieImage[]
-  WatchList        WatchList[]
-  MovieTranslation MovieTranslation[]
-  MovieCollection  MovieCollection[]
-  genres           MovieGenre[]
+  images              MovieImage[]
+  WatchList           WatchList[]
+  MovieTranslation    MovieTranslation[]
+  MovieCollection     MovieCollection[]
+  genres              MovieGenre[]
+  AnnonymousWatchList AnnonymousWatchList[]
 }
 
 model MovieTranslation {
@@ -83,15 +142,15 @@ model MovieTranslation {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
   movieId            String
-  movie              Movie    @relation(fields: [movieId], references: [id])
+  movie              Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model MovieGenre {
   id      String @id @default(dbgenerated("gen_random_uuid()"))
   movieId String
   genreId Int
-  movie   Movie  @relation(fields: [movieId], references: [id])
-  genre   Genre  @relation(fields: [genreId], references: [id])
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -115,7 +174,7 @@ model MovieImage {
   country_ISO_3166_1 String
 
   movieId String
-  movie   Movie  @relation(fields: [movieId], references: [id])
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Genre {
@@ -138,7 +197,7 @@ model LocalizedGenre {
   name               String
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
-  genre              Genre    @relation(fields: [genreId], references: [id])
+  genre              Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([genreId, language_ISO_639_1, country_ISO_3166_1])
 }
@@ -158,7 +217,7 @@ model MovieCollection {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @default(now())
   movieId   String
-  movie     Movie          @relation(fields: [movieId], references: [id])
+  movie     Movie          @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([type, movieId])
 }

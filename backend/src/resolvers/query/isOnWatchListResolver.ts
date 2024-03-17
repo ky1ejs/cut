@@ -1,18 +1,23 @@
-import { MovieInterface, MovieInterfaceResolvers, MovieResolvers } from "../../__generated__/graphql";
-import { GraphQLContext } from "../../graphql/GraphQLContext";
+import { GraphQLError } from "graphql";
+import { MovieInterfaceResolvers } from "../../__generated__/graphql";
 
 const isOnWatchlistResolver: MovieInterfaceResolvers["isOnWatchList"] = async (movie, _, context) => {
-  console.log('isOnWatchlistResolver');
-  if (!context.user) {
-    return false
-  }
-  if (!movie.id) {
-    return false
-  }
   if (movie.isOnWatchList !== undefined) {
     return movie.isOnWatchList
   }
-  return await context.dataSources.watchList.getWatchlistStatusFor({ movieId: movie.id, userId: context.user.id });
+  if (context.userDevice) {
+    if (!movie.id) {
+      return false
+    }
+    return await context.dataSources.watchList.getWatchlistStatusFor({ movieId: movie.id, userId: context.userDevice.user.id });
+  }
+  if (context.annonymousUserDevice) {
+    if (!movie.id) {
+      return false
+    }
+    return await context.dataSources.annonymousWatchList.getWatchlistStatusFor({ movieId: movie.id, userId: context.annonymousUserDevice.user.id });
+  }
+  throw new GraphQLError("Unauthorized")
 }
 
 export default isOnWatchlistResolver;

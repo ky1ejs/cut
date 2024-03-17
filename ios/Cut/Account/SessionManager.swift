@@ -22,30 +22,64 @@ public class SessionManager: ObservableObject {
         accessGroup: "\(TEAM_ID).keychain.watch.cut"
     ).accessibility(.afterFirstUnlock)
     private let client = AuthorizedApolloClient.shared.client
-    private var inFlightLogIn: Apollo.Cancellable?
+    private var inFlightRequest: Apollo.Cancellable?
 
     init() throws {
         sessionId = try readSessionId()
     }
 
-    struct SignInError: Error {
-        let error: Error
+    enum SignInError: Error {
+        case error(Error)
+        case unknown
     }
 
     func signUp(completion: @escaping (Result<String, SignInError>) -> ()) {
-        guard sessionId == nil && inFlightLogIn == nil else { return }
+        guard sessionId == nil && inFlightRequest == nil else { return }
         let deviceName = UIDevice.current.name
-        inFlightLogIn = client.perform(mutation: CutGraphQL.SignUpMutation(deviceName: deviceName)) { [weak self] result in
-            self?.inFlightLogIn = nil
-            guard case .success(let response) = result, let sessionId = response.data?.signUp.session_id else { return }
+        inFlightRequest = client.perform(mutation: CutGraphQL.SignUpMutation(deviceName: deviceName)) { [weak self] result in
+            self?.inFlightRequest = nil
+            guard case .success(let response) = result, let sessionId = response.data?.signUp.session_id else {
+                completion(.failure(.unknown))
+                return
+            }
             do {
                 try self?.storeSessionId(sessionId)
                 self?.sessionId = sessionId
                 completion(.success(sessionId))
             } catch {
-                completion(.failure(SignInError(error: error)))
+                completion(.failure(.error(error)))
             }
         }
+    }
+
+    func completeAccount(_ input: CutGraphQL.CompleteAccountInput, completion: @escaping (Result<String, SignInError>) -> ()) -> Apollo.Cancellable {
+        guard sessionId != nil && inFlightRequest == nil else {
+            completion(.failure(.unknown))
+            return inFlightRequest!
+        }
+
+        let cancellable = client.perform(mutation: CutGraphQL.CompleteAccountMutation(params: input), resultHandler: { [weak self] result in
+            self?.inFlightRequest = nil
+            guard case .success(let response) = result else {
+                completion(.failure(.unknown))
+                return
+            }
+            do {
+                if let error = response.errors?.first {
+                    completion(.failure(.error(error)))
+                } else if let sessionId = response.data?.completeAccount.updatedDevice.session_id {
+                    try self?.storeSessionId(sessionId)
+                    self?.sessionId = sessionId
+                    completion(.success(sessionId))
+                } else {
+                    completion(.failure(.unknown))
+                }
+            } catch {
+                completion(.failure(.error(error)))
+            }
+        })
+        inFlightRequest = cancellable
+        return cancellable
     }
 
     private func readSessionId() throws -> String? {

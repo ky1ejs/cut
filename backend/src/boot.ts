@@ -13,13 +13,20 @@ import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
 import addToWatchList from './resolvers/mutation/addToWatchlist';
 import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
-import WatchListDataSource from './dataloaders/watchListDataloader';
+import WatchListDataLoader from './dataloaders/watchListDataLoader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
 import watchList from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
 import importGenres from './tmbd/import-genres';
 import movieResolver from './resolvers/query/movie';
+import completeAccount from './resolvers/mutation/completeAccount';
+import follow from './resolvers/mutation/follow';
+import unfollow from './resolvers/mutation/unfollow';
+import initiateEmailVerification from './resolvers/query/initiateEmailVerification';
+import isUsernameAvailable from './resolvers/query/isUsernameAvailable';
+import getAccount from './resolvers/query/getAccount';
+import AnnonymousWatchListDataLoader from './dataloaders/annonymousWatchListDataLoader';
 
 const boot = async () => {
   await importGenres();
@@ -28,15 +35,21 @@ const boot = async () => {
 
   const resolvers: Resolvers = {
     Query: {
+      account: getAccount,
       movies: moviesResolver,
       search: searchResolver,
       watchList: (_, __, context) => watchList(context),
       movie: movieResolver,
+      initiateEmailVerification,
+      isUsernameAvailable
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
       addToWatchList,
-      removeFromWatchList
+      removeFromWatchList,
+      completeAccount,
+      follow,
+      unfollow
     },
     MovieInterface: {
       __resolveType: (movie) => {
@@ -52,6 +65,17 @@ const boot = async () => {
     },
     Movie: {
       isOnWatchList: isOnWatchlistResolver
+    },
+    AccountUnion: {
+      __resolveType: (parent) => {
+        return parent.__typename!
+      }
+    },
+    CompleteAccount: {
+      watchList: (_, __, context) => watchList(context)
+    },
+    IncompleteAccount: {
+      watchList: (_, __, context) => watchList(context)
     }
   };
 
@@ -74,16 +98,24 @@ const boot = async () => {
       context: async ({ req }) => {
         let context: GraphQLContext = {
           dataSources: {
-            watchList: new WatchListDataSource(prisma)
+            watchList: new WatchListDataLoader(prisma),
+            annonymousWatchList: new AnnonymousWatchListDataLoader(prisma)
           }
         }
         const sessionId = req.headers.authorization;
         if (sessionId) {
-          const user = await prisma.device.findUnique({ where: { sessionId }, include: { user: true } });
-          if (!user) {
+          const userDevicePromise = prisma.device.findUnique({ where: { sessionId }, include: { user: true } });
+          const annonUserDevicePromise = prisma.annonymousDevice.findUnique({ where: { sessionId }, include: { user: true } })
+          const [userDevice, annonUserDevice] = await Promise.all([userDevicePromise, annonUserDevicePromise])
+          if (userDevice) {
+            context.userDevice = userDevice;
+          }
+          if (annonUserDevice) {
+            context.annonymousUserDevice = annonUserDevice;
+          }
+          if (context.userDevice === undefined && context.annonymousUserDevice === undefined) {
             throw new GraphQLError('Unauthorized', { extensions: { code: 'UNAUTHORIZED' } });
           }
-          context.user = user.user;
         }
         return context
       }

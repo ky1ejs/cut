@@ -58,6 +58,7 @@ class ErrorInterceptor: ApolloErrorInterceptor {
                 try? SessionManager.shared.logOut()
             }
         }
+        completion(.failure(error))
     }
 }
 

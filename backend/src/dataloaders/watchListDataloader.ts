@@ -6,7 +6,7 @@ export type WatchListCacheKey = {
   userId: string;
 };
 
-export default class WatchListDataSource {
+export default class WatchListDataLoader {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {

@@ -5,6 +5,7 @@
     "preserveConstEnums": true,
     "esModuleInterop": true,
     "types": [
+      "jest",
       "node"
     ]
   },

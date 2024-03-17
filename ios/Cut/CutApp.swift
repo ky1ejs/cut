@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct CutApp: App {
     @ObservedObject private var session = SessionManager.shared
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {

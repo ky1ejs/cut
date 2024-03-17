@@ -1,19 +1,16 @@
-import { Movie } from "@prisma/client";
-import { MutationAddToWatchListArgs, MutationResolvers, Resolvers } from "../../__generated__/graphql";
-import { GraphQLContext } from "../../graphql/GraphQLContext";
+
+import { GraphQLError } from "graphql";
+import { MutationResolvers } from "../../__generated__/graphql";
 import fetchTmdbMovie from "../../datasources/fetchTmdbMovie";
 import importTmbdMovie from "../../db/tmdbImporter";
 import prisma from "../../prisma";
-import { markAsUntransferable } from "worker_threads";
 
 const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, context) => {
-  if (!context.user) {
-    throw new Error('Unauthorized');
+  if (!context.userDevice && !context.annonymousUserDevice) {
+    throw new GraphQLError('Unauthorized');
   }
 
   const [providerOrCutId, parsedId] = args.movieId.split(':');
-  console.log("Provider: ", providerOrCutId);
-  console.log("ParsedId: ", parsedId);
 
   let movieId: string
   switch (providerOrCutId) {
@@ -28,11 +25,21 @@ const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, cont
       break;
   }
 
-  await prisma.watchList.upsert({
-    where: { movieId_userId: { movieId, userId: context.user.id } },
-    create: { userId: context.user.id, movieId },
-    update: {}
-  });
+  if (context.userDevice) {
+    await prisma.watchList.upsert({
+      where: { movieId_userId: { movieId, userId: context.userDevice.user.id } },
+      create: { userId: context.userDevice.user.id, movieId },
+      update: {}
+    });
+  } else if (context.annonymousUserDevice) {
+    await prisma.annonymousWatchList.upsert({
+      where: { movieId_userId: { movieId, userId: context.annonymousUserDevice.user.id } },
+      create: { userId: context.annonymousUserDevice.user.id, movieId },
+      update: {}
+    });
+  } else {
+    throw new GraphQLError('Runtime error');
+  }
 
   return {
     true: true,

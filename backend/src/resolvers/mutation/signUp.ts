@@ -2,16 +2,13 @@ import { Device, MutationSignUpArgs } from "../../__generated__/graphql";
 import prisma from "../../prisma";
 
 const signUp = async (args: MutationSignUpArgs): Promise<Device> => {
-  const user = await prisma.user.create({ data: {} })
-  const device = await prisma.device.create({
+  const device = await prisma.annonymousDevice.create({
     data: {
       name: args.deviceName,
       user: {
-        connect: {
-          id: user.id
-        }
+        create: {}
       }
-    }
+    },
   })
   return {
     name: device.name,
