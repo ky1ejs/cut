@@ -56,7 +56,7 @@ jobs:
        run: ./apollo-ios-cli generate -p Cut/graphql/apollo-codegen-config.json
 
      - id: build-release-notes
-       uses: ky1ejs/release-notes-action@v0.0.1
+       uses: ky1ejs/release-notes-action@v0.1.0
        with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
       
