@@ -27,9 +27,10 @@ import initiateEmailVerification from './resolvers/query/initiateEmailVerificati
 import isUsernameAvailable from './resolvers/query/isUsernameAvailable';
 import getAccount from './resolvers/query/getAccount';
 import AnnonymousWatchListDataLoader from './dataloaders/annonymousWatchListDataLoader';
+import { OFFLINE } from './constants';
 
 const boot = async () => {
-  await importGenres();
+  if (!OFFLINE) await importGenres();
 
   const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
@@ -130,7 +131,6 @@ const boot = async () => {
 
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(`📡 listening on port ${port}`);
-
 }
 
 export default boot;

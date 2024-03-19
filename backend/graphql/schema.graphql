@@ -33,34 +33,41 @@ input CompleteAccountInput {
   emailToken: String!
 }
 
-interface Account {
+interface ProfileInterface {
   id: String!
-  watchList: [Movie!]!
-}
-
-type IncompleteAccount implements Account {
-  # Account
-  id: String!
-  watchList: [Movie!]!
-}
-
-type OtherAccount {
-  id: String!
-  username: String!
-  profileUrl: String
-}
-
-type CompleteAccount {
-  # Account
-  id: String!
-  watchList: [Movie!]!
-
   username: String!
   name: String!
-  bio: String
   url: String
-  followers: [OtherAccount!]!
-  following: [OtherAccount!]!
+  bio: String
+  imageUrl: String
+}
+
+type Profile implements ProfileInterface {
+  id: String!
+  username: String!
+  name: String!
+  url: String
+  bio: String
+  imageUrl: String
+}
+
+type IncompleteAccount {
+  id: String!
+  watchList: [Movie!]!
+}
+
+type CompleteAccount implements ProfileInterface {
+  # Profile
+  id: String!
+  username: String!
+  name: String!
+  url: String
+  bio: String
+  imageUrl: String
+
+  watchList: [Movie!]!
+  followers: [Profile!]!
+  following: [Profile!]!
   followerCount: Int!
   followingCount: Int!
 }

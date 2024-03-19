@@ -1,12 +1,11 @@
 import boot from "./boot";
 import { Worker } from "worker_threads";
+import { OFFLINE } from "./constants";
 
 let worker: Worker | undefined
 
-console.log(`WORKER: ${process.env.WORKER}`)
-if ((process.env.WORKER || 'true') === 'true') {
-  const worker = new Worker(__dirname + "/workers/index");
-}
+console.log(OFFLINE)
+if (!OFFLINE) worker = new Worker(__dirname + "/workers/index")
 
 const shutdown = async () => {
   console.log("Shutting down gracefully...");

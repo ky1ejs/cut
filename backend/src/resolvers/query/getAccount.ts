@@ -1,4 +1,5 @@
-import { CompleteAccount, IncompleteAccount, QueryResolvers } from "../../__generated__/graphql";
+import { User } from "@prisma/client";
+import { CompleteAccount, IncompleteAccount, Profile, QueryResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
 import { GraphQLError } from "graphql";
 
@@ -26,8 +27,8 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       name: context.userDevice.user.name,
       bio: context.userDevice.user.bio,
       url: context.userDevice.user.url,
-      followers: userWithFollowing.followers.map(u => ({ id: u.follower.id, username: u.follower.username, profileUrl: null })),
-      following: userWithFollowing.following.map(u => ({ id: u.following.id, username: u.following.username, profileUrl: null })),
+      followers: userWithFollowing.followers.map(f => profileMapper(f.follower)),
+      following: userWithFollowing.following.map(f => profileMapper(f.following)),
       followerCount: userWithFollowing.followers.length,
       followingCount: userWithFollowing.following.length,
       __typename: "CompleteAccount"
@@ -42,6 +43,16 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
   }
 
   throw new GraphQLError("Unauthorized")
+}
+
+function profileMapper(user: User): Profile {
+  return {
+    id: user.id,
+    username: user.username,
+    name: user.name,
+    url: user.url,
+    bio: user.bio,
+  }
 }
 
 export default getAccount;

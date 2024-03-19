@@ -37,8 +37,8 @@ model User {
 
   devices   Device[]
   watchList WatchList[]
-  followers Follow[]    @relation(name: "follower_user_id")
-  following Follow[]    @relation(name: "following_user_id")
+  following Follow[]    @relation(name: "follower_user_id")
+  followers Follow[]    @relation(name: "following_user_id")
 }
 
 model Follow {
@@ -60,7 +60,6 @@ model Device {
   updatedAt       DateTime @default(now())
   userId          String
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  anonymousUserId String?
 }
 
 model AnnonymousDevice {

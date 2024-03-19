@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node -r dotenv/config src/index.ts",
     "dev:watch": "nodemon",
-    "dev:watch:no-worker": "WORKER=false nodemon",
+    "dev:watch:no-worker": "OFFLINE=true nodemon",
     "build": "tsc -p tsconfig.build.json && cp -r src/resources ./dist",
     "start": "node dist/index.js",
     "codegen:graphql": "gql-gen --config graphql-codegen.yaml",
