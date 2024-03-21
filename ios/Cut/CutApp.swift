@@ -16,6 +16,9 @@ struct CutApp: App {
         WindowGroup {
             if let _ = session.sessionId {
                 Root()
+                    .onOpenURL(perform: { url in
+                        DeepLinkManager.shared.open(url)
+                    })
             } else {
                 DeviceRegister()
             }

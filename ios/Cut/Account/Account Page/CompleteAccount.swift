@@ -25,27 +25,22 @@ struct CompleteAccount: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
             ScrollView {
                 HStack {
-                    VStack(alignment: .leading) {
-                        Text(account.name).font(.cut_title3.bold()).foregroundColor(.white)
-                        Text(account.username).font(.cut_footnote).foregroundColor(.white)
-                        Text(account.bio ?? "").font(.cut_footnote).foregroundColor(.white)
-                        Text(account.url ?? "").font(.cut_footnote).foregroundColor(.white)
-                        Spacer()
-                    }
                     Spacer()
-                    ProfileImage()
+                    NavigationLink {
+                        Settings()
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .tint(.gray)
+                            .padding(.bottom, 18)
+                    }
                 }
+                ProfileHeader(profile: account.fragments.profileFragment)
                 .padding(.bottom, 24)
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10).foregroundStyle(.white)
-                        Text("Edit profile").foregroundStyle(.black)
-                    }.frame(height: 40)
-                })
+                PrimaryButton(text: "Edit Profile") {}
                 .padding(.bottom, 24)
                 Picker(selection: $state) {
                     ForEach(ListState.allCases) { s in
@@ -55,11 +50,9 @@ struct CompleteAccount: View {
                     Text("Ignored")
                 }
                 .pickerStyle(.segmented)
-                .preferredColorScheme(.dark)
             }
             .scrollBounceBehavior(.basedOnSize)
             .padding(.horizontal, 24)
-        }
     }
 }
 

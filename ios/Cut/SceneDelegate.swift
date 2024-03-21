@@ -21,4 +21,16 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
         }
         DeepLinkManager.shared.open(context.url)
     }
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        print(userActivity)
+    }
+
+    func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String) {
+
+    }
+
+    func scene(_ scene: UIScene, didFailToContinueUserActivityWithType userActivityType: String, error: Error) {
+
+    }
 }

@@ -11,26 +11,24 @@ struct CheckEmailVerification: View {
     @StateObject private var deepLinkObserver = EmailVerifyDeepLinkHandler()
 
     var body: some View {
-        ZStack {
-            Color.cutOrange
-            VStack(spacing: 0) {
-                Text("📧").font(.system(size: 120))
-                    .padding(.bottom, 24)
-                    .padding(.top, 80)
-                Text("Check your email")
-                    .font(.title)
-                    .foregroundStyle(.white)
-                    .padding(.bottom, 24)
-                Text("Open the link in the email we just sent you.\n\nRemember to check your spack if it doesn't turn up")
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.white)
-                Spacer()
-            }.padding(.horizontal, 12)
-        }
-        .ignoresSafeArea()
+        VStack(spacing: 0) {
+            Text("📧").font(.system(size: 120))
+                .padding(.bottom, 24)
+                .padding(.top, 80)
+            Text("Check your email")
+                .font(.title)
+                .foregroundStyle(.white)
+                .padding(.bottom, 24)
+            Text("Open the link in the email we just sent you.\n\nRemember to check your spack if it doesn't turn up")
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.white)
+            Spacer()
+        }.padding(.horizontal, 12)
         .navigationDestination(item: $deepLinkObserver.deepLinkToken) { token in
             CompleteAccountForm(emailVerificationToken: token)
-        }
+        }.onOpenURL(perform: { url in
+            deepLinkObserver.open(url)
+        })
     }
 }
 
