@@ -21,7 +21,7 @@ struct IncompleteAccount: View {
                 } label: {
                     Image(systemName: "gear")
                         .resizable()
-                        .frame(width: 36, height: 36)
+                        .frame(width: 32, height: 32)
                         .tint(.gray)
                         .padding(.horizontal, 18)
                 }
@@ -30,18 +30,14 @@ struct IncompleteAccount: View {
                 .padding(.bottom, 16)
             Text("Complete your account to keep your data safe and follow friends").font(.title2).multilineTextAlignment(.center)
             Spacer(minLength: 48)
-            Button(action: {
+            PrimaryButton(text: "Complete my account") {
                 viewModel.isCompleteAccountPresented = true
-            }) { Text("Complete my account").foregroundStyle(.white).font(.title3) }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .background(.orange)
-                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 8, height: 8)))
-            Button(action: {
+            }
+            SecondaryButton(text: "Why do I need an account?") {
                 viewModel.isAccountExplainerPresented = true
-            }) { Text("Why do I need an account?").foregroundStyle(.gray).font(.title3) }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
         }
     }
 }

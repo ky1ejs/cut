@@ -8,19 +8,40 @@
 import SwiftUI
 
 struct UsernameAvailabilityIndicator: View {
-    let state: State
+    let state: ViewState
 
-    enum State {
+    @State private var animationColor = Color.gray
+    @State private var loadingOnScreen = false
+
+    enum ViewState {
         case empty, loading, available, unavailable, error
+
+        var color: Color {
+            switch self {
+            case .empty: return .gray
+            case .error: return .red
+            case .available: return .green
+            case .unavailable: return .red
+            case .loading: return .gray
+            }
+        }
     }
 
     var body: some View {
-        switch state {
-        case .empty, .loading: Circle().foregroundStyle(.gray).frame(width: 14, height: 14)
-        case .error: Text("⚠️")
-        case .available: Circle().foregroundStyle(.green).frame(width: 14, height: 14)
-        case .unavailable: Circle().foregroundStyle(.red).frame(width: 14, height: 14)
+        if state == .loading {
+            StateCircle.foregroundStyle(animationColor)
+                .animation(.linear(duration: 0.5).repeatForever(), value: animationColor)
+                .onAppear(perform: {
+                    animationColor = .orange
+                })
+        } else {
+            StateCircle.foregroundStyle(state.color)
+                .animation(.easeIn, value: state)
         }
+    }
+
+    private var StateCircle: some View {
+        Circle().frame(width: 14, height: 14)
     }
 }
 

@@ -1,26 +1,25 @@
 
-fragment OtherAccountFragment on OtherAccount {
-  id
-  username
-  profileUrl
-}
-
-fragment CompleteAccountFragment on CompleteAccount {
+fragment ProfileFragment on ProfileInterface {
   id
   username
   name
-  bio
   url
+  bio
+  imageUrl
+}
+
+fragment CompleteAccountFragment on CompleteAccount {
+  ...ProfileFragment
   followerCount
   followingCount
   watchList {
     ...MovieFragment
   }
   followers {
-    ...OtherAccountFragment
+    ...ProfileFragment
   }
   following {
-    ...OtherAccountFragment
+    ...ProfileFragment
   }
 }
 

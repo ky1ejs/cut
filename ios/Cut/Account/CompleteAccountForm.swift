@@ -30,6 +30,7 @@ class Debouncer {
 class CompleteAccountFormViewModel {
     var username = "" {
         didSet {
+            usernameState = .loading
             debouncer.debounce {
                 self.updateUsernameAvailability()
             }
@@ -37,13 +38,12 @@ class CompleteAccountFormViewModel {
     }
     var name = ""
     var password = ""
-    var usernameState = UsernameAvailabilityIndicator.State.empty
+    var usernameState = UsernameAvailabilityIndicator.ViewState.empty
     private var usernameCheck: Apollo.Cancellable?
     private var checkCancelable: AnyCancellable?
     private let debouncer = Debouncer(delay: 0.2)
 
     func updateUsernameAvailability() {
-        print(username)
         self.usernameCheck?.cancel()
         guard username.count > 0 else {
             self.usernameState = .empty
@@ -73,48 +73,33 @@ struct CompleteAccountForm: View {
     @State private var error: Error?
 
     var body: some View {
-        ZStack {
-            Color.cutOrange.ignoresSafeArea()
-            VStack(alignment: .center, spacing: 4) {
-                Text("🎬")
-                    .font(.system(size: 80))
-                    .padding(.top, 48)
-                Text("Make the Cut")
-                    .font(.cut_title1)
-                    .foregroundStyle(.white)
-                    .padding(.top, 12)
-                Text("Complete your account")
-                    .font(.subheadline)
-                    .foregroundStyle(.white)
-                Text("Last step, set your username and password.")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .padding(.top, 16)
-                HStack(spacing: 0) {
-                    TextField(text: $viewModel.username) {
-                        Text("username")
-                    }
-                    UsernameAvailabilityIndicator(state: viewModel.usernameState).padding(.horizontal, 8)
+        VStack(alignment: .center, spacing: 42) {
+            Text("Complete your account")
+                .font(.cut_title1)
+                .padding(.top, 42)
+            VStack(spacing: 16) {
+                CutTextField(text: $viewModel.username, label: "Username") {
+                    UsernameAvailabilityIndicator(state: viewModel.usernameState)
+                        .padding(.horizontal, 8)
                 }
-                .textFieldStyle(CutTextFieldStyle())
-                .padding(.top, 12)
-                TextField(text: $viewModel.name) {
-                    Text("name")
-                }
-                .textFieldStyle(CutTextFieldStyle())
-                .padding(.top, 12)
-                SecureField(text: $viewModel.password) {
-                    Text("password")
-                }.textFieldStyle(CutTextFieldStyle())
-                    .padding(.top, 12)
-                CutButton(action: {
-                    completeAccount()
-                }, text: "Complete Account", state: inFlightRequest == nil ? .notLoading : .loading)
-                Spacer()
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                CutTextField(text: $viewModel.name, label: "Name")
+                    .autocorrectionDisabled()
+                CutTextField(
+                    text: $viewModel.password,
+                    label: "Password",
+                    secure: true
+                )
+
+            }.disabled(inFlightRequest != nil)
+            PrimaryButton(text: "Complete Account", state: inFlightRequest == nil ? .notLoading : .loading) {
+                completeAccount()
             }
-            .frame(maxWidth: 300)
-            .errorAlert(error: $error)
+            Spacer()
         }
+        .padding(.horizontal, 24)
+        .errorAlert(error: $error)
     }
 
     func completeAccount() {
@@ -136,15 +121,56 @@ struct CompleteAccountForm: View {
     }
 }
 
+struct CutTextField<Accessory>: View where Accessory : View {
+    @Binding var text: String
+    let label: String
+    let secure: Bool
+    @ViewBuilder let accessoryView: (() -> Accessory)?
+
+    init(text: Binding<String>, label: String, secure: Bool = false, accessoryView: @escaping (() -> Accessory)) {
+        self._text = text
+        self.label = label
+        self.secure = secure
+        self.accessoryView = accessoryView
+    }
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(label).font(.cut_footnote)
+            HStack {
+                if secure {
+                    SecureField(text: $text) {
+                        Text(label.lowercased())
+                    }
+                } else {
+                    TextField(text: $text) {
+                        Text(label.lowercased())
+                    }
+                }
+                accessoryView?()
+            }
+        }.textFieldStyle(CutTextFieldStyle())
+    }
+}
+
+extension CutTextField where Accessory == EmptyView {
+    init(text: Binding<String>, label: String, secure: Bool = false) {
+        self._text = text
+        self.label = label
+        self.secure = secure
+        self.accessoryView = nil
+    }
+}
+
 struct CutTextFieldStyle: TextFieldStyle {
+    @Environment(\.colorScheme) private var colorScheme
+
     func _body(configuration: TextField<Self._Label>) -> some View {
             configuration
-            .padding(.vertical, 10)
-            .padding(.horizontal, 6)
-            .background(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
-            .foregroundColor(.black)
-        }
+                .padding(.vertical, 10)
+                .padding(.horizontal, 8)
+                .background((RoundedRectangle(cornerRadius: 6).strokeBorder(.gray)))
+    }
 }
 
 #Preview {

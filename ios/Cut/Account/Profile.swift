@@ -28,8 +28,8 @@ struct Profile: View {
             VStack {
                 ProfileImage()
                 Text("username")
-                Button("Follow") {
-
+                PrimaryButton(text: "Follow") {
+                    
                 }
                 HStack {
                     Text("Pinned").font(.title2).bold()
