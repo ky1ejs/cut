@@ -27,7 +27,6 @@ struct CompleteAccountBenefits: View {
                 - Follow your friends and see what they want to watch or what they've rated
                 - Sign into your cut account on another device or when you get a new one
                 """)
-
                 NavigationLink(destination: {
                     InitiateEmailConfirm()
                 }, label: {
@@ -35,16 +34,15 @@ struct CompleteAccountBenefits: View {
 
                     }
                 }).padding(.top, 16)
-                SecondaryButton(text: "Maybe later") {
+                SecondaryButton(text: "Maybe Later"){
                     isPresented = false
                 }
                 Spacer()
             }
             .padding(24)
-        }
-        .toolbar(.hidden, for: .navigationBar)
-
+        }.toolbar(.hidden, for: .navigationBar)
     }
+
 }
 
 struct CompleteAccountBenefits_Previews: PreviewProvider {

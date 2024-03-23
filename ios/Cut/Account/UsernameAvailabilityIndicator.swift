@@ -64,3 +64,19 @@ struct UsernameAvailabilityIndicator: View {
 #Preview {
     UsernameAvailabilityIndicator(state: .error)
 }
+
+private struct StateTest: View {
+    @State var isLoading = false
+
+    var body: some View {
+        UsernameAvailabilityIndicator(state: isLoading ? .loading : .unavailable)
+        SecondaryButton(text: "Toggle") {
+            isLoading.toggle()
+        }
+    }
+}
+
+#Preview {
+    StateTest()
+}
+

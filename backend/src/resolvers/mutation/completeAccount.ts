@@ -3,7 +3,7 @@ import { MutationCompleteAccountArgs, MutationResolvers } from "../../__generate
 import { GraphQLContext } from "../../graphql/GraphQLContext";
 import prisma from "../../prisma";
 import { decrypt } from "../../services/cipher";
-import { hashPassword } from "../../services/bcrypt";
+import { hash } from "../../services/bcrypt";
 
 export const completeAccount = async (args: MutationCompleteAccountArgs, context: GraphQLContext) => {
   const { username, name, password, emailToken } = args.params
@@ -36,8 +36,9 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
       data: {
         username: username,
         email: email,
+        hashedEmail: await hash(email),
         name: name,
-        password: await hashPassword(password),
+        password: await hash(password),
         createdAt: context.annonymousUserDevice.user.createdAt,
         watchList: {
           createMany: {

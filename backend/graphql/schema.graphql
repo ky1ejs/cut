@@ -4,6 +4,8 @@ type Query {
   watchList: [Movie!]!
   movie(id: String!): ExtendedMovie!
 
+  contactMatches: [Profile!]!
+
   account: AccountUnion!
   isUsernameAvailable(username: String!): Boolean!
   initiateEmailVerification(email: String!): Boolean!
@@ -16,9 +18,12 @@ type Mutation {
   signUp(deviceName: String!): Device!
   logIn(username: String!, password: String!): Device!
   completeAccount(params: CompleteAccountInput!): CompleteAccountResult!
+  updateAccount(params: UpdateAccountInput!): CompleteAccount!
 
   follow(userId: String!): Boolean!
   unfollow(userId: String!): Boolean!
+  uploadContactNumbers(contacts: [ContactInput!]!): Boolean!
+  uploadContactEmails(contacts: [ContactInput!]!): Boolean!
 
   addToWatchList(movieId: String!): WatchListMutationResult!
   removeFromWatchList(movieId: String!): WatchListMutationResult!
@@ -31,6 +36,21 @@ input CompleteAccountInput {
   name: String!
   password: String!
   emailToken: String!
+}
+
+input ContactInput {
+  name: String!
+  contactField: String!
+  externalId: String!
+}
+
+input UpdateAccountInput {
+  username: String
+  password: String
+  phoneNumber: String
+  name: String
+  bio: String
+  url: String
 }
 
 interface ProfileInterface {
@@ -65,6 +85,7 @@ type CompleteAccount implements ProfileInterface {
   bio: String
   imageUrl: String
 
+  phoneNumber: String
   watchList: [Movie!]!
   followers: [Profile!]!
   following: [Profile!]!

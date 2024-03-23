@@ -34,9 +34,9 @@ struct Account: View {
 
     enum ViewState {
         case loading
-        case complete(CutGraphQL.GetAccountQuery.Data.Account.AsCompleteAccount)
+        case complete(CutGraphQL.CompleteAccountFragment)
         case incomplete(CutGraphQL.GetAccountQuery.Data.Account.AsIncompleteAccount)
-        case error
+        case error(String)
     }
 
     var body: some View {
@@ -48,8 +48,8 @@ struct Account: View {
                 CompleteAccount(account: account)
             case .incomplete:
                 IncompleteAccount(viewModel: viewModel)
-            case .error:
-                Text("Error")
+            case .error(let message):
+                Text("Error: \(message)")
             }
         }
         .padding(.horizontal, 12)
@@ -64,12 +64,18 @@ struct Account: View {
         .task {
             state = .loading
             AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetAccountQuery()) { result in
-                if let completeAccount = try? result.get().data?.account.asCompleteAccount {
-                    state = .complete(completeAccount)
-                } else if let incompleteAccount = try? result.get().data?.account.asIncompleteAccount {
-                    state = .incomplete(incompleteAccount)
-                } else {
-                    state = .error
+                switch result {
+                case .success(let response):
+                    if let completeAccount = response.data?.account.asCompleteAccount {
+                     
+                        state = .complete(completeAccount.fragments.completeAccountFragment)
+                    } else if let incompleteAccount = response.data?.account.asIncompleteAccount {
+                        state = .incomplete(incompleteAccount)
+                    } else {
+                        state = .error("Unknown")
+                    }
+                case .failure(let error):
+                    state = .error(error.localizedDescription)
                 }
             }
         }

@@ -31,7 +31,7 @@ struct Mocks {
         return try! CutGraphQL.MovieFragment(data: jsonObject)
     }
 
-    static var completeAccount: CutGraphQL.GetAccountQuery.Data.Account.AsCompleteAccount {
+    static var completeAccount: CutGraphQL.CompleteAccountFragment {
         let json = """
         {
             "__typename": "Query",
@@ -51,7 +51,7 @@ struct Mocks {
           }
         """
         let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-        return try! CutGraphQL.GetAccountQuery.Data(data: jsonObject).account.asCompleteAccount!
+        return try! CutGraphQL.CompleteAccountFragment(data: jsonObject)
     }
 
     static var profile: CutGraphQL.ProfileFragment {

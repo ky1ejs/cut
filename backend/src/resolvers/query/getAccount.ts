@@ -27,6 +27,7 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       name: context.userDevice.user.name,
       bio: context.userDevice.user.bio,
       url: context.userDevice.user.url,
+      phoneNumber: `${(context.userDevice.user.countryCode) ? `+${context.userDevice.user.countryCode}` : ""}${context.userDevice.user.phoneNumber}`,
       followers: userWithFollowing.followers.map(f => profileMapper(f.follower)),
       following: userWithFollowing.following.map(f => profileMapper(f.following)),
       followerCount: userWithFollowing.followers.length,
