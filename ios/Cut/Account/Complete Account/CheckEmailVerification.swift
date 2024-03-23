@@ -17,13 +17,12 @@ struct CheckEmailVerification: View {
                 .padding(.top, 80)
             Text("Check your email")
                 .font(.title)
-                .foregroundStyle(.white)
                 .padding(.bottom, 24)
             Text("Open the link in the email we just sent you.\n\nRemember to check your spack if it doesn't turn up")
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.white)
             Spacer()
-        }.padding(.horizontal, 12)
+        }
+        .padding(.horizontal, 12)
         .navigationDestination(item: $deepLinkObserver.deepLinkToken) { token in
             CompleteAccountForm(emailVerificationToken: token)
         }.onOpenURL(perform: { url in
@@ -65,7 +64,7 @@ class EmailVerifyDeepLinkHandler: DeepLinkHandler, ObservableObject {
         deepLinkToken = token
         return true
     }
-    
+
 
 }
 

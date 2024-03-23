@@ -1,8 +1,8 @@
 
 fragment ProfileFragment on ProfileInterface {
   id
-  username
   name
+  username
   url
   bio
   imageUrl
@@ -10,6 +10,7 @@ fragment ProfileFragment on ProfileInterface {
 
 fragment CompleteAccountFragment on CompleteAccount {
   ...ProfileFragment
+  phoneNumber
   followerCount
   followingCount
   watchList {
@@ -50,5 +51,25 @@ query GetAccount {
     ... on CompleteAccount {
       ...CompleteAccountFragment
     }
+  }
+}
+
+mutation UpdateAccount($params: UpdateAccountInput!) {
+  updateAccount(params: $params) {
+    ...CompleteAccountFragment
+  }
+}
+
+mutation UploadContactNumbers($contacts: [ContactInput!]!) {
+  uploadContactNumbers(contacts: $contacts)
+}
+
+mutation UploadContactEmails($contacts: [ContactInput!]!) {
+  uploadContactEmails(contacts: $contacts)
+}
+
+query GetContactMatches {
+  contactMatches {
+    ...ProfileFragment
   }
 }

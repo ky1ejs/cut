@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct CompleteAccount: View {
-    let account: CutGraphQL.GetAccountQuery.Data.Account.AsCompleteAccount
+    let account: CutGraphQL.CompleteAccountFragment
     @State var state = ListState.rated
-
+    @State private var editAccount = false
+    @State private var findContacts = false
+    
     enum ListState: CaseIterable, Identifiable {
         var id: Self { self }
-
+        
         case rated, watchList, lists
         var title: String {
             return switch self {
@@ -23,7 +25,7 @@ struct CompleteAccount: View {
             }
         }
     }
-
+    
     var body: some View {
             ScrollView {
                 HStack {
@@ -40,8 +42,9 @@ struct CompleteAccount: View {
                 }
                 ProfileHeader(profile: account.fragments.profileFragment)
                 .padding(.bottom, 24)
-                PrimaryButton(text: "Edit Profile") {}
-                .padding(.bottom, 24)
+                PrimaryButton(text: "Edit Profile") { editAccount = true }
+                PrimaryButton(text: "Find Friends") { findContacts = true }
+                    .padding(.bottom, 24)
                 Picker(selection: $state) {
                     ForEach(ListState.allCases) { s in
                         Text(s.title).tag(s)
@@ -53,28 +56,17 @@ struct CompleteAccount: View {
             }
             .scrollBounceBehavior(.basedOnSize)
             .padding(.horizontal, 24)
+            .sheet(isPresented: $editAccount, content: {
+                EditAccount(user: account) {
+                    editAccount = false
+                }
+            })
+            .sheet(isPresented: $findContacts, content: {
+                FindFriendsViaContacts()
+            })
     }
 }
 
 #Preview {
-    let json = """
-    {
-        "__typename": "Query",
-        "account": {
-          "__typename": "CompleteAccount",
-          "username": "kylejs",
-          "name": "Kyle Satti",
-          "bio": "Co-founder of Cut",
-          "url": "https://kylejs.dev",
-          "id": "72686e5d-025f-46ef-b78d-a1511fd01383",
-          "followerCount": 0,
-          "followingCount": 0,
-          "watchList": [],
-          "followers": [],
-          "following": []
-        }
-      }
-    """
-    let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-    return CompleteAccount(account: try! CutGraphQL.GetAccountQuery.Data(data: jsonObject).account.asCompleteAccount!)
+    CompleteAccount(account: Mocks.completeAccount)
 }

@@ -28,6 +28,9 @@ import isUsernameAvailable from './resolvers/query/isUsernameAvailable';
 import getAccount from './resolvers/query/getAccount';
 import AnnonymousWatchListDataLoader from './dataloaders/annonymousWatchListDataLoader';
 import { OFFLINE } from './constants';
+import updateAccount from './resolvers/mutation/updateAccount';
+import { uploadContactEmails, uploadContactNumbers } from './resolvers/mutation/uploadContacts';
+import contactMatches from './resolvers/query/contactMatches';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -42,7 +45,8 @@ const boot = async () => {
       watchList: (_, __, context) => watchList(context),
       movie: movieResolver,
       initiateEmailVerification,
-      isUsernameAvailable
+      isUsernameAvailable,
+      contactMatches
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
@@ -50,7 +54,10 @@ const boot = async () => {
       removeFromWatchList,
       completeAccount,
       follow,
-      unfollow
+      unfollow,
+      updateAccount,
+      uploadContactEmails,
+      uploadContactNumbers
     },
     MovieInterface: {
       __resolveType: (movie) => {

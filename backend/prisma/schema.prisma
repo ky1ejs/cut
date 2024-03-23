@@ -25,20 +25,26 @@ model AnonymousUser {
 }
 
 model User {
-  id        String   @id @default(dbgenerated("gen_random_uuid()"))
-  username  String   @unique @db.Citext
-  password  String
-  email     String   @unique @db.Citext
-  name      String
-  bio       String?
-  url       String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id                String   @id @default(dbgenerated("gen_random_uuid()"))
+  username          String   @unique @db.Citext
+  password          String
+  email             String   @unique @db.Citext
+  hashedEmail       String   @unique
+  name              String
+  bio               String?
+  url               String?
+  countryCode       String?  @db.Citext
+  phoneNumber       String?  @db.Citext
+  hashedPhoneNumber String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
 
-  devices   Device[]
-  watchList WatchList[]
-  following Follow[]    @relation(name: "follower_user_id")
-  followers Follow[]    @relation(name: "following_user_id")
+  devices       Device[]
+  watchList     WatchList[]
+  following     Follow[]       @relation(name: "follower_user_id")
+  followers     Follow[]       @relation(name: "following_user_id")
+  phoneContacts PhoneContact[]
+  emailContacts EmailContact[]
 }
 
 model Follow {
@@ -53,13 +59,13 @@ model Follow {
 }
 
 model Device {
-  id              String   @id @default(dbgenerated("gen_random_uuid()"))
-  sessionId       String   @unique @default(dbgenerated("gen_random_uuid()"))
-  name            String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @default(now())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
+  sessionId String   @unique @default(dbgenerated("gen_random_uuid()"))
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model AnnonymousDevice {
@@ -70,6 +76,32 @@ model AnnonymousDevice {
   updatedAt DateTime      @default(now())
   userId    String
   user      AnonymousUser @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model PhoneContact {
+  id          String  @id @default(dbgenerated("gen_random_uuid()"))
+  countryCode String? @db.Citext
+  phoneNumber String  @db.Citext
+  name        String
+  externalId  String?
+  userId      String
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([countryCode, phoneNumber, userId])
+}
+
+model EmailContact {
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  email      String   @db.Citext
+  name       String
+  externalId String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([email, userId])
 }
 
 // -----------------------------------------------------------
