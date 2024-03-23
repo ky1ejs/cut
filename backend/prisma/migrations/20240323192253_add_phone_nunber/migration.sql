@@ -19,6 +19,8 @@ CREATE TABLE "PhoneContact" (
     "name" TEXT NOT NULL,
     "externalId" TEXT,
     "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "PhoneContact_pkey" PRIMARY KEY ("id")
 );
@@ -50,3 +52,15 @@ ALTER TABLE "PhoneContact" ADD CONSTRAINT "PhoneContact_userId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "EmailContact" ADD CONSTRAINT "EmailContact_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_users_updated_at
+BEFORE UPDATE ON "PhoneContact"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to automatically update the `updatedAt` column
+CREATE TRIGGER update_users_updated_at
+BEFORE UPDATE ON "EmailContact"
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
