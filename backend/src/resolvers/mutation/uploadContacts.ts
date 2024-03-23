@@ -1,9 +1,8 @@
 import { MutationResolvers } from "../../__generated__/graphql";
-import { PhoneNumberUtil } from 'google-libphonenumber';
 import prisma from "../../prisma";
 import { GraphQLError } from "graphql";
-import { hash } from '../../services/bcrypt'
 import processPhoneNumber from "../../services/phoneNumberProcessing";
+import sha256 from "../../services/sha-256";
 
 export const uploadContactNumbers: MutationResolvers["uploadContactNumbers"] = async (_, { contacts }, context) => {
   if (!context.userDevice) {
@@ -11,12 +10,11 @@ export const uploadContactNumbers: MutationResolvers["uploadContactNumbers"] = a
   }
   const { userDevice: { userId } } = context
 
-  const processedContactsPromise = contacts
-    .map(async (input) => {
-      const proccessedPhoneNubmer = await processPhoneNumber(input.contactField)
+  const processedContacts = contacts
+    .map((input) => {
+      const proccessedPhoneNubmer = processPhoneNumber(input.contactField)
       return { ...input, code: proccessedPhoneNubmer.code, contactField: proccessedPhoneNubmer.hashedPhoneNumber }
     })
-  const processedContacts = await Promise.all(processedContactsPromise)
   await prisma.phoneContact.createMany({
     data: processedContacts.map((contact) => ({
       countryCode: contact.code,
@@ -32,8 +30,7 @@ export const uploadContactNumbers: MutationResolvers["uploadContactNumbers"] = a
 export const uploadContactEmails: MutationResolvers["uploadContactEmails"] = async (_, { contacts }, context) => {
   if (!context.userDevice) throw new GraphQLError('Not authenticated')
   const { userDevice: { userId } } = context
-  const hashedEmailsPromise = contacts.map(async (contact) => ({ ...contact, contactField: await hash(contact.contactField.toLowerCase()) }))
-  const hashedEmails = await Promise.all(hashedEmailsPromise)
+  const hashedEmails = contacts.map((contact) => ({ ...contact, contactField: sha256(contact.contactField.toLowerCase()) }))
   await prisma.emailContact.createMany({
     data: hashedEmails.map((contact) => ({
       name: contact.name,
