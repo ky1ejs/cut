@@ -103,7 +103,7 @@ model EmailContact {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@unique([email, userId])
+  @@unique([email, userId, externalId])
 }
 
 // -----------------------------------------------------------
