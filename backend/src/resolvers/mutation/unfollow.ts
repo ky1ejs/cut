@@ -7,16 +7,19 @@ const unfollow: MutationResolvers["unfollow"] = async (_, args, context) => {
     throw new GraphQLError("Unauthorized")
   }
 
-  await prisma.follow.delete({
+  const result = await prisma.follow.delete({
     where: {
       followerId_followingId: {
         followerId: context.userDevice.user.id,
         followingId: args.userId
       }
+    },
+    include: {
+      following: true
     }
   })
 
-  return true
+  return result.following
 }
 
 export default unfollow;

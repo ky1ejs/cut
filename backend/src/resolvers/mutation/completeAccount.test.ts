@@ -1,4 +1,4 @@
-import WatchListDataLoader from "../../dataloaders/watchListDataLoader"
+import WatchListDataLoader from "../../dataloaders/watchlist/watchListDataLoader"
 import { GraphQLContext } from "../../graphql/GraphQLContext"
 import prisma from "../../prisma"
 import { encrypt } from "../../services/cipher"
@@ -6,7 +6,7 @@ import { completeAccount } from "./completeAccount"
 import clearDatabase from "../../../tests/clear-database"
 import { AnnonymousDevice, AnonymousUser } from "@prisma/client"
 import { GraphQLError } from "graphql"
-import AnnonymousWatchListDataLoader from "../../dataloaders/annonymousWatchListDataLoader"
+import AnnonymousWatchListDataLoader from "../../dataloaders/watchlist/annonymousWatchListDataLoader"
 
 let device: AnnonymousDevice & { user: AnonymousUser }
 let context: GraphQLContext

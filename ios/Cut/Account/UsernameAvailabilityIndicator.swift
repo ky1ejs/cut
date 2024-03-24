@@ -79,4 +79,3 @@ private struct StateTest: View {
 #Preview {
     StateTest()
 }
-

@@ -1,5 +1,5 @@
 
-fragment ProfileFragment on ProfileInterface {
+fragment ProfileInterfaceFragment on ProfileInterface {
   id
   name
   username
@@ -8,19 +8,18 @@ fragment ProfileFragment on ProfileInterface {
   imageUrl
 }
 
+fragment ProfileFragment on Profile {
+  ...ProfileInterfaceFragment
+  isFollowing
+}
+
 fragment CompleteAccountFragment on CompleteAccount {
-  ...ProfileFragment
+  ...ProfileInterfaceFragment
   phoneNumber
   followerCount
   followingCount
   watchList {
     ...MovieFragment
-  }
-  followers {
-    ...ProfileFragment
-  }
-  following {
-    ...ProfileFragment
   }
 }
 

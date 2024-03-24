@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileHeader: View {
-    let profile: CutGraphQL.ProfileFragment
+    let profile: CutGraphQL.ProfileInterfaceFragment
     @Environment(\.openURL) private var openURL
 
     var body: some View {
@@ -35,7 +35,7 @@ struct ProfileHeader: View {
 
 #Preview {
     VStack {
-        ProfileHeader(profile: Mocks.profile)
+        ProfileHeader(profile: Mocks.profileInterface)
         Spacer()
     }
 }

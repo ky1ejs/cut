@@ -40,7 +40,7 @@ struct CompleteAccount: View {
                             .padding(.bottom, 18)
                     }
                 }
-                ProfileHeader(profile: account.fragments.profileFragment)
+                ProfileHeader(profile: account.fragments.profileInterfaceFragment)
                 .padding(.bottom, 24)
                 PrimaryButton(text: "Edit Profile") { editAccount = true }
                 PrimaryButton(text: "Find Friends") { findContacts = true }
@@ -62,7 +62,7 @@ struct CompleteAccount: View {
                 }
             })
             .sheet(isPresented: $findContacts, content: {
-                FindFriendsViaContacts()
+                FindFriendsViaContacts(isPresented: $findContacts)
             })
     }
 }

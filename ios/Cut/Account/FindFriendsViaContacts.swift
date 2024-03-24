@@ -10,7 +10,7 @@ import Contacts
 
 struct FindFriendsViaContacts: View {
     @State private var state: ViewState
-
+    @Binding private var presented: Bool
 
     enum ViewState {
         case notDetermined, denied, loading
@@ -18,7 +18,12 @@ struct FindFriendsViaContacts: View {
         case error(Error)
     }
 
-    init() {
+    init(isPresented: Binding<Bool>? = nil) {
+        if let presented = isPresented {
+            _presented = presented
+        } else {
+            _presented = Binding.constant(true)
+        }
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .authorized, .restricted: state = .loading
         case .denied: state = .denied
@@ -43,11 +48,20 @@ struct FindFriendsViaContacts: View {
                     }
                 }
         case .result(let data):
-            List {
-                ForEach(data, id: \.id) { profile in
-                    Text(profile.name)
-                    Text(profile.username)
+            NavigationStack {
+                List {
+                    ForEach(data, id: \.id) { profile in
+                        ProfileRow(profile: profile)
+                    }
                 }
+                .listStyle(.plain)
+                .toolbar(content: {
+                    Button("Done") {
+                        self.presented = false
+                    }
+                })
+                .navigationTitle("Find Friends")
+                .navigationBarTitleDisplayMode(.inline)
             }
         case .notDetermined:
             SecondaryButton(text: "Sync") {
