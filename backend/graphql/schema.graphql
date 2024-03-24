@@ -10,6 +10,9 @@ type Query {
   isUsernameAvailable(username: String!): Boolean!
   initiateEmailVerification(email: String!): Boolean!
 
+  profileByUsername(username: String!): Profile
+  profileById(id: String!): Profile
+
   # activityFeed: [Activity!]!
   # notifications: [Notification!]!
 }
@@ -20,8 +23,8 @@ type Mutation {
   completeAccount(params: CompleteAccountInput!): CompleteAccountResult!
   updateAccount(params: UpdateAccountInput!): CompleteAccount!
 
-  follow(userId: String!): Boolean!
-  unfollow(userId: String!): Boolean!
+  follow(userId: String!): Profile!
+  unfollow(userId: String!): Profile!
   uploadContactNumbers(contacts: [ContactInput!]!): Boolean!
   uploadContactEmails(contacts: [ContactInput!]!): Boolean!
 
@@ -69,6 +72,7 @@ type Profile implements ProfileInterface {
   url: String
   bio: String
   imageUrl: String
+  isFollowing: Boolean!
 }
 
 type IncompleteAccount {
@@ -87,8 +91,6 @@ type CompleteAccount implements ProfileInterface {
 
   phoneNumber: String
   watchList: [Movie!]!
-  followers: [Profile!]!
-  following: [Profile!]!
   followerCount: Int!
   followingCount: Int!
 }

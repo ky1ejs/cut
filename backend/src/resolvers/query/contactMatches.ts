@@ -6,6 +6,7 @@ const contactMatches: QueryResolvers["contactMatches"] = async (_, __, context) 
   if (!context.userDevice) {
     throw new GraphQLError("Unauthorized ")
   }
+  const userId = context.userDevice.userId
 
   const phoneContacts = prisma.phoneContact.findMany({
     where: {
@@ -17,11 +18,11 @@ const contactMatches: QueryResolvers["contactMatches"] = async (_, __, context) 
         hashedPhoneNumber: contact.phoneNumber
       }))
     }
-  }))
+  })).then((users) => users.filter((user) => user.id !== userId))
 
   const emailContacts = prisma.emailContact.findMany({
     where: {
-      userId: context.userDevice.userId
+      userId: userId
     }
   }).then((contacts) => prisma.user.findMany({
     where: {
@@ -29,7 +30,7 @@ const contactMatches: QueryResolvers["contactMatches"] = async (_, __, context) 
         hashedEmail: contact.email
       }))
     }
-  }))
+  })).then((users) => users.filter((user) => user.id !== userId))
 
   const [phoneUsers, emailUsers] = await Promise.all([phoneContacts, emailContacts])
 

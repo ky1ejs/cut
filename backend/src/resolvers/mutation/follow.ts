@@ -11,17 +11,21 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
     followerId: context.userDevice.user.id,
     followingId: args.userId
   }
-  await prisma.follow.upsert(
+
+  const result = await prisma.follow.upsert(
     {
       where: {
         followerId_followingId: data
       },
       create: data,
-      update: {}
+      update: {},
+      include: {
+        following: true
+      }
     }
   )
 
-  return true
+  return result.following
 }
 
 export default follow;

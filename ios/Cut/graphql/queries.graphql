@@ -127,3 +127,21 @@ query Movie($movieId: String!) {
     ...ExtendedMovieFragment
   }
 }
+
+mutation Follow($userId: String!) {
+  follow(userId: $userId) {
+    ...ProfileFragment
+  }
+}
+
+mutation Unfollow($userId: String!) {
+  unfollow(userId: $userId) {
+    ...ProfileFragment
+  }
+}
+
+query GetProfileById($id: String!) {
+  profileById(id: $id) {
+    ...ProfileFragment
+  }
+}

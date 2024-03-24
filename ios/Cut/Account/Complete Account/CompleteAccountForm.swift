@@ -9,23 +9,6 @@ import SwiftUI
 import Apollo
 import Combine
 
-class Debouncer {
-    var timer: Timer?
-    let delay: TimeInterval
-
-    init(delay: TimeInterval) {
-        self.delay = delay
-    }
-
-    func debounce(_ closure: @escaping () -> Void) {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { _ in
-            closure()
-        }
-    }
-}
-
-
 @Observable
 class CompleteAccountFormViewModel {
     var username = "" {

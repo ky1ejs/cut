@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct ProfileImage: View {
+    @State private var width: CGFloat = 0
     var body: some View {
-        RoundedRectangle(cornerSize: CGSize(width: 30, height: 30)).foregroundStyle(.orange).frame(width: 100, height: 100)
+        RoundedRectangle(cornerRadius: width * 0.3)
+            .background(content: {
+                GeometryReader { proxy in
+                    Color.clear
+                        .onAppear {
+                            width = proxy.size.width
+                        }
+                }
+            })
+            .foregroundStyle(.orange)
+            .frame(maxWidth: 100, maxHeight: 100)
     }
 }
 

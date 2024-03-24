@@ -13,7 +13,7 @@ import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
 import addToWatchList from './resolvers/mutation/addToWatchlist';
 import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
-import WatchListDataLoader from './dataloaders/watchListDataLoader';
+import WatchListDataLoader from './dataloaders/watchlist/watchListDataLoader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
 import watchList from './resolvers/query/watchList';
@@ -26,11 +26,15 @@ import unfollow from './resolvers/mutation/unfollow';
 import initiateEmailVerification from './resolvers/query/initiateEmailVerification';
 import isUsernameAvailable from './resolvers/query/isUsernameAvailable';
 import getAccount from './resolvers/query/getAccount';
-import AnnonymousWatchListDataLoader from './dataloaders/annonymousWatchListDataLoader';
+import AnnonymousWatchListDataLoader from './dataloaders/watchlist/annonymousWatchListDataLoader';
 import { OFFLINE } from './constants';
 import updateAccount from './resolvers/mutation/updateAccount';
 import { uploadContactEmails, uploadContactNumbers } from './resolvers/mutation/uploadContacts';
 import contactMatches from './resolvers/query/contactMatches';
+import IsFollowingDataLoader from './dataloaders/isFollowingDataLoader';
+import isFollowing from './resolvers/query/isFollowing';
+import { getProfileById, getProfileByUsername } from './resolvers/query/getProfile';
+import { profile } from 'console';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -46,7 +50,9 @@ const boot = async () => {
       movie: movieResolver,
       initiateEmailVerification,
       isUsernameAvailable,
-      contactMatches
+      contactMatches,
+      profileById: getProfileById,
+      profileByUsername: getProfileByUsername
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
@@ -84,6 +90,9 @@ const boot = async () => {
     },
     IncompleteAccount: {
       watchList: (_, __, context) => watchList(context)
+    },
+    Profile: {
+      isFollowing
     }
   };
 
@@ -107,7 +116,8 @@ const boot = async () => {
         let context: GraphQLContext = {
           dataSources: {
             watchList: new WatchListDataLoader(prisma),
-            annonymousWatchList: new AnnonymousWatchListDataLoader(prisma)
+            annonymousWatchList: new AnnonymousWatchListDataLoader(prisma),
+            isFollowing: new IsFollowingDataLoader()
           }
         }
         const sessionId = req.headers.authorization;

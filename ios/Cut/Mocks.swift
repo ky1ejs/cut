@@ -63,10 +63,15 @@ struct Mocks {
           "name": "Fabiano Souza",
           "url": "https://threads.com/fab",
           "bio": "Co-founder of Cut",
-          "imageUrl": null
+          "imageUrl": null,
+          "isFollowing": false
         }
         """
         let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
         return try! CutGraphQL.ProfileFragment(data: jsonObject)
+    }
+
+    static var profileInterface: CutGraphQL.ProfileInterfaceFragment {
+        profile.fragments.profileInterfaceFragment
     }
 }
