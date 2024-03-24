@@ -52,7 +52,7 @@ struct ContactSyncer {
 
         async let numberUpload: () = uploadPhoneNumbers(result.0)
         async let emailUpload: () = uploadPhoneEmails(result.1)
-        let _ = await [numberUpload, emailUpload]
+        let _ = try await [numberUpload, emailUpload]
 
         return try await withCheckedThrowingContinuation { continuation in
             AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContactMatchesQuery()) { result in
@@ -72,18 +72,34 @@ struct ContactSyncer {
         }
     }
 
-    private static func uploadPhoneNumbers(_ contacts: [CutGraphQL.ContactInput]) async {
-        return await withCheckedContinuation { continuation in
+    private static func uploadPhoneNumbers(_ contacts: [CutGraphQL.ContactInput]) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
             AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UploadContactNumbersMutation(contacts: contacts)) { result in
-                continuation.resume()
+                switch result {
+                case .success(let response):
+                    if let error = response.errors?.first {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume()
+                    }
+                case .failure(let error): continuation.resume(throwing: error)
+                }
             }
         }
     }
 
-    private static func uploadPhoneEmails(_ contacts: [CutGraphQL.ContactInput]) async {
-        return await withCheckedContinuation { continuation in
+    private static func uploadPhoneEmails(_ contacts: [CutGraphQL.ContactInput]) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
             AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UploadContactEmailsMutation(contacts: contacts)) { result in
-                continuation.resume()
+                switch result {
+                case .success(let response):
+                    if let error = response.errors?.first {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume()
+                    }
+                case .failure(let error): continuation.resume(throwing: error)
+                }
             }
         }
     }

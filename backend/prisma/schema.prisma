@@ -83,20 +83,20 @@ model PhoneContact {
   countryCode String?  @db.Citext
   phoneNumber String   @db.Citext
   name        String
-  externalId  String?
+  externalId  String
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
-  @@unique([countryCode, phoneNumber, userId])
+  @@unique([phoneNumber, userId, externalId])
 }
 
 model EmailContact {
   id         String   @id @default(dbgenerated("gen_random_uuid()"))
   email      String   @db.Citext
   name       String
-  externalId String?
+  externalId String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
 
