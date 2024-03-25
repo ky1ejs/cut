@@ -19,8 +19,18 @@ struct Settings: View {
                     .navigationBarTitleDisplayMode(.inline)
             })
             .navigationTitle("Settings")
-            Button("Send test push") {
-                inFlightRequest = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.SendTestPushQuery(), cachePolicy: .fetchIgnoringCacheCompletely)
+            HStack {
+                Button(inFlightRequest != nil ? "Sending test push..." : "Send test push") {
+                    inFlightRequest?.cancel()
+                    inFlightRequest = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.SendTestPushQuery(), cachePolicy: .fetchIgnoringCacheCompletely, resultHandler: { result in
+                        inFlightRequest = nil
+                    })
+                }
+                .disabled(inFlightRequest != nil)
+                Spacer()
+                if inFlightRequest != nil {
+                    ProgressView()
+                }
             }
         }
     }
