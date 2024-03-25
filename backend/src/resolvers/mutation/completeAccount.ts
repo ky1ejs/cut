@@ -28,6 +28,15 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
     where: { userId: context.annonymousUserDevice.user.id }
   })
 
+  const existingDevices = await prisma.annonymousDevice.findMany({
+    where: {
+      userId: context.annonymousUserDevice.userId
+    },
+    include: {
+      token: true
+    }
+  })
+
   const [completedUser] = await prisma.$transaction([
     prisma.user.create({
       include: {
@@ -50,16 +59,23 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
           }
         },
         devices: {
-          create: {
-            name: context.annonymousUserDevice.name
-          }
+          create: existingDevices.map(d => ({
+            name: d.name,
+            token: {
+              create: d.token ? {
+                token: d.token.token,
+                platform: d.token.platform,
+                env: d.token.env
+              } : undefined
+            }
+          }))
         }
       }
     }),
     prisma.anonymousUser.delete({ where: { id: context.annonymousUserDevice.user.id } }),
   ])
 
-  const newDevice = completedUser.devices[0]
+  const newDevice = completedUser.devices.find(d => d.name === context.annonymousUserDevice!.name)!
 
   context.annonymousUserDevice = undefined
   context.userDevice = {
