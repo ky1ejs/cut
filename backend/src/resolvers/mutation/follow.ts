@@ -60,7 +60,7 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
     await prisma.sentNotification.create({
       data: {
         idempotencyKey: notificationKey,
-        repeatLimit: 60 * 60 * 3,
+        repeatLimit: 60 * 60, // once every hour
         userId: context.userDevice.user.id,
         title,
         body
