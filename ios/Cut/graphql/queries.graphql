@@ -145,3 +145,11 @@ query GetProfileById($id: String!) {
     ...ProfileFragment
   }
 }
+
+mutation SetPushToken($tokenParams: PushTokenInput!) {
+  setPushToken(token: $tokenParams)
+}
+
+query SendTestPush {
+  sendTestPush
+}

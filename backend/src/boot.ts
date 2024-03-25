@@ -35,6 +35,8 @@ import IsFollowingDataLoader from './dataloaders/isFollowingDataLoader';
 import isFollowing from './resolvers/query/isFollowing';
 import { getProfileById, getProfileByUsername } from './resolvers/query/getProfile';
 import { profile } from 'console';
+import setPushToken from './resolvers/mutation/setPushToken';
+import sendTestPush from './resolvers/query/sendTestPush';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -52,7 +54,8 @@ const boot = async () => {
       isUsernameAvailable,
       contactMatches,
       profileById: getProfileById,
-      profileByUsername: getProfileByUsername
+      profileByUsername: getProfileByUsername,
+      sendTestPush
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
@@ -63,7 +66,8 @@ const boot = async () => {
       unfollow,
       updateAccount,
       uploadContactEmails,
-      uploadContactNumbers
+      uploadContactNumbers,
+      setPushToken
     },
     MovieInterface: {
       __resolveType: (movie) => {

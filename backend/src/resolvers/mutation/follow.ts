@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import { MutationResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
+import { sendIosPush } from "../../services/sendIosPush";
 
 const follow: MutationResolvers["follow"] = async (_, args, context) => {
   if (!context.userDevice) {
@@ -24,6 +25,48 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
       }
     }
   )
+
+  const notificationKey = `follow:${context.userDevice.user.id}:${args.userId}`
+  const latestPush = await prisma.sentNotification.findFirst({
+    where: {
+      idempotencyKey: notificationKey,
+      userId: context.userDevice.user.id
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  })
+
+  if (!latestPush?.repeatLimit || latestPush.repeatLimit < (Date.now() - latestPush.createdAt.getTime())) {
+    const devices = await prisma.device.findMany({
+      where: {
+        userId: args.userId
+      },
+      include: {
+        token: true
+      }
+    })
+    const title = "New Follower"
+    const body = `${result.following.name} followed you!`
+    for (const device of devices) {
+      if (!device.token) continue
+      await sendIosPush(
+        device.token,
+        {
+          title,
+          body
+        })
+    }
+    await prisma.sentNotification.create({
+      data: {
+        idempotencyKey: notificationKey,
+        repeatLimit: 60 * 60 * 3,
+        userId: context.userDevice.user.id,
+        title,
+        body
+      }
+    })
+  }
 
   return result.following
 }

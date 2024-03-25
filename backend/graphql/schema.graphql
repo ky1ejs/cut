@@ -9,6 +9,7 @@ type Query {
   account: AccountUnion!
   isUsernameAvailable(username: String!): Boolean!
   initiateEmailVerification(email: String!): Boolean!
+  sendTestPush: Boolean!
 
   profileByUsername(username: String!): Profile
   profileById(id: String!): Profile
@@ -22,6 +23,7 @@ type Mutation {
   logIn(username: String!, password: String!): Device!
   completeAccount(params: CompleteAccountInput!): CompleteAccountResult!
   updateAccount(params: UpdateAccountInput!): CompleteAccount!
+  setPushToken(token: PushTokenInput!): Boolean!
 
   follow(userId: String!): Profile!
   unfollow(userId: String!): Profile!
@@ -54,6 +56,23 @@ input UpdateAccountInput {
   name: String
   bio: String
   url: String
+}
+
+enum TokenEnv {
+  STAGING
+  PRODUCTION
+}
+
+enum PushPlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+input PushTokenInput {
+  token: String!
+  platform: PushPlatform!
+  env: TokenEnv!
 }
 
 interface ProfileInterface {
