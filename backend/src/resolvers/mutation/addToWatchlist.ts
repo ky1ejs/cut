@@ -16,9 +16,7 @@ const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, cont
   switch (providerOrCutId) {
     case 'TMDB':
       const movie = await fetchTmdbMovie(parsedId);
-      console.log("Movie");
       movieId = (await importTmbdMovie(movie, "en", "US")).id;
-      console.log("Added");
       break;
     default:
       movieId = parsedId ?? providerOrCutId;

@@ -4,7 +4,6 @@ import { OFFLINE } from "./constants";
 
 let worker: Worker | undefined
 
-console.log(OFFLINE)
 if (!OFFLINE) worker = new Worker(__dirname + "/workers/index")
 
 const shutdown = async () => {

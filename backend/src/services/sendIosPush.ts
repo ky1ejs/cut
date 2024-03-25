@@ -19,7 +19,6 @@ export function sendIosPush(
   { title, body, badge }: PushMessage
 ): Promise<void> {
   const path = `/3/device/${deviceToken.token}`;
-  console.log("test")
   const bearerToken = createBearerToken();
   const pushPayload = {
     aps: {
@@ -41,7 +40,6 @@ export function sendIosPush(
 
   return new Promise((resolve, reject) => {
     const client = http2.connect(getHostForEnv(deviceToken.env));
-    console.log("test")
     client.on("error", (err) => {
       reject(err)
       console.log(err)
@@ -73,24 +71,19 @@ function createBearerToken(): string {
   if (!KEY) throw new Error("No push key");
   if (!KEY_ID) throw new Error("No key ID")
 
-  try {
-    return jwt.sign(
-      {
-        iss: "X2TBSUCASC", // "team ID" of your developer account
-        iat: Math.floor(new Date().getTime() / 1000), // Replace with current unix epoch time [Not in milliseconds, frustated me :D]
+  return jwt.sign(
+    {
+      iss: "X2TBSUCASC", // "team ID" of your developer account
+      iat: Math.floor(new Date().getTime() / 1000), // Replace with current unix epoch time [Not in milliseconds, frustated me :D]
+    },
+    KEY,
+    {
+      header: {
+        alg: "ES256",
+        kid: KEY_ID, // issuer key which is "key ID" of your p8 file
       },
-      KEY,
-      {
-        header: {
-          alg: "ES256",
-          kid: KEY_ID, // issuer key which is "key ID" of your p8 file
-        },
-      }
-    );
-  } catch (error) {
-    console.log(error)
-    throw error
-  }
+    }
+  );
 }
 
 function getHostForEnv(env: TokenEnv): string {

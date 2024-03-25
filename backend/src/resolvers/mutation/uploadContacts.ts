@@ -23,7 +23,6 @@ export const uploadContactNumbers: MutationResolvers["uploadContactNumbers"] = a
 
   // remove duplicate contactFields
   const uniqueContacts = Array.from(new Map(processedContacts.map((contact) => [`${contact.contactField}:${contact.externalId}`, contact])).values())
-  console.log(uniqueContacts)
 
   const existingRecords = await prisma.phoneContact.findMany({
     where: {

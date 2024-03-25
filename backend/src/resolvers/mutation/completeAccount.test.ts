@@ -82,10 +82,7 @@ describe('completeAccount', () => {
   describe('given expired email token', () => {
     it('should throw an error if the token is expired', async () => {
       const expiredDate = new Date()
-      console.log(expiredDate)
       expiredDate.setHours(expiredDate.getHours() - 2)
-      console.log(expiredDate)
-      console.log(expiredDate.toISOString())
       const token = encrypt(`test@test.com#${expiredDate.toISOString()}`, process.env.EMAIL_ENCRYPTION_KEY)
       const args = {
         params: {
@@ -99,7 +96,6 @@ describe('completeAccount', () => {
         expect.assertions(1)
         await completeAccount(args, context)
       } catch (e) {
-        console.log(e)
         if (e instanceof GraphQLError) {
           expect(e.message).toBe("Token expired")
         }
