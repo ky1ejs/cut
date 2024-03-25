@@ -6,7 +6,7 @@ interface FollowingCacheKey {
   followingId: string; // person they may be following
 }
 
-export default class AnnonymousWatchListDataLoader {
+export default class IsFollowingDataLoader {
   private batchWatchList = new DataLoader<FollowingCacheKey, boolean>(async (ids) => {
     return prisma.follow.findMany({
       where: {
