@@ -93,7 +93,6 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
       followerCount: 0,
       watchList: [],
       name: completedUser.name,
-
     },
     updatedDevice: {
       name: completedUser.devices[0].name,

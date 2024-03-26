@@ -2,10 +2,16 @@ import jwt from "jsonwebtoken";
 import http2 from "http2";
 import { PushToken, TokenEnv } from "@prisma/client";
 
-/*
-Read p8 file. Assumes p8 file to be in same directory
-*/
-const KEY = process.env.APPLE_P8;
+function parseKey(): string | undefined {
+  const base64EncodedKey = process.env.APPLE_P8;
+  if (!base64EncodedKey) {
+    return undefined;
+  }
+
+  return Buffer.from(base64EncodedKey, "base64").toString("utf-8");
+}
+
+const KEY = parseKey();
 const KEY_ID = process.env.APPLE_P8_KEY_ID;
 
 export type PushMessage = {
