@@ -9,9 +9,17 @@ import SwiftUI
 import Apollo
 import ApolloAPI
 
+class ProfileRowViewModel {
+    var watch: Apollo.Cancellable? = nil
+
+    deinit {
+        watch?.cancel()
+    }
+}
+
 struct ProfileRow: View {
-    private let debouncer = Debouncer(delay: 0.5)
-    @State private var watch: Apollo.Cancellable? = nil
+    private let debouncer = Debouncer(delay: 0.2)
+    private let viewModel = ProfileRowViewModel()
     @State private var profile: CutGraphQL.ProfileFragment
     @State private var isFollowing: Bool
     @State private var inFlightRequest: Apollo.Cancellable?
@@ -39,7 +47,8 @@ struct ProfileRow: View {
             .frame(maxWidth: 90)
         }.padding(.horizontal, 18)
             .onAppear(perform: {
-                watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id), resultHandler: { result in
+                viewModel.watch?.cancel()
+                viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id), resultHandler: { result in
                     if let updatedProfile = try? result.get().data?.profileById?.fragments.profileFragment {
                         self.profile = updatedProfile
                     }
