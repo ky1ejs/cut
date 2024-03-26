@@ -32,26 +32,41 @@ const setPushToken: MutationResolvers["setPushToken"] = async (_, args, context)
   }
 
   if (context.userDevice) {
+    const update = {
+      token: args.token.token,
+      env,
+      platform,
+    }
 
-    await prisma.pushToken.create(
+    await prisma.pushToken.upsert(
       {
-        data: {
-          token: args.token.token,
-          env,
-          platform,
+        where: {
           device_id: context.userDevice.id
-        }
+        },
+        create: {
+          ...update,
+          device_id: context.userDevice.id
+        },
+        update
       }
     )
   } else if (context.annonymousUserDevice) {
-    await prisma.annoymousPushToken.create(
+    const update = {
+      token: args.token.token,
+      env,
+      platform,
+    }
+
+    await prisma.annoymousPushToken.upsert(
       {
-        data: {
-          token: args.token.token,
-          env,
-          platform,
+        where: {
           device_id: context.annonymousUserDevice.id
-        }
+        },
+        create: {
+          ...update,
+          device_id: context.annonymousUserDevice.id
+        },
+        update
       }
     )
   } else {
