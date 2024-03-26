@@ -100,6 +100,3 @@ function getHostForEnv(env: TokenEnv): string {
       return "https://api.push.apple.com";
   }
 }
-/* 
-  Use '' for production build
-*/
