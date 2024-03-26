@@ -55,7 +55,7 @@ struct ContactSyncer {
         let _ = try await [numberUpload, emailUpload]
 
         return try await withCheckedThrowingContinuation { continuation in
-            AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContactMatchesQuery()) { result in
+            AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContactMatchesQuery(), cachePolicy: .fetchIgnoringCacheData) { result in
                 switch result {
                 case .success(let response):
                     if let profiles = response.data?.contactMatches.map({ c in
