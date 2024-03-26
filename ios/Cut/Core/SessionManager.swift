@@ -67,9 +67,24 @@ public class SessionManager: ObservableObject {
             do {
                 if let error = response.errors?.first {
                     completion(.failure(.error(error)))
-                } else if let sessionId = response.data?.completeAccount.updatedDevice.session_id {
+                } else if let data = response.data {
+                    let sessionId = data.completeAccount.updatedDevice.session_id
                     try self?.storeSessionId(sessionId)
                     self?.sessionId = sessionId
+
+                    AuthorizedApolloClient.shared.client.store.withinReadWriteTransaction { txn in
+                        try txn.update(CutGraphQL.GetAccountMutationLocalCacheMutation()) { set in
+                            set.account.asIncompleteAccount = nil
+                            set.account.asCompleteAccount =  CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount(
+                                followerCount: data.completeAccount.completeAccount.followerCount,
+                                followingCount: data.completeAccount.completeAccount.followingCount,
+                                id: data.completeAccount.completeAccount.id,
+                                name: data.completeAccount.completeAccount.name,
+                                username: data.completeAccount.completeAccount.username
+                            )
+                        }
+                    }
+
                     completion(.success(sessionId))
                 } else {
                     completion(.failure(.unknown))

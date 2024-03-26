@@ -89,9 +89,6 @@ const boot = async () => {
         return parent.__typename!
       }
     },
-    CompleteAccount: {
-      watchList: (_, __, context) => watchList(context)
-    },
     IncompleteAccount: {
       watchList: (_, __, context) => watchList(context)
     },

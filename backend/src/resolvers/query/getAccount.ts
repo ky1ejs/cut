@@ -21,13 +21,14 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       }
     })
 
+    const phoneNumber = userWithFollowing.phoneNumber ? `${(context.userDevice.user.countryCode) ? `+${context.userDevice.user.countryCode}` : ""}${context.userDevice.user.phoneNumber}` : null
     const completeUser: Partial<CompleteAccount> = {
       id: userWithFollowing.id,
       username: context.userDevice.user.username,
       name: context.userDevice.user.name,
       bio: context.userDevice.user.bio,
       url: context.userDevice.user.url,
-      phoneNumber: `${(context.userDevice.user.countryCode) ? `+${context.userDevice.user.countryCode}` : ""}${context.userDevice.user.phoneNumber}`,
+      phoneNumber,
       followerCount: userWithFollowing.followers.length,
       followingCount: userWithFollowing.following.length,
       __typename: "CompleteAccount"

@@ -18,9 +18,6 @@ fragment CompleteAccountFragment on CompleteAccount {
   phoneNumber
   followerCount
   followingCount
-  watchList {
-    ...MovieFragment
-  }
 }
 
 mutation CompleteAccount($params: CompleteAccountInput!) {
@@ -43,6 +40,17 @@ query CheckUsernameAvailability($username: String!) {
 }
 
 query GetAccount {
+  account {
+    ... on IncompleteAccount {
+      id
+    }
+    ... on CompleteAccount {
+      ...CompleteAccountFragment
+    }
+  }
+}
+
+query GetAccountMutation @apollo_client_ios_localCacheMutation {
   account {
     ... on IncompleteAccount {
       id

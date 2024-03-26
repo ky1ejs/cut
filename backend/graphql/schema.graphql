@@ -109,7 +109,6 @@ type CompleteAccount implements ProfileInterface {
   imageUrl: String
 
   phoneNumber: String
-  watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
 }

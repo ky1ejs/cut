@@ -7,12 +7,14 @@
 
 import SwiftUI
 import Combine
+import Apollo
 
 class AccountViewModel: ObservableObject {
     @Published var isCompleteAccountPresented = false
     @Published var isAccountExplainerPresented = false
     let accountCompletionController = AccountCompletionController()
     var cancelable: AnyCancellable?
+    var watch: Apollo.Cancellable?
 
     init() {
         cancelable = accountCompletionController.$isFinished.sink { [weak self] isFinished in
@@ -24,7 +26,7 @@ class AccountViewModel: ObservableObject {
 
     deinit {
         cancelable?.cancel()
-        cancelable = nil
+        watch?.cancel()
     }
 }
 
@@ -63,7 +65,8 @@ struct Account: View {
         })
         .task {
             state = .loading
-            AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetAccountQuery()) { result in
+            viewModel.watch?.cancel()
+            viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery()) { result in
                 switch result {
                 case .success(let response):
                     if let completeAccount = response.data?.account.asCompleteAccount {
