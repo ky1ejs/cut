@@ -77,19 +77,24 @@ function createBearerToken(): string {
   if (!KEY) throw new Error("No push key");
   if (!KEY_ID) throw new Error("No key ID")
 
-  return jwt.sign(
-    {
-      iss: "X2TBSUCASC", // "team ID" of your developer account
-      iat: Math.floor(new Date().getTime() / 1000), // Replace with current unix epoch time [Not in milliseconds, frustated me :D]
-    },
-    KEY,
-    {
-      header: {
-        alg: "ES256",
-        kid: KEY_ID, // issuer key which is "key ID" of your p8 file
+  try {
+    return jwt.sign(
+      {
+        iss: "X2TBSUCASC", // "team ID" of your developer account
+        iat: Math.floor(new Date().getTime() / 1000), // Replace with current unix epoch time [Not in milliseconds, frustated me :D]
       },
-    }
-  );
+      KEY,
+      {
+        header: {
+          alg: "ES256",
+          kid: KEY_ID, // issuer key which is "key ID" of your p8 file
+        },
+      }
+    );
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
 }
 
 function getHostForEnv(env: TokenEnv): string {
