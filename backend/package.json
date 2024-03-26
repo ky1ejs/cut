@@ -13,6 +13,7 @@
     "codegen:prisma": "prisma generate",
     "migrate": "prisma migrate deploy",
     "migrate:start": "pnpm run migrate && pnpm run start",
+    "seed": "ts-node -r dotenv/config tests/seed.ts",
     "jest": "export $(cat tests/.env.test | xargs) && prisma migrate deploy && jest --coverage"
   },
   "keywords": [],
