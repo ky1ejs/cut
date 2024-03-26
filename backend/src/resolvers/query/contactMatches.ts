@@ -33,10 +33,8 @@ const contactMatches: QueryResolvers["contactMatches"] = async (_, __, context) 
   })).then((users) => users.filter((user) => user.id !== userId))
 
   const [phoneUsers, emailUsers] = await Promise.all([phoneContacts, emailContacts])
-
-  const users = new Set([...phoneUsers, ...emailUsers])
-
-  return Array.from(users.values())
+  const uniqueUsers = new Map([...phoneUsers, ...emailUsers].map((user) => [user.id, user]))
+  return Array.from(uniqueUsers.values())
 }
 
 export default contactMatches
