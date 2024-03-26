@@ -21,7 +21,7 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
       create: data,
       update: {},
       include: {
-        following: true
+        following: true,
       }
     }
   )
@@ -47,7 +47,7 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
       }
     })
     const title = "New Follower"
-    const body = `${result.following.name} followed you!`
+    const body = `${context.userDevice.user.username} followed you!`
     for (const device of devices) {
       if (!device.token) continue
       await sendIosPush(
