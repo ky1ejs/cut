@@ -1,4 +1,4 @@
-import { Genre, Movie, MovieGenre, MovieImage } from "@prisma/client";
+import { Genre, Movie, MovieGenre, MovieImage, Prisma } from "@prisma/client";
 import { MovieInterface as GqlMovie } from "../../__generated__/graphql";
 
 export type ResolvedGenre = Genre & {
@@ -16,6 +16,32 @@ export type ResolvedMovie = Movie & {
   mainGenre: ResolvedGenre | null;
   genres: ResolvedMovieGenre[];
 };
+
+export const movieInclude = {
+  images: true,
+  mainGenre: {
+    include: {
+      locales: {
+        where: {
+          language_ISO_639_1: "en"
+        }
+      }
+    }
+  },
+  genres: {
+    include: {
+      genre: {
+        include: {
+          locales: {
+            where: {
+              language_ISO_639_1: "en"
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 export default function dbMovieToGqlMovie(movie: ResolvedMovie): Partial<GqlMovie> {
   const mainGenre = movie.mainGenre ? {

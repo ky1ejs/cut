@@ -53,6 +53,8 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
 
   return {
     ...updatedUser,
+    link: `https://cut.watch/p/${updatedUser.username}`,
+    favoriteMovies: undefined,
     phoneNumber: updatedUser.phoneNumber ? `${updatedUser.countryCode}${updatedUser.phoneNumber}` : null
   }
 }

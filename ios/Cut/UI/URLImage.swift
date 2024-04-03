@@ -25,5 +25,5 @@ struct URLImage: View {
 }
 
 #Preview {
-    URLImage(url: URL(string: "https://image.tmdb.org/t/p/ymswR4vhemmgq8m7bNbOdiPohOU.jpg")!)
+    URLImage(url: URL(string: "https://image.tmdb.org/t/p/original/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg")!)
 }

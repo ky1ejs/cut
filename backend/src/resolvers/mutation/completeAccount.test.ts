@@ -7,6 +7,7 @@ import clearDatabase from "../../../tests/clear-database"
 import { AnnonymousDevice, AnonymousUser } from "@prisma/client"
 import { GraphQLError } from "graphql"
 import AnnonymousWatchListDataLoader from "../../dataloaders/watchlist/annonymousWatchListDataLoader"
+import IsFollowingDataLoader from "../../dataloaders/isFollowingDataLoader"
 
 let device: AnnonymousDevice & { user: AnonymousUser }
 let context: GraphQLContext
@@ -32,7 +33,8 @@ beforeEach(async () => {
     annonymousUserDevice: device,
     dataSources: {
       watchList: new WatchListDataLoader(prisma),
-      annonymousWatchList: new AnnonymousWatchListDataLoader(prisma)
+      annonymousWatchList: new AnnonymousWatchListDataLoader(prisma),
+      isFollowing: new IsFollowingDataLoader()
     }
   }
 })

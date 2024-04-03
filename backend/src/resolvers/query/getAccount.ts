@@ -31,6 +31,7 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       phoneNumber,
       followerCount: userWithFollowing.followers.length,
       followingCount: userWithFollowing.following.length,
+      link: "https://cut.watch/p/" + context.userDevice.user.username,
       __typename: "CompleteAccount"
     }
     return completeUser

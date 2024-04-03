@@ -2,6 +2,7 @@ import { GraphQLError } from "graphql";
 import { MutationResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
 import { sendIosPush } from "../../services/sendIosPush";
+import { mapProfile } from "../mappers/profileMapper";
 
 const follow: MutationResolvers["follow"] = async (_, args, context) => {
   if (!context.userDevice) {
@@ -68,7 +69,7 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
     })
   }
 
-  return result.following
+  return mapProfile(result.following, true)
 }
 
 export default follow;

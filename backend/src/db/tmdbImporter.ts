@@ -1,7 +1,7 @@
 import { Prisma, ImageType, Movie, Genre } from "@prisma/client";
 import prisma from "../prisma"
 import { randomUUID } from "crypto";
-import { ResolvedMovie } from "../resolvers/helpers/dbMovieToGqlMovie";
+import { ResolvedMovie } from "../resolvers/mappers/dbMovieToGqlMovie";
 
 export default async function importTmbdMovie(movie: any, lang: string, country: string): Promise<ResolvedMovie> {
   let cutMovie = await prisma.movie.findUnique({

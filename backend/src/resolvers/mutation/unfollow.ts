@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import { MutationResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
+import { mapProfile } from "../mappers/profileMapper";
 
 const unfollow: MutationResolvers["unfollow"] = async (_, args, context) => {
   if (!context.userDevice) {
@@ -13,13 +14,10 @@ const unfollow: MutationResolvers["unfollow"] = async (_, args, context) => {
         followerId: context.userDevice.user.id,
         followingId: args.userId
       }
-    },
-    include: {
-      following: true
     }
   })
-
-  return result.following
+  const unfollowedUser = await prisma.user.findUniqueOrThrow({ where: { id: args.userId } })
+  return mapProfile(unfollowedUser, false)
 }
 
 export default unfollow;
