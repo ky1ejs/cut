@@ -18,7 +18,6 @@ struct Settings: View {
                     .navigationTitle("Changelog")
                     .navigationBarTitleDisplayMode(.inline)
             })
-            .navigationTitle("Settings")
             HStack {
                 Button(inFlightRequest != nil ? "Sending test push..." : "Send test push") {
                     inFlightRequest?.cancel()
@@ -32,7 +31,11 @@ struct Settings: View {
                     ProgressView()
                 }
             }
+            NavigationLink("Find friends", destination: {
+                FindFriendsViaContacts()
+            })
         }
+        .navigationTitle("Settings")
     }
 }
 

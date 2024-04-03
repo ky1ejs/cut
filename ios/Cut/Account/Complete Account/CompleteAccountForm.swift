@@ -41,7 +41,6 @@ class CompleteAccountFormViewModel {
                 self.usernameState = .error
                 return
             }
-            print("parsed")
             self.usernameState = isAvailable ? .available : .unavailable
         })
     }

@@ -78,9 +78,21 @@ public class SessionManager: ObservableObject {
                             set.account.asCompleteAccount =  CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount(
                                 followerCount: data.completeAccount.completeAccount.followerCount,
                                 followingCount: data.completeAccount.completeAccount.followingCount,
+                                favoriteMovies: [],
+                                watchList: data.completeAccount.completeAccount.watchList.map({ m in
+                                    CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount.WatchList(
+                                        title: m.title,
+                                        id: m.id,
+                                        poster_url: m.poster_url,
+                                        mainGenre: m.mainGenre,
+                                        genres: m.genres,
+                                        isOnWatchList: m.isOnWatchList
+                                    )
+                                }),
                                 id: data.completeAccount.completeAccount.id,
                                 name: data.completeAccount.completeAccount.name,
-                                username: data.completeAccount.completeAccount.username
+                                username: data.completeAccount.completeAccount.username,
+                                link: data.completeAccount.completeAccount.link
                             )
                         }
                     }

@@ -34,8 +34,6 @@ struct Mocks {
     static var completeAccount: CutGraphQL.CompleteAccountFragment {
         let json = """
         {
-            "__typename": "Query",
-            "account": {
               "__typename": "CompleteAccount",
               "username": "kylejs",
               "name": "Kyle Satti",
@@ -44,11 +42,52 @@ struct Mocks {
               "id": "72686e5d-025f-46ef-b78d-a1511fd01383",
               "followerCount": 0,
               "followingCount": 0,
-              "watchList": [],
-              "followers": [],
-              "following": []
-            }
-          }
+              "link": "https://cut.watch/p/fab",
+              "watchList": [
+                  {
+                    "__typename": "Movie",
+                    "title": "12 Angry Men",
+                    "id": "e2754aa7-7d73-474a-bf53-7fcffdc7ac57",
+                    "poster_url": "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
+                    "release_date": "Tue Apr 09 1957 19:00:00 GMT-0500 (Eastern Daylight Time)",
+                    "mainGenre": {
+                      "__typename": "Genre",
+                      "id": 7,
+                      "name": "Drama"
+                    },
+                    "genres": [
+                      {
+                        "__typename": "Genre",
+                        "name": "Drama",
+                        "id": 7
+                      }
+                    ],
+                    "isOnWatchList": false
+                  }
+              ],
+              "favoriteMovies": [
+                  {
+                    "__typename": "Movie",
+                    "title": "12 Angry Men",
+                    "id": "e2754aa7-7d73-474a-bf53-7fcffdc7ac57",
+                    "poster_url": "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
+                    "release_date": "Tue Apr 09 1957 19:00:00 GMT-0500 (Eastern Daylight Time)",
+                    "mainGenre": {
+                      "__typename": "Genre",
+                      "id": 7,
+                      "name": "Drama"
+                    },
+                    "genres": [
+                      {
+                        "__typename": "Genre",
+                        "name": "Drama",
+                        "id": 7
+                      }
+                    ],
+                    "isOnWatchList": false
+                  }
+              ]
+        }
         """
         let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
         return try! CutGraphQL.CompleteAccountFragment(data: jsonObject)
@@ -64,7 +103,8 @@ struct Mocks {
           "url": "https://threads.com/fab",
           "bio": "Co-founder of Cut",
           "imageUrl": null,
-          "isFollowing": false
+          "isFollowing": false,
+          "link": "https://cut.watch/p/fab"
         }
         """
         let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]

@@ -6,6 +6,8 @@ fragment ProfileInterfaceFragment on ProfileInterface {
   url
   bio
   imageUrl
+  link
+  followerCount
 }
 
 fragment ProfileFragment on Profile {
@@ -13,11 +15,27 @@ fragment ProfileFragment on Profile {
   isFollowing
 }
 
+fragment FullProfileFragment on Profile {
+  ...ProfileFragment
+  favoriteMovies {
+    ...MovieFragment
+  }
+  watchList {
+    ...MovieFragment
+  }
+}
+
 fragment CompleteAccountFragment on CompleteAccount {
   ...ProfileInterfaceFragment
   phoneNumber
   followerCount
   followingCount
+  favoriteMovies {
+    ...MovieFragment
+  }
+  watchList {
+    ...MovieFragment
+  }
 }
 
 mutation CompleteAccount($params: CompleteAccountInput!) {

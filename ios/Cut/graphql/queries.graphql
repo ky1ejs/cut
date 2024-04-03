@@ -142,7 +142,12 @@ mutation Unfollow($userId: String!) {
 
 query GetProfileById($id: String!) {
   profileById(id: $id) {
-    ...ProfileFragment
+    ... on CompleteAccount {
+      ...CompleteAccountFragment
+    }
+    ... on Profile {
+      ...FullProfileFragment
+    }
   }
 }
 

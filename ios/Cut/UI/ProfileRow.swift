@@ -18,15 +18,10 @@ class ProfileRowViewModel {
 }
 
 struct ProfileRow: View {
-    private let debouncer = Debouncer(delay: 0.2)
-    private let viewModel = ProfileRowViewModel()
-    @State private var profile: CutGraphQL.ProfileFragment
-    @State private var isFollowing: Bool
-    @State private var inFlightRequest: Apollo.Cancellable?
+    private let profile: CutGraphQL.ProfileFragment
 
     init(profile: CutGraphQL.ProfileFragment) {
         self.profile = profile
-        self.isFollowing = profile.isFollowing
     }
 
     var body: some View {
@@ -40,20 +35,51 @@ struct ProfileRow: View {
                 Text(profile.username).font(.cut_footnote)
             }
             Spacer()
-            PrimaryButton(text: isFollowing ? "Unfollow" : "Follow") {
-                toggleFollow()
-            }
-            .animation(.linear, value: isFollowing)
+            FollowButton(profile: profile)
             .frame(maxWidth: 90)
         }.padding(.horizontal, 18)
-            .onAppear(perform: {
-                viewModel.watch?.cancel()
-                viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id), resultHandler: { result in
-                    if let updatedProfile = try? result.get().data?.profileById?.fragments.profileFragment {
-                        self.profile = updatedProfile
-                    }
-                })
+    }
+}
+
+#Preview {
+    ProfileRow(profile: Mocks.profile)
+}
+
+
+class FollowButtonViewModel {
+    var watch: Apollo.Cancellable?
+
+    deinit {
+        watch?.cancel()
+    }
+}
+
+struct FollowButton: View {
+    private let debouncer = Debouncer(delay: 0.2)
+    private let viewModel = FollowButtonViewModel()
+    @State private(set) var isFollowing: Bool
+    @State private var inFlightRequest: Apollo.Cancellable?
+    @State var profile: CutGraphQL.ProfileFragment
+
+    init(profile: CutGraphQL.ProfileFragment) {
+        self.profile = profile
+        self.isFollowing = profile.isFollowing
+    }
+
+    var body: some View {
+        PrimaryButton(text: isFollowing ? "Unfollow" : "Follow") {
+            toggleFollow()
+        }
+        .animation(.linear, value: isFollowing)
+        .onAppear(perform: {
+            viewModel.watch?.cancel()
+            viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id), resultHandler: { result in
+                if let updatedProfile = try? result.get().data?.profileById?.asProfile {
+                    profile = updatedProfile.fragments.profileFragment
+                    isFollowing = updatedProfile.isFollowing
+                }
             })
+        })
     }
 
     private func toggleFollow() {
@@ -73,8 +99,4 @@ struct ProfileRow: View {
 
         }
     }
-}
-
-#Preview {
-    ProfileRow(profile: Mocks.profile)
 }

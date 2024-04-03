@@ -23,7 +23,6 @@ class SceneDelegate: NSObject, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        print(userActivity)
     }
 
     func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String) {

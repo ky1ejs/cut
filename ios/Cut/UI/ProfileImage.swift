@@ -21,6 +21,7 @@ struct ProfileImage: View {
             })
             .foregroundStyle(.orange)
             .frame(maxWidth: 100, maxHeight: 100)
+            .aspectRatio(1, contentMode: .fit)
     }
 }
 

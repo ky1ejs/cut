@@ -16,7 +16,7 @@ import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataLoader from './dataloaders/watchlist/watchListDataLoader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
-import watchList from './resolvers/query/watchList';
+import watchList, { completeAccountWatchList, incompleteAccountWatchList } from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
 import importGenres from './tmbd/import-genres';
 import movieResolver from './resolvers/query/movie';
@@ -34,9 +34,11 @@ import contactMatches from './resolvers/query/contactMatches';
 import IsFollowingDataLoader from './dataloaders/isFollowingDataLoader';
 import isFollowing from './resolvers/query/isFollowing';
 import { getProfileById, getProfileByUsername } from './resolvers/query/getProfile';
-import { profile } from 'console';
 import setPushToken from './resolvers/mutation/setPushToken';
 import sendTestPush from './resolvers/query/sendTestPush';
+import MovieDataLoader from './dataloaders/MovieDataLoader';
+import UserDataLoader from './dataloaders/UserDataLoader';
+import favoriteMovies from './resolvers/query/favoriteMovies';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -48,7 +50,7 @@ const boot = async () => {
       account: getAccount,
       movies: moviesResolver,
       search: searchResolver,
-      watchList: (_, __, context) => watchList(context),
+      watchList: (_, __, context, info) => completeAccountWatchList({}, context, info),
       movie: movieResolver,
       initiateEmailVerification,
       isUsernameAvailable,
@@ -85,15 +87,26 @@ const boot = async () => {
       isOnWatchList: isOnWatchlistResolver
     },
     AccountUnion: {
-      __resolveType: (parent) => {
-        return parent.__typename!
-      }
+      __resolveType: (parent) => parent.__typename!
     },
     IncompleteAccount: {
-      watchList: (_, __, context) => watchList(context)
+      watchList: incompleteAccountWatchList
     },
     Profile: {
-      isFollowing
+      isFollowing,
+      favoriteMovies,
+      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info)
+    },
+    ProfileInterface: {
+      __resolveType: (parent) => parent.__typename!,
+      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info)
+    },
+    CompleteAccount: {
+      favoriteMovies,
+      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info)
+    },
+    ProfileUnion: {
+      __resolveType: (parent) => parent.__typename!
     }
   };
 
@@ -118,7 +131,9 @@ const boot = async () => {
           dataSources: {
             watchList: new WatchListDataLoader(prisma),
             annonymousWatchList: new AnnonymousWatchListDataLoader(prisma),
-            isFollowing: new IsFollowingDataLoader()
+            isFollowing: new IsFollowingDataLoader(),
+            movies: new MovieDataLoader(),
+            users: new UserDataLoader()
           }
         }
         const sessionId = req.headers.authorization;

@@ -47,7 +47,7 @@ struct Account: View {
             case .loading:
                 Text("loading...")
             case .complete(let account):
-                CompleteAccount(account: account)
+                Profile(profile: .loggedInUser(account))
             case .incomplete:
                 IncompleteAccount(viewModel: viewModel)
             case .error(let message):
@@ -70,10 +70,11 @@ struct Account: View {
                 switch result {
                 case .success(let response):
                     if let completeAccount = response.data?.account.asCompleteAccount {
-                     
                         state = .complete(completeAccount.fragments.completeAccountFragment)
                     } else if let incompleteAccount = response.data?.account.asIncompleteAccount {
                         state = .incomplete(incompleteAccount)
+                    } else if let error = response.errors?.first {
+                        state = .error(error.localizedDescription)
                     } else {
                         state = .error("Unknown")
                     }

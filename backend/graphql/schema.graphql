@@ -11,12 +11,14 @@ type Query {
   initiateEmailVerification(email: String!): Boolean!
   sendTestPush: Boolean!
 
-  profileByUsername(username: String!): Profile
-  profileById(id: String!): Profile
+  profileByUsername(username: String!): ProfileUnion
+  profileById(id: String!): ProfileUnion
 
   # activityFeed: [Activity!]!
   # notifications: [Notification!]!
 }
+
+union ProfileUnion = Profile | CompleteAccount
 
 type Mutation {
   signUp(deviceName: String!): Device!
@@ -56,6 +58,7 @@ input UpdateAccountInput {
   name: String
   bio: String
   url: String
+  favoriteMovies: [String!]
 }
 
 enum TokenEnv {
@@ -82,15 +85,27 @@ interface ProfileInterface {
   url: String
   bio: String
   imageUrl: String
+  link: String!
+  favoriteMovies: [Movie!]!
+  watchList: [Movie!]!
+  followerCount: Int!
+  followingCount: Int!
 }
 
 type Profile implements ProfileInterface {
+  # ProfileInterface
   id: String!
   username: String!
   name: String!
   url: String
   bio: String
   imageUrl: String
+  link: String!
+  favoriteMovies: [Movie!]!
+  watchList: [Movie!]!
+  followerCount: Int!
+  followingCount: Int!
+
   isFollowing: Boolean!
 }
 
@@ -107,10 +122,13 @@ type CompleteAccount implements ProfileInterface {
   url: String
   bio: String
   imageUrl: String
-
-  phoneNumber: String
+  link: String!
+  favoriteMovies: [Movie!]!
+  watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+
+  phoneNumber: String
 }
 
 type CompleteAccountResult {

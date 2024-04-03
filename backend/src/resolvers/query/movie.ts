@@ -4,7 +4,7 @@ import fetchTmdbMovie from "../../datasources/fetchTmdbMovie";
 import prisma from "../../prisma";
 import importTmbdMovie from "../../db/tmdbImporter";
 import axios from "axios";
-import dbMovieToGqlMovie, { ResolvedMovie } from "../helpers/dbMovieToGqlMovie";
+import dbMovieToGqlMovie, { ResolvedMovie } from "../mappers/dbMovieToGqlMovie";
 import e from "express";
 
 const movieResolver: QueryResolvers["movie"] = async (_, args, context) => {

@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 import { QueryResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
+import { mapProfile } from "../mappers/profileMapper";
 
 const contactMatches: QueryResolvers["contactMatches"] = async (_, __, context) => {
   if (!context.userDevice) {
@@ -34,7 +35,7 @@ const contactMatches: QueryResolvers["contactMatches"] = async (_, __, context) 
 
   const [phoneUsers, emailUsers] = await Promise.all([phoneContacts, emailContacts])
   const uniqueUsers = new Map([...phoneUsers, ...emailUsers].map((user) => [user.id, user]))
-  return Array.from(uniqueUsers.values())
+  return Array.from(uniqueUsers.values()).map(p => mapProfile(p, undefined))
 }
 
 export default contactMatches

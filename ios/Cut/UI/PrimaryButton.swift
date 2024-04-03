@@ -25,16 +25,61 @@ struct PrimaryButton: View {
 
     var body: some View {
         Button(action: action, label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(colorScheme == .dark ? .white : .black)
-                if state == .loading {
-                    ProgressView().colorInvert()
-                } else {
-                    Text(text).bold().foregroundStyle(colorScheme == .dark ? .black : .white)
-                }
-            }.frame(height: 44)
-        }).disabled(state == .loading)
+            if state == .loading {
+                ProgressView().colorInvert()
+            } else {
+                Text(text)
+            }
+        })
+        .disabled(state == .loading)
+        .buttonStyle(PrimaryButtonStyle())
+    }
+}
+
+struct PrimaryButtonStyle: ButtonStyle {
+    @Environment(\.colorScheme) private var colorScheme
+
+    func makeBody(configuration: Configuration) -> some View {
+        FilledButtonStyle(
+            backgroundLightColor: .black,
+            backgroundDarkColor: .white,
+            textLightColor: .black,
+            textDarkColor: .white
+        )
+        .makeBody(configuration: configuration)
+    }
+}
+
+struct SecondaryButtonStyle: ButtonStyle {
+    @Environment(\.colorScheme) private var colorScheme
+
+    func makeBody(configuration: Configuration) -> some View {
+        FilledButtonStyle(
+            backgroundLightColor: .gray,
+            backgroundDarkColor: .gray,
+            textLightColor: .white,
+            textDarkColor: .white
+        )
+        .makeBody(configuration: configuration)
+    }
+}
+
+struct FilledButtonStyle: ButtonStyle {
+    @Environment(\.colorScheme) private var colorScheme
+    let backgroundLightColor: Color
+    let backgroundDarkColor: Color
+    let textLightColor: Color
+    let textDarkColor: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(colorScheme == .dark ? backgroundDarkColor : backgroundLightColor)
+                configuration
+                    .label
+                    .bold()
+                    .foregroundStyle(colorScheme == .dark ? textLightColor : textDarkColor)
+        }.frame(height: 44)
     }
 }
 

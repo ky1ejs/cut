@@ -9,7 +9,7 @@
     "dev:watch:no-worker": "OFFLINE=true nodemon",
     "build": "tsc -p tsconfig.build.json && cp -r src/resources ./dist",
     "start": "node dist/index.js",
-    "codegen:graphql": "gql-gen --config graphql-codegen.yaml",
+    "codegen:graphql": "gql-gen --config graphql-codegen.ts",
     "codegen:prisma": "prisma generate",
     "migrate": "prisma migrate deploy",
     "migrate:start": "pnpm run migrate && pnpm run start",
@@ -30,7 +30,9 @@
     "google-libphonenumber": "^3.2.34",
     "graphql": "^16.8.1",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.9.1"
+    "lodash": "^4.17.21",
+    "prisma": "^5.9.1",
+    "utility-types": "^3.11.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
@@ -43,6 +45,7 @@
     "@types/google-libphonenumber": "^7.4.30",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.17.0",
     "@types/node": "^20.11.16",
     "dotenv": "^16.4.1",
     "jest": "^29.7.0",

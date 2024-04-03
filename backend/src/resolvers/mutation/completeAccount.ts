@@ -90,6 +90,7 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
       followingCount: 0,
       followerCount: 0,
       name: completedUser.name,
+      link: "https://cut.watch/p/" + username,
     },
     updatedDevice: {
       name: completedUser.devices[0].name,
