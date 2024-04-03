@@ -53,10 +53,7 @@ struct Profile: View {
     @State private var editAccount = false
     @State private var findContacts = false
     @State private var watch: Apollo.Cancellable?
-
-    init(profile: ProfileInput) {
-        self.profile = profile
-    }
+    @Environment(\.colorScheme) private var colorScheme
 
     enum ListState: CaseIterable, Identifiable {
         var id: Self { self }
@@ -100,7 +97,7 @@ struct Profile: View {
                     ShareLink(item: URL(string: profile.profileInterface.link)!) {
                         Text("Share")
                     }
-                    .buttonStyle(SecondaryButtonStyle())
+                    .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme))
                 }
                 Picker(selection: $state) {
                     ForEach(ListState.allCases) { s in
@@ -214,7 +211,7 @@ struct Profile: View {
                 FollowButton(profile: state.profile)
             }
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorScheme: colorScheme))
     }
 }
 
