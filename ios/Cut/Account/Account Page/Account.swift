@@ -67,14 +67,12 @@ struct Account: View {
             state = .loading
             viewModel.watch?.cancel()
             viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery()) { result in
-                switch result {
-                case .success(let response):
-                    if let completeAccount = response.data?.account.asCompleteAccount {
+                switch result.parseGraphQL() {
+                case .success(let data):
+                    if let completeAccount = data.account.asCompleteAccount {
                         state = .complete(completeAccount.fragments.completeAccountFragment)
-                    } else if let incompleteAccount = response.data?.account.asIncompleteAccount {
+                    } else if let incompleteAccount = data.account.asIncompleteAccount {
                         state = .incomplete(incompleteAccount)
-                    } else if let error = response.errors?.first {
-                        state = .error(error.localizedDescription)
                     } else {
                         state = .error("Unknown")
                     }

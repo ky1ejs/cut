@@ -171,18 +171,11 @@ struct Profile: View {
             watch?.cancel()
             watch = nil
             watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.profileInterface.id)) { result in
-                switch result {
-                case .success(let response):
-                    if let error = response.errors?.first {
-                        switch profile {
-                        case let .loggedInUser(completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                            profile = .loggedInUserError(completeAccountFragment, error)
-                        case .otherUser(let otherUserState):
-                            profile = .otherUser(.error(otherUserState.profile, error))
-                        }
-                    } else if let completeUser = response.data?.profileById?.asCompleteAccount {
+                switch result.parseGraphQL() {
+                case .success(let data):
+                    if let completeUser = data.profileById?.asCompleteAccount {
                         profile = .loggedInUser(completeUser.fragments.completeAccountFragment)
-                    } else if let otherUser = response.data?.profileById?.asProfile {
+                    } else if let otherUser = data.profileById?.asProfile {
                         self.profile = .otherUser(.loaded(otherUser.fragments.fullProfileFragment))
                     } else {
                         let error = GenericError(description: "Error loading full profile")

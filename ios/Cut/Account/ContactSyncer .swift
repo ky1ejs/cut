@@ -8,10 +8,6 @@
 import Contacts
 
 struct ContactSyncer {
-    enum ContactSyncerError: Error {
-        case unknown
-        case error(Error)
-    }
     static func sync() async throws -> [CutGraphQL.ProfileFragment] {
         let result = await withCheckedContinuation { continuation in
             DispatchQueue.global().async {
@@ -56,17 +52,12 @@ struct ContactSyncer {
 
         return try await withCheckedThrowingContinuation { continuation in
             AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContactMatchesQuery(), cachePolicy: .fetchIgnoringCacheData) { result in
-                switch result {
-                case .success(let response):
-                    if let profiles = response.data?.contactMatches.map({ c in
-                        return c.fragments.profileFragment
-                    }) {
-                        continuation.resume(returning: profiles)
-                    } else {
-                        continuation.resume(throwing: ContactSyncerError.unknown)
-                    }
+                switch result.parseGraphQL() {
+                case .success(let data):
+                    let profiles = data.contactMatches.map { $0.fragments.profileFragment }
+                    continuation.resume(returning: profiles)
                 case .failure(let error):
-                    continuation.resume(throwing: ContactSyncerError.error(error))
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -75,14 +66,11 @@ struct ContactSyncer {
     private static func uploadPhoneNumbers(_ contacts: [CutGraphQL.ContactInput]) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UploadContactNumbersMutation(contacts: contacts)) { result in
-                switch result {
-                case .success(let response):
-                    if let error = response.errors?.first {
-                        continuation.resume(throwing: error)
-                    } else {
-                        continuation.resume()
-                    }
-                case .failure(let error): continuation.resume(throwing: error)
+                switch result.parseGraphQL() {
+                case .success:
+                    continuation.resume()
+                case .failure(let error): 
+                    continuation.resume(throwing: error)
                 }
             }
         }
@@ -91,14 +79,11 @@ struct ContactSyncer {
     private static func uploadPhoneEmails(_ contacts: [CutGraphQL.ContactInput]) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UploadContactEmailsMutation(contacts: contacts)) { result in
-                switch result {
-                case .success(let response):
-                    if let error = response.errors?.first {
-                        continuation.resume(throwing: error)
-                    } else {
-                        continuation.resume()
-                    }
-                case .failure(let error): continuation.resume(throwing: error)
+                switch result.parseGraphQL() {
+                case .success:
+                    continuation.resume()
+                case .failure(let error): 
+                    continuation.resume(throwing: error)
                 }
             }
         }

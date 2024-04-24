@@ -40,15 +40,9 @@ class SearchViewModel: ObservableObject {
             .sink { [weak self] term in
                 self?.state.cancelInflightSearch()
                 let request = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.SearchQuery(term: term)) { [weak self] result in
-                    switch result {
-                    case .success(let response):
-                        if let error = response.errors?.first {
-                            self?.state = .error(error)
-                        } else if let data = response.data {
-                            self?.state = .results(data.search.map { $0.fragments.movieFragment})
-                        } else {
-                            self?.state = .error(UnknownError())
-                        }
+                    switch result.parseGraphQL() {
+                    case .success(let data):
+                        self?.state = .results(data.search.map { $0.fragments.movieFragment})
                     case .failure(let error):
                         self?.state = .error(error)
                     }

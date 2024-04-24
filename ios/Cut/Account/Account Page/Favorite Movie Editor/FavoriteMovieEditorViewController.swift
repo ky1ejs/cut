@@ -158,7 +158,7 @@ class FavoriteMovieEditorViewController: UIViewController {
                 button.state = .loading
                 self.inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UpdateAccountMutation(params: update), resultHandler: { result in
                     button.state = .notLoading
-                    switch parseResult(result) {
+                    switch result.parseGraphQL() {
                     case .success:
                         self.dismiss()
                     case .failure(let error):

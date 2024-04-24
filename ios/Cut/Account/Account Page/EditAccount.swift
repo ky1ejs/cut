@@ -75,7 +75,7 @@ struct EditAccount: View {
             bio: .some(bio),
             url: .some(url))
         ), resultHandler: { result in
-            switch result {
+            switch result.parseGraphQL() {
             case .success:
                 inFlightRequest = nil
                 onCompletion?()

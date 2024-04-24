@@ -58,12 +58,12 @@ struct InitiateEmailConfirm: View {
             }
             inFlightRequest = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.InitiateEmailVerificationQuery(email: email)) { result in
                 inFlightRequest = nil
-                switch result {
-                case .success(let payload):
-                    if let error = payload.errors?.first {
-                        self.error = error
-                    } else if payload.data!.initiateEmailVerification {
+                switch result.parseGraphQL() {
+                case .success(let data):
+                    if data.initiateEmailVerification {
                         pushNextPage = true
+                    } else {
+                        self.error = UnknownError()
                     }
                 case .failure(let error):
                     self.error = error
