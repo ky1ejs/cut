@@ -5,6 +5,7 @@ import prisma from "../../prisma";
 import { GraphQLError, GraphQLResolveInfo } from "graphql";
 import { movieInclude } from "../mappers/dbMovieToGqlMovie";
 import { DeepPartial } from "utility-types";
+import Provider from "../../types/providers";
 
 enum UserType {
   INCOMPLETE,
@@ -19,8 +20,7 @@ export const incompleteAccountWatchList: IncompleteAccountResolvers["watchList"]
 }
 
 export async function completeAccountWatchList(parent: DeepPartial<ProfileInterface>, context: GraphQLContext, info: GraphQLResolveInfo): Promise<Movie[]> {
-  console.log(info)
-  if (info.path.prev?.key === "account") {
+  if (info.path.prev?.key === "account" || info.path.prev?.key === undefined) {
     if (context.userDevice) {
       return watchList(context.userDevice.userId, UserType.COMPLETE);
     } else {
@@ -77,6 +77,11 @@ function watchListGraphQLModel(movie: DbMovie & { images: MovieImage[], genres: 
     poster_url: movie.images[0].url,
     release_date: movie.releaseDate?.toString(),
     genres: genres,
-    isOnWatchList: true
+    isOnWatchList: true,
+    url: `https://cut.watch/movie/${movie.id}`,
+    allIds: [
+      movie.id,
+      movie.tmdbId ? `${Provider.TMDB}:${movie.tmdbId}` : undefined
+    ].filter((id) => id !== undefined) as string[]
   }
 }

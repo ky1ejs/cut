@@ -32,15 +32,16 @@ struct PrimaryButton: View {
             }
         })
         .disabled(state == .loading)
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorScheme: colorScheme))
     }
 }
 
 struct PrimaryButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme) private var colorScheme
+    let colorScheme: ColorScheme
 
     func makeBody(configuration: Configuration) -> some View {
         FilledButtonStyle(
+            colorScheme: colorScheme,
             backgroundLightColor: .black,
             backgroundDarkColor: .white,
             textLightColor: .black,
@@ -51,10 +52,11 @@ struct PrimaryButtonStyle: ButtonStyle {
 }
 
 struct SecondaryButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme) private var colorScheme
+    let colorScheme: ColorScheme
 
     func makeBody(configuration: Configuration) -> some View {
         FilledButtonStyle(
+            colorScheme: colorScheme,
             backgroundLightColor: .gray,
             backgroundDarkColor: .gray,
             textLightColor: .white,
@@ -65,7 +67,7 @@ struct SecondaryButtonStyle: ButtonStyle {
 }
 
 struct FilledButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme) private var colorScheme
+    let colorScheme: ColorScheme
     let backgroundLightColor: Color
     let backgroundDarkColor: Color
     let textLightColor: Color
@@ -80,6 +82,18 @@ struct FilledButtonStyle: ButtonStyle {
                     .bold()
                     .foregroundStyle(colorScheme == .dark ? textLightColor : textDarkColor)
         }.frame(height: 44)
+    }
+}
+
+struct StatedPrimaryButton: View {
+    let text: String
+    let action: (StatedPrimaryButton) -> Void
+    @State var state = PrimaryButton.ButtonState.notLoading
+
+    var body: some View {
+        PrimaryButton(text: text, state: state) {
+            action(self)
+        }
     }
 }
 

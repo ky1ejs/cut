@@ -74,6 +74,7 @@ class WatchListViewModel {
                             title: movie.title,
                             id: movieId,
                             poster_url: movie.poster_url,
+                            url: movie.url,
                             genres: movie.genres,
                             isOnWatchList: true
                         ))

@@ -1,5 +1,6 @@
 import { Genre, Movie, MovieGenre, MovieImage, Prisma } from "@prisma/client";
 import { MovieInterface as GqlMovie } from "../../__generated__/graphql";
+import Provider from "../../types/providers";
 
 export type ResolvedGenre = Genre & {
   locales: {
@@ -57,6 +58,11 @@ export default function dbMovieToGqlMovie(movie: ResolvedMovie): Partial<GqlMovi
       id: g.genre.id,
       name: g.genre.locales[0].name
     })),
-    mainGenre: mainGenre
+    mainGenre: mainGenre,
+    url: "https://cut.watch/movie/" + movie.id,
+    allIds: [
+      movie.id,
+      movie.tmdbId ? `${Provider.TMDB}:${movie.tmdbId}` : undefined
+    ].filter((id) => id !== undefined) as string[]
   }
 }

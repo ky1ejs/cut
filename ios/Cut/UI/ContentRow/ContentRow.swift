@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct ContentRow: View {
+struct ContentRow<Accessory: View>: View {
     let viewModel: ContentRowViewModel
-    @State var watchListViewModel: WatchListViewModel
     let index: Int?
+    let accessory: Accessory?
 
-    init(viewModel: ContentRowViewModel, index: Int? = nil) {
+    init(viewModel: ContentRowViewModel, accessory: Accessory, index: Int? = nil) {
         self.viewModel = viewModel
-        self.watchListViewModel = WatchListViewModel(movie: viewModel.movie, index: index)
+        self.accessory = accessory
         self.index = index
     }
 
@@ -27,20 +27,63 @@ struct ContentRow: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(viewModel.title)
                     .font(.title3)
-                Text(viewModel.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(Color.sub)
+                if let subtitle = viewModel.subtitle {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.sub)
+                }
             }
             Spacer()
-            WatchListButton(isOnWatchList: watchListViewModel.isOnWatchList) {
-                watchListViewModel.toggleWatchList()
-            }
+            accessory
         }
         .padding(0)
     }
 }
 
+extension ContentRow where Accessory == EmptyView {
+    init(viewModel: ContentRowViewModel, accessory: Accessory? = nil, index: Int? = nil) {
+        self.viewModel = viewModel
+        self.accessory = accessory
+        self.index = index
+    }
+}
+
+extension ContentRow where Accessory == WatchListButton {
+    init(viewModel: ContentRowViewModel, index: Int? = nil) {
+        self.viewModel = viewModel
+        self.accessory = WatchListButton(movie: viewModel.movie, index: index)
+        self.index = index
+    }
+}
+
+struct StatedContentRow: View {
+    var movie: Movie
+    @State var isIncluded: Bool
+    let action: (() -> Void?)
+
+    var body: some View {
+        ContentRow(viewModel: ContentRowViewModel(movie: movie), accessory: Button(isIncluded ? "Remove" : "Add") {
+            isIncluded.toggle()
+            action()
+        })
+    }
+}
+
+class ContentRowCell: UITableViewCell {
+    var action: (() -> Void)?
+    private var content: UIHostingConfiguration<ContentRow<Button<Text>>, EmptyView>?
+
+    func update(movie: Movie, isIncluded: Bool) {
+        let content = UIHostingConfiguration {
+            StatedContentRow(movie: movie, isIncluded: isIncluded) {
+                self.action?()
+            }
+        }
+        contentConfiguration = content
+    }
+}
+
 #Preview {
     let viewModel = ContentRowViewModel(movie: Mocks.movie)
-    return ContentRow(viewModel: viewModel, index: 0)
+    return ContentRow(viewModel: viewModel)
 }

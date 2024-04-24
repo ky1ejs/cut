@@ -31,6 +31,23 @@ struct Mocks {
         return try! CutGraphQL.MovieFragment(data: jsonObject)
     }
 
+    static var favoriteMovie: CutGraphQL.FavoriteMovieFragment {
+        let json = """
+            {
+              "__typename": "Movie",
+              "id": "TMDB:1072790",
+              "poster_url": "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
+              "allIds": [
+                 "45996cad-3548-46f5-b2e6-0b309c7e34d0",
+                 "3542226f-c12d-44de-b507-45f314eba69c",
+                 "8253d3df-1838-4423-a701-30cdd6b1e7a3"
+              ]
+            }
+        """
+        let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
+        return try! CutGraphQL.FavoriteMovieFragment(data: jsonObject)
+    }
+
     static var completeAccount: CutGraphQL.CompleteAccountFragment {
         let json = """
         {

@@ -84,6 +84,7 @@ public class SessionManager: ObservableObject {
                                         title: m.title,
                                         id: m.id,
                                         poster_url: m.poster_url,
+                                        url: m.url,
                                         mainGenre: m.mainGenre,
                                         genres: m.genres,
                                         isOnWatchList: m.isOnWatchList
