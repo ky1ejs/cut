@@ -9,30 +9,61 @@ import SwiftUI
 import Combine
 import Apollo
 
-typealias Movie = CutGraphQL.MovieFragment
-
 class SearchViewModel: ObservableObject {
     // inspired by: https://designcode.io/swiftui-advanced-handbook-search-feature
     @Published var searchTerm = ""
-    @Published var results: [Movie] = []
-    private var searchCancellable: AnyCancellable?
-    private var inFlightRequest: Apollo.Cancellable?
+    @Published var state = State.results([])
+    private var bag = [AnyCancellable]()
+
+    enum State {
+        case searching(Apollo.Cancellable?)
+        case results([Movie])
+        case error(Error)
+
+        var results: [Movie] {
+            if case .results(let results) = self {
+                return results
+            }
+            return []
+        }
+
+        fileprivate func cancelInflightSearch() {
+            if case .searching(let request) = self {
+                request?.cancel()
+            }
+        }
+    }
 
     init() {
-        searchCancellable = _searchTerm
-            .projectedValue.debounce(for: .milliseconds(400), scheduler: DispatchQueue.main)
+        let searchCancellable = _searchTerm
+            .projectedValue.debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .sink { [weak self] term in
-                self?.inFlightRequest = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.SearchQuery(term: term)) { [weak self] result in
-                    guard case .success(let data) = result, let r = data.data else { return }
-                    self?.results = r.search.map { $0.fragments.movieFragment }
+                self?.state.cancelInflightSearch()
+                let request = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.SearchQuery(term: term)) { [weak self] result in
+                    switch result {
+                    case .success(let response):
+                        if let error = response.errors?.first {
+                            self?.state = .error(error)
+                        } else if let data = response.data {
+                            self?.state = .results(data.search.map { $0.fragments.movieFragment})
+                        } else {
+                            self?.state = .error(UnknownError())
+                        }
+                    case .failure(let error):
+                        self?.state = .error(error)
+                    }
                 }
+                self?.state = .searching(request)
             }
-
+        let loadingCancellable = _searchTerm.projectedValue.sink { [weak self] term in
+            self?.state = term.isEmpty ? .results([]) : .searching(nil)
+        }
+        bag = [searchCancellable, loadingCancellable]
     }
 
     deinit {
-        searchCancellable?.cancel()
-        inFlightRequest?.cancel()
+        bag.forEach { $0.cancel() }
+        state.cancelInflightSearch()
     }
 }
 
@@ -42,12 +73,19 @@ struct Search: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModel.results, id: \.id) { movie in
-                    NavigationLink {
-                        DetailView(movie: movie)
-                    } label: {
-                        ContentRow(viewModel: ContentRowViewModel(movie: movie))
+                switch viewModel.state {
+                case .searching:
+                    ProgressView()
+                case .results(let results):
+                    ForEach(results, id: \.id) { movie in
+                        NavigationLink {
+                            DetailView(movie: movie)
+                        } label: {
+                            ContentRow(viewModel: ContentRowViewModel(movie: movie))
+                        }
                     }
+                case .error(let error):
+                    Text(error.localizedDescription)
                 }
             }
             .listStyle(.plain)

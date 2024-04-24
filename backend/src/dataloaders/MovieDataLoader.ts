@@ -5,7 +5,6 @@ import { ResolvedMovie, movieInclude } from "../resolvers/mappers/dbMovieToGqlMo
 
 export default class MovieDataLoader {
   private batchMovieFetch = new DataLoader<string, ResolvedMovie | undefined>(async (ids) => {
-    console.log("Fetching movies", ids)
     const movies = await prisma.movie.findMany({
       where: {
         OR: ids.map((id) => ({ id }))
@@ -17,8 +16,6 @@ export default class MovieDataLoader {
   })
 
   async getMovie(id: string) {
-    console.log("Fetching movie", id)
-    console.log(`${this} --- `)
     return this.batchMovieFetch.load(id)
   }
 }

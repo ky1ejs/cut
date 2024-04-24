@@ -8,6 +8,20 @@
 import SwiftUI
 
 struct WatchListButton: View {
+    @State var watchListViewModel: WatchListViewModel
+
+    init(movie: Movie, index: Int? = nil) {
+        watchListViewModel = WatchListViewModel(movie: movie, index: index)
+    }
+
+    var body: some View {
+        _WatchListButton(isOnWatchList: watchListViewModel.isOnWatchList) {
+            watchListViewModel.toggleWatchList()
+        }
+    }
+}
+
+private struct _WatchListButton: View {
     let isOnWatchList: Bool
     let buttonTapped: () -> Void
 
@@ -30,8 +44,8 @@ struct TodoRow_Previews: PreviewProvider {
         @State var on: Bool = false
 
         var body: some View {
-            WatchListButton(isOnWatchList: on) {
-                on = !on
+            _WatchListButton(isOnWatchList: on) {
+                on.toggle()
             }
         }
     }

@@ -25,6 +25,7 @@ const searchResolver: QueryResolvers["search"] = async (_, args) => {
         release_data: movie.release_date,
         genres,
         mainGenre: genres[0],
+        url: `https://cut.watch/movie/${movie.id}`
       }
     });
   } catch (error) {

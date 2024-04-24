@@ -163,6 +163,8 @@ interface MovieInterface {
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
+  allIds: [String!]!
+  url: String!
 }
 
 type Movie implements MovieInterface {
@@ -173,6 +175,8 @@ type Movie implements MovieInterface {
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
+  allIds: [String!]!
+  url: String!
 }
 
 type ExtendedMovie implements MovieInterface {
@@ -184,6 +188,8 @@ type ExtendedMovie implements MovieInterface {
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
+  allIds: [String!]!
+  url: String!
 
   # ExtendedMovie fields
   overview: String!

@@ -45,6 +45,15 @@ enum ProfileInput {
             }
         }
     }
+
+    var isLoggedInUser: Bool {
+        switch self {
+        case .loggedInUser, .loggedInUserError:
+            return true
+        case .otherUser:
+            return false
+        }
+    }
 }
 
 struct Profile: View {
@@ -113,13 +122,13 @@ struct Profile: View {
                         Text("Favorite movies").font(.cut_title3).bold()
                         switch profile {
                         case .loggedInUser(let completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                            coverShelf(movies: completeAccountFragment.favoriteMovies.map { $0.fragments.movieFragment })
+                            coverShelf(movies: completeAccountFragment.favoriteMovies.map { $0.fragments.favoriteMovieFragment })
                         case .otherUser(let otherUserState):
                             switch otherUserState {
                             case .loading:
                                 ProgressView()
                             case .loaded(let fullProfileFragment):
-                                coverShelf(movies: fullProfileFragment.favoriteMovies.map { $0.fragments.movieFragment })
+                                coverShelf(movies: fullProfileFragment.favoriteMovies.map { $0.fragments.favoriteMovieFragment })
                             case .error(_, let error):
                                 Text("Error: " + error.localizedDescription)
                             }
@@ -196,10 +205,8 @@ struct Profile: View {
         }
     }
 
-    func coverShelf(movies: [Movie]) -> some View {
-        CoverShelf(posters: movies.map({ m in
-            URL(string: m.poster_url)!
-        }))
+    func coverShelf(movies: [CutGraphQL.FavoriteMovieFragment]) -> some View {
+        CoverShelf(movies: movies, editable: profile.isLoggedInUser)
     }
 
     func cta() -> some View {

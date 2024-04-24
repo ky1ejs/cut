@@ -29,14 +29,8 @@ private extension CutGraphQL.ExtendedMovieFragment {
 
 struct DetailView: View {
     let movie: Movie
-    @State var watchListViewModel: WatchListViewModel
     @State var extendedMovie: CutGraphQL.ExtendedMovieFragment?
     @State var watched: Apollo.GraphQLQueryWatcher<CutGraphQL.MovieQuery>?
-
-    init(movie: Movie) {
-        self.movie = movie
-        self.watchListViewModel = WatchListViewModel(movie: movie, index: nil)
-    }
 
     var body: some View {
         ScrollView {
@@ -57,9 +51,7 @@ struct DetailView: View {
                     if let em  = extendedMovie {
                         RatingCirlce(rating: em.userRating)
                     }
-                    WatchListButton(isOnWatchList: watchListViewModel.isOnWatchList) {
-                        watchListViewModel.toggleWatchList()
-                    }
+                    WatchListButton(movie: movie)
                     Spacer()
                 }
                 Spacer(minLength: 12)

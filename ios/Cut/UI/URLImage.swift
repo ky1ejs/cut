@@ -18,8 +18,7 @@ struct URLImage: View {
             .placeholder { Color.gray }
             .fade(duration: 0.25)
             .resizable()
-            .aspectRatio(contentMode: .fit)
-
+            .aspectRatio(0.64, contentMode: .fit)
 
     }
 }

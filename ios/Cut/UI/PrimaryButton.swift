@@ -85,6 +85,18 @@ struct FilledButtonStyle: ButtonStyle {
     }
 }
 
+struct StatedPrimaryButton: View {
+    let text: String
+    let action: (StatedPrimaryButton) -> Void
+    @State var state = PrimaryButton.ButtonState.notLoading
+
+    var body: some View {
+        PrimaryButton(text: text, state: state) {
+            action(self)
+        }
+    }
+}
+
 #Preview {
     HStack {
         PrimaryButton(text: "Test", state: .loading) {}

@@ -1,9 +1,11 @@
 
+
 fragment MovieFragment on MovieInterface {
   title
   id
   poster_url
   release_date
+  url
   mainGenre {
     id
     name
