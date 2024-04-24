@@ -7,6 +7,10 @@ on:
       - 'backend/graphql/schema.graphql'
       - 'ios/**'
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   ios-test:
     uses: ./.github/workflows/ios-build.yaml
