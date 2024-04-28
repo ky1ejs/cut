@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 class MovieSelectionViewController: KeyboardAnimationVC {
     private var keyboardConstraint: NSLayoutConstraint?
@@ -48,7 +49,7 @@ class MovieSelectionViewController: KeyboardAnimationVC {
     lazy var loadingIndicator = UIActivityIndicatorView(style: .large)
     lazy var infoView = {
         let v = UIView()
-        v.backgroundColor = .white
+        v.backgroundColor = Theme.current.background
         return v
     }()
     lazy var infoLabel = {
@@ -75,15 +76,20 @@ class MovieSelectionViewController: KeyboardAnimationVC {
     override func loadView() {
         view = UIView()
 
+        let t = Theme.current
+
         let item = UINavigationItem(title: "Add movie")
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAnimated))
+        cancelButton.tintColor = t.primaryButton
         item.rightBarButtonItem = cancelButton
 
         let nav = UINavigationBar()
         nav.delegate = self
         nav.items = [item]
+        nav.backgroundColor = t.background
 
         tableView = UITableView()
+        tableView.backgroundColor = t.background
         tableView.estimatedRowHeight = 140
         tableView.dataSource = self
         tableView.delegate = self
@@ -202,10 +208,10 @@ class MovieSelectionViewController: KeyboardAnimationVC {
             searchBarContainer.layer.sublayers?[0].removeFromSuperlayer()
         }
 
+        let t = Theme.current
         let gradient = CAGradientLayer()
-
         gradient.frame = searchBarContainer.bounds
-        gradient.colors = [UIColor.white.cgColor, UIColor.white.withAlphaComponent(0).cgColor]
+        gradient.colors = [t.background.cgColor, t.background.withAlphaComponent(0).cgColor]
         gradient.startPoint = CGPoint(x: 0.5, y: 0.8)
         gradient.endPoint = CGPoint(x: 0.5, y: 0.1)
 
@@ -248,5 +254,27 @@ extension MovieSelectionViewController: UITableViewDelegate {
         keyboardConstraint?.isActive = false
         movieSelected(searchViewModel.state.results[indexPath.row])
     }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
+    }
 }
 
+struct MovieSelectionView: UIViewControllerRepresentable {
+    let movieSelected: (Movie) -> Void
+    typealias UIViewControllerType = MovieSelectionViewController
+
+    func makeUIViewController(context: Context) -> UIViewControllerType {
+        return MovieSelectionViewController(movieSelected: movieSelected)
+    }
+
+    func updateUIViewController(_ uiViewController: MovieSelectionViewController, context: Context) {
+
+    }
+}
+
+#Preview {
+    MovieSelectionView { m in
+        print(m.title)
+    }
+}
