@@ -29,9 +29,7 @@ class FavoriteMovieEditorViewController: UIViewController {
         c.clipsToBounds = false
         c.backgroundColor = .clear
         c.reorderingCadence = .fast
-        c.backgroundView = UIView()
         c.delaysContentTouches = false
-        c.backgroundView?.isUserInteractionEnabled = false
         c.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: "TEST")
         return c
     }()
@@ -94,23 +92,25 @@ class FavoriteMovieEditorViewController: UIViewController {
 
         override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
 
-                let hit = super.hitTest(point, with: event)
-                guard hit === self else {
-                    return hit
-                }
+            guard !hasActiveDrag else { return super.hitTest(point, with: event) }
 
-                let sibling = superview?
-                    .subviews
-                    .filter { $0 !== self }
-                    .filter { $0.canHit }
-                    .last { $0.point(inside: convert(point, to: $0), with: event) }
+            let hit = super.hitTest(point, with: event)
+            guard hit === self else {
+                return hit
+            }
+
+            let sibling = superview?
+                .subviews
+                .filter { $0 !== self }
+                .filter { $0.canHit }
+                .last { $0.point(inside: convert(point, to: $0), with: event) }
 
             let target = sibling?.subviews
                 .filter { $0.canHit }
                 .last { $0.point(inside: convert(point, to: $0), with: event) } ?? sibling
 
-                return target ?? hit
-            }
+            return target ?? hit
+        }
     }
 
     override func loadView() {
@@ -220,8 +220,9 @@ extension FavoriteMovieEditorViewController: UICollectionViewDelegate {
             let movie = movies[indexPath.item]
             movieTapped(movie)
         } else {
-            let vc = MovieSelectionViewController { m in
-                defer { self.dismiss(animated: true) }
+            let vc = MovieSelectionViewController { [weak self] m in
+                defer { self?.dismiss(animated: true) }
+                guard let `self` = self else { return }
                 guard self.movies.contains(where: { $0.allIds.contains(m.id) }) == false else { return }
                 self.movies.append(m)
                 self.moviesCollectionView.performBatchUpdates {
@@ -230,6 +231,7 @@ extension FavoriteMovieEditorViewController: UICollectionViewDelegate {
                 self.placeholderCollectionView.performBatchUpdates {
                     self.placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.movies.count, section: 0)])
                 }
+                self.save()
             }
             self.present(vc, animated: true)
         }
