@@ -73,6 +73,7 @@ class WatchListViewModel {
                         set.watchList.append(CutGraphQL.WatchListMutationLocalCacheMutation.Data.WatchList(
                             title: movie.title,
                             id: movieId,
+                            allIds: movie.allIds,
                             poster_url: movie.poster_url,
                             url: movie.url,
                             genres: movie.genres,

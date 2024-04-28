@@ -11,17 +11,17 @@ import Combine
 import Apollo
 
 class FavoriteMovieEditorViewController: UIViewController {
-    private var _movies: [any FavoriteMovie]
-    private var movies: [any FavoriteMovie] {
+    private var _movies: [Movie]
+    private var movies: [Movie] {
         set { updateMovies(newValue) }
         get { _movies }
     }
     let moviesLayout = OneLineCollectionViewLayout()
     let placeholderLayout = PlaceholderLayout()
-
     lazy var moviesCollectionView = {
         let c = SelfSizingCollectionView(frame: .zero, collectionViewLayout: moviesLayout)
         c.dataSource = self
+        c.delegate = self
         c.dragDelegate = self
         c.dropDelegate = self
         c.isScrollEnabled = false
@@ -29,70 +29,46 @@ class FavoriteMovieEditorViewController: UIViewController {
         c.clipsToBounds = false
         c.backgroundColor = .clear
         c.reorderingCadence = .fast
+        c.backgroundView = UIView()
+        c.delaysContentTouches = false
+        c.backgroundView?.isUserInteractionEnabled = false
         c.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: "TEST")
         return c
     }()
     lazy var placeholderCollectionView = {
         let c = SelfSizingCollectionView(frame: .zero, collectionViewLayout: placeholderLayout)
         c.dataSource = self
+        c.delegate = self
         c.isScrollEnabled = false
         c.backgroundColor = .clear
         c.dragInteractionEnabled = false
+        c.delaysContentTouches = false
         c.register(PlaceholderCollectionViewCell.self, forCellWithReuseIdentifier: "TEST")
         return c
     }()
-    lazy var searchBar = {
-        let searchBar = UITextField()
-        searchBar.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 0))
-        searchBar.leftViewMode = .always
-        searchBar.placeholder = "Search..."
-        searchBar.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
-        searchBar.layer.cornerRadius = 5
-        searchBar.returnKeyType = .done
-        searchBar.keyboardType = .asciiCapable
-        searchBar.delegate = self
-        searchBar.clearButtonMode = .always
-        searchBar.addAction(UIAction(handler: { [weak self] _ in
-            self?.searchViewModel.searchTerm = searchBar.text ?? ""
-        }), for: .editingChanged)
-        self.searchCancellable = self.searchViewModel.$state.receive(on: DispatchQueue.main).sink { [weak self] state in
-            self?.updateView(state)
-        }
-        return searchBar
-    }()
-    lazy var resultsTableView = {
-        let resultsTable = UITableView()
-        resultsTable.dataSource = self
-        resultsTable.delegate = self
-        resultsTable.dragDelegate = self
-        return resultsTable
-    }()
-    lazy var loadingIndicator = UIActivityIndicatorView(style: .large)
-    lazy var infoView = {
-        let v = UIView()
-        v.backgroundColor = .white
-        return v
-    }()
-    lazy var infoLabel = {
-        let l = UILabel()
-        l.numberOfLines = 0
-        l.textAlignment = .center
-        l.textColor = .lightGray
-        l.font = .systemFont(ofSize: 24)
-        return l
-    }()
-    private let searchViewModel = SearchViewModel()
-    private var searchCancellable: AnyCancellable?
-    private var inFlightRequest: Apollo.Cancellable? {
+    let movieTapped: (Movie) -> Void
+    var isWobbling = false {
         didSet {
-
+            guard isWobbling != oldValue else { return }
+            (moviesCollectionView.visibleCells as! [PosterCollectionViewCell]).forEach { cell in
+                cell.updateRemoveButton(isHidden: !isWobbling)
+                cell.isWiggling = isWobbling
+                if isWobbling {
+                    addWiggleToCell(cell)
+                } else {
+                    cell.layer.removeAllAnimations()
+                }
+            }
+            if !isWobbling {
+                save()
+            }
         }
     }
-    let dismiss: () -> Void
+    private var inFlightRequest: Apollo.Cancellable?
 
-    init(movies: [any FavoriteMovie], dismiss: @escaping () -> Void) {
+    init(movies: [Movie], movieTapped: @escaping (Movie) -> Void) {
         _movies = []
-        self.dismiss = dismiss
+        self.movieTapped = movieTapped
         super.init(nibName: nil, bundle: nil)
         updateMovies(movies)
     }
@@ -101,15 +77,8 @@ class FavoriteMovieEditorViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func updateMovies(_ newValue: [any FavoriteMovie]) {
-        _movies = Array(newValue[0..<min(FavoriteMovieEditorConfig.maxItems, newValue.count)])
-        updateView(searchViewModel.state)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        moviesCollectionView.reloadData()
-        placeholderCollectionView.reloadData()
+    private func updateMovies(_ newValue: [Movie]) {
+        _movies = Array(newValue[0..<min(OneLineCollectionViewLayout.maxItems, newValue.count)])
     }
 
     class CollectionViewContainer: UIView {
@@ -120,8 +89,28 @@ class FavoriteMovieEditorViewController: UIViewController {
 
     class SelfSizingCollectionView: UICollectionView {
         override var intrinsicContentSize: CGSize {
-            return collectionViewLayout.collectionViewContentSize
+            collectionViewLayout.collectionViewContentSize
         }
+
+        override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+
+                let hit = super.hitTest(point, with: event)
+                guard hit === self else {
+                    return hit
+                }
+
+                let sibling = superview?
+                    .subviews
+                    .filter { $0 !== self }
+                    .filter { $0.canHit }
+                    .last { $0.point(inside: convert(point, to: $0), with: event) }
+
+            let target = sibling?.subviews
+                .filter { $0.canHit }
+                .last { $0.point(inside: convert(point, to: $0), with: event) } ?? sibling
+
+                return target ?? hit
+            }
     }
 
     override func loadView() {
@@ -130,11 +119,12 @@ class FavoriteMovieEditorViewController: UIViewController {
         collectionViewContainer.addSubview(placeholderCollectionView)
         collectionViewContainer.addSubview(moviesCollectionView)
         collectionViewContainer.disableAutoresizing()
-        collectionViewContainer.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        let constraint = collectionViewContainer.trailingAnchor.constraint(equalTo: moviesCollectionView.trailingAnchor)
+        constraint.priority = UILayoutPriority.init(500)
 
         NSLayoutConstraint.activate([
             collectionViewContainer.leadingAnchor.constraint(equalTo: moviesCollectionView.leadingAnchor),
-            collectionViewContainer.trailingAnchor.constraint(equalTo: moviesCollectionView.trailingAnchor),
+            constraint,
             collectionViewContainer.topAnchor.constraint(equalTo: moviesCollectionView.topAnchor),
             collectionViewContainer.bottomAnchor.constraint(equalTo: moviesCollectionView.bottomAnchor),
 
@@ -144,124 +134,43 @@ class FavoriteMovieEditorViewController: UIViewController {
             collectionViewContainer.bottomAnchor.constraint(equalTo: placeholderCollectionView.bottomAnchor),
         ])
 
-        let rootView = UIView()
-
-        let bottomContainer = UIView()
-        bottomContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        bottomContainer.layer.cornerRadius = 15
-        bottomContainer.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
-        bottomContainer.layer.shadowColor = UIColor.black.cgColor
-
-        let saveButtonConfig = UIHostingConfiguration {
-            StatedPrimaryButton(text: "Save") { button in
-                let update = CutGraphQL.UpdateAccountInput(favoriteMovies: .some(self.movies.map { $0.id }))
-                button.state = .loading
-                self.inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UpdateAccountMutation(params: update), resultHandler: { result in
-                    button.state = .notLoading
-                    switch result.parseGraphQL() {
-                    case .success:
-                        self.dismiss()
-                    case .failure(let error):
-                        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "okay", style: .cancel))
-                        self.present(alert, animated: true)
-                    }
-                })
-            }
-        }
-        let saveButton = saveButtonConfig.margins([.all], 0).makeContentView()
-
-        let cancelButton = UIButton()
-        cancelButton.setTitle("Cancel", for: .normal)
-        let color = UIColor { traits in traits.userInterfaceStyle == .dark ? .white : .black }
-        cancelButton.setTitleColor(color, for: .normal)
-        cancelButton.addAction(UIAction(handler: { _ in
-            self.dismiss()
-        }), for: .touchUpInside)
-
-        [loadingIndicator, infoLabel].forEach { infoView.addSubview($0) }
-        [collectionViewContainer, saveButton].forEach { bottomContainer.addSubview($0) }
-        [searchBar, cancelButton, resultsTableView, bottomContainer, infoView].forEach { rootView.addSubview($0) }
-        infoView.disableAutoresizing()
-        bottomContainer.disableAutoresizing()
-        rootView.disableAutoresizing()
-
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: rootView.topAnchor, constant: 24),
-            searchBar.leadingAnchor.constraint(equalTo: rootView.leadingAnchor, constant: 24),
-            searchBar.heightAnchor.constraint(equalToConstant: 38),
-
-            cancelButton.leadingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: 8),
-            cancelButton.trailingAnchor.constraint(equalTo: rootView.trailingAnchor, constant: -24),
-            cancelButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
-
-            resultsTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 24),
-            resultsTableView.leadingAnchor.constraint(equalTo: rootView.leadingAnchor),
-            resultsTableView.trailingAnchor.constraint(equalTo: rootView.trailingAnchor),
-
-            infoView.topAnchor.constraint(equalTo: resultsTableView.topAnchor),
-            infoView.leadingAnchor.constraint(equalTo: resultsTableView.leadingAnchor),
-            infoView.trailingAnchor.constraint(equalTo: resultsTableView.trailingAnchor),
-            infoView.bottomAnchor.constraint(equalTo: resultsTableView.bottomAnchor),
-
-            infoLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 24),
-            infoLabel.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
-            infoLabel.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
-
-            loadingIndicator.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
-
-            bottomContainer.topAnchor.constraint(equalTo: resultsTableView.bottomAnchor),
-            bottomContainer.leadingAnchor.constraint(equalTo: rootView.leadingAnchor),
-            bottomContainer.centerXAnchor.constraint(equalTo: rootView.centerXAnchor),
-            bottomContainer.bottomAnchor.constraint(equalTo: rootView.bottomAnchor),
-
-            collectionViewContainer.topAnchor.constraint(equalTo: bottomContainer.topAnchor, constant: 24),
-            collectionViewContainer.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 24),
-            collectionViewContainer.centerXAnchor.constraint(equalTo: bottomContainer.centerXAnchor),
-
-            saveButton.topAnchor.constraint(equalTo: collectionViewContainer.bottomAnchor, constant: 24),
-            saveButton.bottomAnchor.constraint(equalTo: bottomContainer.bottomAnchor, constant: -24),
-            saveButton.leadingAnchor.constraint(equalTo: collectionViewContainer.leadingAnchor),
-            saveButton.centerXAnchor.constraint(equalTo: bottomContainer.centerXAnchor),
-        ])
-
-        view = rootView
+        view = collectionViewContainer
     }
 
-    private func updateView(_ state: SearchViewModel.State) {
-        loadingIndicator.stopAnimating()
-        resultsTableView.reloadData()
-        guard movies.count < 5 else {
-            infoView.isHidden = false
-            infoLabel.isHidden = false
-            loadingIndicator.isHidden = true
-            infoLabel.text = "Remove a film to add a new one 👇"
-            return
+    private func getShakeAnimation() -> CAAnimation{
+        let animation = CAKeyframeAnimation(keyPath: "transform")
+        let wobbleAngle: CGFloat = 0.06
+
+        let leftWobble = NSValue(caTransform3D: CATransform3DMakeRotation(wobbleAngle, 0, 0, 1))
+        let rightWobble = NSValue(caTransform3D: CATransform3DMakeRotation(-wobbleAngle, 0, 0, 1))
+        animation.values = [leftWobble, rightWobble]
+
+        animation.autoreverses = true
+        animation.duration = 0.125
+        animation.repeatCount = .infinity
+
+        return animation
+    }
+
+    private func addWiggleToCell(_ cell: UIView) {
+        cell.layer.removeAllAnimations()
+        CATransaction.begin()
+        CATransaction.setDisableActions(false)
+        cell.layer.add(getShakeAnimation(), forKey: "rotation")
+        CATransaction.commit()
+    }
+
+    private func save() {
+        inFlightRequest?.cancel()
+        let movieIds = movies.map { $0.id }
+        inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UpdateAccountMutation(params: CutGraphQL.UpdateAccountInput(favoriteMovies: .some(movieIds)))) { _ in
+            self.inFlightRequest = nil
         }
-        switch state {
-        case .searching:
-            infoView.isHidden = false
-            infoLabel.isHidden = true
-            loadingIndicator.isHidden = false
-            loadingIndicator.startAnimating()
-        case .results(let results):
-            if results.isEmpty {
-                infoView.isHidden = false
-                infoLabel.isHidden = false
-                loadingIndicator.isHidden = true
-                infoLabel.text = searchViewModel.searchTerm.isEmpty ? "Search to add films ☝️" : "No results"
-            } else {
-                infoView.isHidden = true
-                infoLabel.isHidden = true
-                loadingIndicator.isHidden = true
-            }
-        case .error(let error):
-            infoView.isHidden = false
-            infoLabel.isHidden = false
-            loadingIndicator.isHidden = true
-            infoLabel.text = error.localizedDescription
-        }
+    }
+
+    override var preferredContentSize: CGSize {
+        get { view.intrinsicContentSize }
+        set { }
     }
 }
 
@@ -270,7 +179,7 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
         if collectionView == moviesCollectionView {
             return movies.count
         } else {
-            return max(FavoriteMovieEditorConfig.maxItems - movies.count, 0)
+            return max(OneLineCollectionViewLayout.maxItems - movies.count, 0)
         }
     }
 
@@ -279,16 +188,15 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TEST", for: indexPath) as! PosterCollectionViewCell
             let movie = movies[indexPath.item]
             cell.movie = movie
+            if isWobbling {
+                addWiggleToCell(cell)
+            }
+            cell.updateRemoveButton(isHidden: !isWobbling, animated: false)
             cell.removeAction = { [weak collectionView, weak self] in
                 guard let `self` = self, let removedIndex = collectionView?.indexPath(for: cell) else {
                     return
                 }
-                let removedMovie = self.movies.remove(at: removedIndex.item)
-                if let tableIndex = searchViewModel.state.results.firstIndex(where: { movie in
-                    removedMovie.allIds.contains(movie.id)
-                }) {
-                    self.resultsTableView.reloadRows(at: [IndexPath(row: tableIndex, section: 0)], with: .none)
-                }
+                self.movies.remove(at: removedIndex.item)
                 collectionView?.performBatchUpdates {
                     collectionView?.deleteItems(at: [removedIndex])
                 }
@@ -304,20 +212,57 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
             return collectionView.dequeueReusableCell(withReuseIdentifier: "TEST", for: indexPath)
         }
     }
+}
 
+extension FavoriteMovieEditorViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == moviesCollectionView {
+            let movie = movies[indexPath.item]
+            movieTapped(movie)
+        } else {
+            let vc = MovieSelectionViewController { m in
+                defer { self.dismiss(animated: true) }
+                guard self.movies.contains(where: { $0.allIds.contains(m.id) }) == false else { return }
+                self.movies.append(m)
+                self.moviesCollectionView.performBatchUpdates {
+                    self.moviesCollectionView.insertItems(at: [IndexPath(item: self.movies.count - 1, section: 0)])
+                }
+                self.placeholderCollectionView.performBatchUpdates {
+                    self.placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.movies.count, section: 0)])
+                }
+            }
+            self.present(vc, animated: true)
+        }
+    }
 
-    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        true
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.isSelected = false
     }
 }
 
 extension FavoriteMovieEditorViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let item = movies[indexPath.item]
+        let cell = collectionView.cellForItem(at: indexPath) as! PosterCollectionViewCell
+        cell.updateRemoveButton(isHidden: true, animated: true)
         let provider = NSItemProvider(object: item.title as NSString)
         let dragItem = UIDragItem(itemProvider: provider)
         dragItem.localObject = item
+        dragItem.previewProvider = {
+            let params = UIDragPreviewParameters()
+            params.backgroundColor = .clear
+            return UIDragPreview(view: cell.imageView, parameters: params)
+        }
         return [dragItem]
+    }
+
+    func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
+        guard isWobbling else { return }
+        guard let item = session.items.first?.localObject as? Movie else { return }
+        guard let index = movies.firstIndex(where: { $0.id == item.id }) else { return }
+        let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as! PosterCollectionViewCell
+        cell.updateRemoveButton(isHidden: false)
     }
 }
 
@@ -326,7 +271,7 @@ extension FavoriteMovieEditorViewController: UICollectionViewDropDelegate {
         if collectionView.hasActiveDrag {
             return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
         }
-        if let _ = session.items.first?.localObject as? any FavoriteMovie {
+        if let _ = session.items.first?.localObject as? Movie {
             if movies.count >= 5 {
                 return  UICollectionViewDropProposal(operation: .forbidden)
             }
@@ -348,7 +293,7 @@ extension FavoriteMovieEditorViewController: UICollectionViewDropDelegate {
                 movies.insert(movie, at: destinationIndexPath.item)
                 collectionView.insertItems(at: [destinationIndexPath])
             }
-        } else if let movie = item.dragItem.localObject as? any FavoriteMovie {
+        } else if let movie = item.dragItem.localObject as? Movie {
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             movies.insert(movie, at: destinationIndexPath.item)
             collectionView.performBatchUpdates {
@@ -357,93 +302,22 @@ extension FavoriteMovieEditorViewController: UICollectionViewDropDelegate {
             placeholderCollectionView.performBatchUpdates {
                 placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.movies.count, section: 0)])
             }
-
+        }
+        if !isWobbling {
+            save()
         }
     }
 
 }
 
-extension FavoriteMovieEditorViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchViewModel.state.results.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "test"
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! Optional<ContentRowCell> ?? ContentRowCell()
-        let movie = searchViewModel.state.results[indexPath.row]
-        let isIncluded = movies.contains { $0.allIds.contains(movie.id) }
-        cell.update(movie: movie, isIncluded: isIncluded)
-        cell.action = { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-            self.searchBar.resignFirstResponder()
-            if let index = self.movies.firstIndex(where: { $0.allIds.contains(movie.id) }) {
-                self.movies.remove(at: index)
-                self.moviesCollectionView.performBatchUpdates {
-                    self.moviesCollectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-                }
-                self.placeholderCollectionView.performBatchUpdates {
-                    let index = max(4 - self.movies.count, 0)
-                    self.placeholderCollectionView.insertItems(at: [IndexPath(item: index, section: 0)])
-                }
-            } else {
-                self.movies.append(movie)
-                self.moviesCollectionView.performBatchUpdates {
-                    let index = self.movies.count - 1
-                    self.moviesCollectionView.insertItems(at: [IndexPath(item: index, section: 0)])
-                }
-                self.placeholderCollectionView.performBatchUpdates {
-                    let index = max(5 - self.movies.count, 0)
-                    self.placeholderCollectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-                }
-            }
-        }
-        return cell
-    }
-}
-
-extension FavoriteMovieEditorViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-    }
-}
-
-extension FavoriteMovieEditorViewController: UITableViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        searchBar.resignFirstResponder()
-    }
-}
-
-extension FavoriteMovieEditorViewController: UITableViewDragDelegate {
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        searchBar.resignFirstResponder()
-        let item = searchViewModel.state.results[indexPath.row]
-        let provider = NSItemProvider(object: URL(string: item.url)! as NSURL)
-        let dragItem = UIDragItem(itemProvider: provider)
-        dragItem.localObject = item
-        let frame = CGRect(origin: .zero, size: FavoriteMovieEditorConfig.calculateItemSize(frame: moviesCollectionView.frame))
-        dragItem.previewProvider = {
-            let imageView = UIImageView(frame: frame)
-            imageView.kf.setImage(with: item.parsedPosterUrl)
-            return UIDragPreview(view: imageView)
-        }
-        dragItem.localObject = item
-        return [dragItem]
-    }
-
-    func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
-        guard let movie = session.items.first?.localObject as? (any FavoriteMovie) else {
-            return
-        }
-        guard let index = searchViewModel.state.results.firstIndex(where: { $0.id == movie.id }) else {
-            return
-        }
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+extension UIView {
+    var canHit: Bool {
+        !isHidden && isUserInteractionEnabled && alpha >= 0.01
     }
 }
 
 #Preview {
-    FavoriteMovieEditor(movies: [Mocks.favoriteMovie, Mocks.favoriteMovie, Mocks.favoriteMovie], isPresented: Binding.constant(true))
+    CoverShelf(movies: [Mocks.movie, Mocks.movie, Mocks.movie], movieTapped: { _ in
+
+    }, isEditing: .constant(false))
 }

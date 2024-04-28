@@ -30,7 +30,7 @@ struct ContentRow<Accessory: View>: View {
                 if let subtitle = viewModel.subtitle {
                     Text(subtitle)
                         .font(.subheadline)
-                        .foregroundStyle(Color.sub)
+                        .foregroundStyle(Color.cut_sub)
                 }
             }
             Spacer()
@@ -56,28 +56,10 @@ extension ContentRow where Accessory == WatchListButton {
     }
 }
 
-struct StatedContentRow: View {
-    var movie: Movie
-    @State var isIncluded: Bool
-    let action: (() -> Void?)
-
-    var body: some View {
-        ContentRow(viewModel: ContentRowViewModel(movie: movie), accessory: Button(isIncluded ? "Remove" : "Add") {
-            isIncluded.toggle()
-            action()
-        })
-    }
-}
-
 class ContentRowCell: UITableViewCell {
-    var action: (() -> Void)?
-    private var content: UIHostingConfiguration<ContentRow<Button<Text>>, EmptyView>?
-
-    func update(movie: Movie, isIncluded: Bool) {
+    func set(_ movie: Movie) {
         let content = UIHostingConfiguration {
-            StatedContentRow(movie: movie, isIncluded: isIncluded) {
-                self.action?()
-            }
+            ContentRow(viewModel: ContentRowViewModel(movie: movie), accessory: nil)
         }
         contentConfiguration = content
     }

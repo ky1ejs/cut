@@ -83,6 +83,7 @@ public class SessionManager: ObservableObject {
                                     CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount.WatchList(
                                         title: m.title,
                                         id: m.id,
+                                        allIds: m.allIds,
                                         poster_url: m.poster_url,
                                         url: m.url,
                                         mainGenre: m.mainGenre,
