@@ -91,7 +91,6 @@ class FavoriteMovieEditorViewController: UIViewController {
         }
 
         override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-
             guard !hasActiveDrag else { return super.hitTest(point, with: event) }
 
             let hit = super.hitTest(point, with: event)
@@ -191,7 +190,9 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
             if isWobbling {
                 addWiggleToCell(cell)
             }
-            cell.updateRemoveButton(isHidden: !isWobbling, animated: false)
+            if !collectionView.hasActiveDrop {
+                cell.updateRemoveButton(isHidden: !isWobbling, animated: false)
+            }
             cell.removeAction = { [weak collectionView, weak self] in
                 guard let `self` = self, let removedIndex = collectionView?.indexPath(for: cell) else {
                     return
@@ -247,7 +248,7 @@ extension FavoriteMovieEditorViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let item = movies[indexPath.item]
         let cell = collectionView.cellForItem(at: indexPath) as! PosterCollectionViewCell
-        cell.updateRemoveButton(isHidden: true, animated: true)
+        cell.updateRemoveButton(isHidden: true, animated: false)
         let provider = NSItemProvider(object: item.title as NSString)
         let dragItem = UIDragItem(itemProvider: provider)
         dragItem.localObject = item
@@ -264,7 +265,9 @@ extension FavoriteMovieEditorViewController: UICollectionViewDragDelegate {
         guard let item = session.items.first?.localObject as? Movie else { return }
         guard let index = movies.firstIndex(where: { $0.id == item.id }) else { return }
         let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as! PosterCollectionViewCell
-        cell.updateRemoveButton(isHidden: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            cell.updateRemoveButton(isHidden: false)
+        }
     }
 }
 
