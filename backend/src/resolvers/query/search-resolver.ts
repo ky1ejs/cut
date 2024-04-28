@@ -18,8 +18,10 @@ const searchResolver: QueryResolvers["search"] = async (_, args) => {
       const genres: Genre[] = movie.genre_ids.map((id: number) =>
         tmdbGenres.find((g) => g.tmdbId === id) ?? null
       ).filter((g: (Genre | null)) => g !== null);
+      const id = `${Provider.TMDB}:${movie.id.toString()}`
       return {
-        id: `${Provider.TMDB}:${movie.id.toString()}`,
+        id: id,
+        allIds: [id],
         title: movie.title,
         poster_url: getImageBaseUrl() + movie.poster_path,
         release_data: movie.release_date,

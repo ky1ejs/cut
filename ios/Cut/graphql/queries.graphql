@@ -3,6 +3,7 @@
 fragment MovieFragment on MovieInterface {
   title
   id
+  allIds
   poster_url
   release_date
   url

@@ -61,7 +61,9 @@ struct Profile: View {
     @State var state = ListState.rated
     @State private var editAccount = false
     @State private var findContacts = false
+    @State private var isEditingFavoriteMovies = false
     @State private var watch: Apollo.Cancellable?
+    @State private var presentedMovie: Movie?
     @Environment(\.colorScheme) private var colorScheme
 
     enum ListState: CaseIterable, Identifiable {
@@ -119,16 +121,22 @@ struct Profile: View {
                 switch state {
                 case .rated:
                     VStack(alignment: .leading) {
-                        Text("Favorite movies").font(.cut_title3).bold()
+                        HStack {
+                            Text("Favorite movies").font(.cut_title3).bold()
+                            Spacer()
+                            Button(isEditingFavoriteMovies ? "Done" : "Edit") {
+                                isEditingFavoriteMovies.toggle()
+                            }
+                        }
                         switch profile {
                         case .loggedInUser(let completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                            coverShelf(movies: completeAccountFragment.favoriteMovies.map { $0.fragments.favoriteMovieFragment })
+                            coverShelf(movies: completeAccountFragment.favoriteMovies.map { $0.fragments.movieFragment })
                         case .otherUser(let otherUserState):
                             switch otherUserState {
                             case .loading:
                                 ProgressView()
                             case .loaded(let fullProfileFragment):
-                                coverShelf(movies: fullProfileFragment.favoriteMovies.map { $0.fragments.favoriteMovieFragment })
+                                coverShelf(movies: fullProfileFragment.favoriteMovies.map { $0.fragments.movieFragment })
                             case .error(_, let error):
                                 Text("Error: " + error.localizedDescription)
                             }
@@ -154,6 +162,7 @@ struct Profile: View {
         }
         .padding(.horizontal, 24)
         .scrollBounceBehavior(.basedOnSize)
+        .scrollClipDisabled()
         .sheet(isPresented: $editAccount, content: {
             switch profile {
             case let .loggedInUser(account), let .loggedInUserError(account, _) :
@@ -166,6 +175,9 @@ struct Profile: View {
         })
         .sheet(isPresented: $findContacts, content: {
             FindFriendsViaContacts(isPresented: $findContacts)
+        })
+        .sheet(item: $presentedMovie, content: { m in
+            DetailView(movie: m)
         })
         .task {
             watch?.cancel()
@@ -198,8 +210,11 @@ struct Profile: View {
         }
     }
 
-    func coverShelf(movies: [CutGraphQL.FavoriteMovieFragment]) -> some View {
-        CoverShelf(movies: movies, editable: profile.isLoggedInUser)
+    func coverShelf(movies: [Movie]) -> some View {
+        CoverShelf(movies: movies, movieTapped: { m in
+            presentedMovie = m
+        }, isEditing: $isEditingFavoriteMovies)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     func cta() -> some View {

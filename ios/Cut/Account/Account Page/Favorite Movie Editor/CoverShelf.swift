@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-struct FavoriteMovieEditor: UIViewControllerRepresentable {
-    let movies: [CutGraphQL.FavoriteMovieFragment]
-    @Binding var isPresented: Bool
+struct CoverShelf: UIViewControllerRepresentable {
+    let movies: [Movie]
+    let movieTapped: (Movie) -> Void
+    @Binding var isEditing: Bool
 
     typealias UIViewControllerType = FavoriteMovieEditorViewController
 
     func makeUIViewController(context: Context) -> FavoriteMovieEditorViewController {
-        FavoriteMovieEditorViewController(movies: movies) {
-            isPresented = false
-        }
+        FavoriteMovieEditorViewController(movies: movies, movieTapped: movieTapped)
     }
 
     func updateUIViewController(_ uiViewController: FavoriteMovieEditorViewController, context: Context) {
-
+        uiViewController.isWobbling = isEditing
     }
 }
 
-
 #Preview {
-    FavoriteMovieEditor(movies: [Mocks.favoriteMovie, Mocks.favoriteMovie, Mocks.favoriteMovie], isPresented: Binding.constant(true))
+    CoverShelf(movies: [Mocks.movie, Mocks.movie, Mocks.movie], movieTapped: { _ in
+
+    }, isEditing: .constant(false))
 }

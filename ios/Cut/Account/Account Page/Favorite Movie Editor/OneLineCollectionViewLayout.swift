@@ -11,8 +11,17 @@ class OneLineCollectionViewLayout: UICollectionViewLayout {
     var attrCache = [UICollectionViewLayoutAttributes]()
     var viewWidth: CGFloat { collectionView?.frame.width ?? 0 }
     var itemCount: Int { collectionView?.numberOfItems(inSection: 0) ?? 0 }
-    let spacing = FavoriteMovieEditorConfig.spacing
-    var itemSize: CGSize { FavoriteMovieEditorConfig.calculateItemSize(frame: collectionView!.frame) }
+    var itemSize: CGSize { type(of: self).calculateItemSize(frame: collectionView!.frame) }
+    var spacing: CGFloat { type(of: self).spacing }
+    static let spacing: CGFloat = 10
+    static let maxItems = 5
+
+    static func calculateItemSize(frame: CGRect) -> CGSize {
+        let maxItems = CGFloat(maxItems)
+        let w: CGFloat = (frame.width - (spacing * (CGFloat(maxItems) - 1))) / CGFloat(maxItems)
+        let h = w * 1.62
+        return CGSize(width: w, height: h)
+    }
 
     override func prepare() {
         attrCache = (0..<itemCount).map(CGFloat.init).map { i in
@@ -30,7 +39,9 @@ class OneLineCollectionViewLayout: UICollectionViewLayout {
         guard let collectionView = collectionView else {
             return .zero
         }
-        return CGSize(width: collectionView.frame.size.width, height: itemSize.height)
+        let items = CGFloat(collectionView.numberOfItems(inSection: 0))
+        let width = items * itemSize.width + (items - 1) * spacing
+        return CGSize(width: width, height: itemSize.height)
     }
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {

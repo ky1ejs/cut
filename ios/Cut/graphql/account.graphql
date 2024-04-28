@@ -18,20 +18,13 @@ fragment ProfileFragment on Profile {
 fragment FullProfileFragment on Profile {
   ...ProfileFragment
   favoriteMovies {
-    ...FavoriteMovieFragment
+    ...MovieFragment
   }
   watchList {
     ...MovieFragment
   }
 }
 
-fragment FavoriteMovieFragment on MovieInterface {
-  id
-  title
-  url
-  poster_url
-  allIds
-}
 
 fragment CompleteAccountFragment on CompleteAccount {
   ...ProfileInterfaceFragment
@@ -39,7 +32,7 @@ fragment CompleteAccountFragment on CompleteAccount {
   followerCount
   followingCount
   favoriteMovies {
-    ...FavoriteMovieFragment
+    ...MovieFragment
   }
   watchList {
     ...MovieFragment
