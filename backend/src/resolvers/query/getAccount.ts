@@ -27,11 +27,11 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       username: context.userDevice.user.username,
       name: context.userDevice.user.name,
       bio: context.userDevice.user.bio,
-      url: context.userDevice.user.url,
+      bio_url: context.userDevice.user.url,
       phoneNumber,
       followerCount: userWithFollowing.followers.length,
       followingCount: userWithFollowing.following.length,
-      link: "https://cut.watch/p/" + context.userDevice.user.username,
+      share_url: "https://cut.watch/p/" + context.userDevice.user.username,
       __typename: "CompleteAccount"
     }
     return completeUser

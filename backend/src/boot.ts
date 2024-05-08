@@ -7,7 +7,7 @@ import http from 'http';
 import cors from 'cors';
 import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
-import moviesResolver from './resolvers/query/movie-resolver';
+import moviesResolver from './resolvers/query/movies';
 import searchResolver from './resolvers/query/search-resolver';
 import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
@@ -16,10 +16,10 @@ import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataLoader from './dataloaders/watchlist/watchListDataLoader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
-import watchList, { completeAccountWatchList, incompleteAccountWatchList } from './resolvers/query/watchList';
+import watchList, { completeAccountWatchList, incompleteAccountWatchList, unknownAccountWatchList } from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
 import importGenres from './tmbd/import-genres';
-import movieResolver from './resolvers/query/movie';
+import movieResolver from './resolvers/query/content/movie';
 import completeAccount from './resolvers/mutation/completeAccount';
 import follow from './resolvers/mutation/follow';
 import unfollow from './resolvers/mutation/unfollow';
@@ -39,6 +39,10 @@ import sendTestPush from './resolvers/query/sendTestPush';
 import MovieDataLoader from './dataloaders/MovieDataLoader';
 import UserDataLoader from './dataloaders/UserDataLoader';
 import favoriteMovies from './resolvers/query/favoriteMovies';
+import contentResolver from './resolvers/query/content/content';
+import TMDB from './datasources/TMDB';
+import dateScalar from './graphql/scalars/DateScalar';
+import urlScalar from './graphql/scalars/UrlScalar';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -46,12 +50,14 @@ const boot = async () => {
   const typeDefs = readFileSync('graphql/schema.graphql', { encoding: 'utf-8' });
 
   const resolvers: Resolvers = {
+    Date: dateScalar,
+    URL: urlScalar,
     Query: {
       account: getAccount,
       movies: moviesResolver,
       search: searchResolver,
-      watchList: (_, __, context, info) => completeAccountWatchList({}, context, info),
-      movie: movieResolver,
+      watchList: unknownAccountWatchList,
+      content: contentResolver,
       initiateEmailVerification,
       isUsernameAvailable,
       contactMatches,
@@ -81,6 +87,9 @@ const boot = async () => {
       isOnWatchList: isOnWatchlistResolver
     },
     ExtendedMovie: {
+      isOnWatchList: isOnWatchlistResolver
+    },
+    ExtendedTVShow: {
       isOnWatchList: isOnWatchlistResolver
     },
     Movie: {
@@ -133,7 +142,8 @@ const boot = async () => {
             annonymousWatchList: new AnnonymousWatchListDataLoader(prisma),
             isFollowing: new IsFollowingDataLoader(),
             movies: new MovieDataLoader(),
-            users: new UserDataLoader()
+            users: new UserDataLoader(),
+            tmdb: TMDB.instance,
           }
         }
         const sessionId = req.headers.authorization;

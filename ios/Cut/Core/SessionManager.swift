@@ -86,6 +86,7 @@ public class SessionManager: ObservableObject {
                                         allIds: m.allIds,
                                         poster_url: m.poster_url,
                                         url: m.url,
+                                        type: m.type,
                                         mainGenre: m.mainGenre,
                                         genres: m.genres,
                                         isOnWatchList: m.isOnWatchList
@@ -94,7 +95,7 @@ public class SessionManager: ObservableObject {
                                 id: data.completeAccount.completeAccount.id,
                                 name: data.completeAccount.completeAccount.name,
                                 username: data.completeAccount.completeAccount.username,
-                                link: data.completeAccount.completeAccount.link
+                                share_url: data.completeAccount.completeAccount.share_url
                             )
                         }
                     }

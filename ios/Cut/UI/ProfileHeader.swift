@@ -47,7 +47,7 @@ struct ProfileHeader: View {
     }
 
     var formattedProfileUrl: (URL, String)? {
-        guard let url = URL(string: profile.url ?? "") else  {
+        guard let url = profile.bio_url else  {
             return nil
         }
 

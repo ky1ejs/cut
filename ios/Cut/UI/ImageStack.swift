@@ -9,22 +9,29 @@ import SwiftUI
 
 struct ImageStack: View {
     let urls: [String]
-    private let spacing: CGFloat = 4
+    private let spacing: CGFloat = 5
+    private let size: CGFloat = 20
 
     var body: some View {
         HStack(spacing: -spacing) {
             ForEach(0..<urls.count, id: \.self) { i in
                 if i < urls.count - 1 {
-                    Circle()
+                    circle()
                         .foregroundColor(.red)
-                        .mask(MoonMask(amount: spacing).fill(style: FillStyle(eoFill: true)))
+                        .mask(MoonMask(amount: spacing)
+                        .fill(style: FillStyle(eoFill: true)))
                 } else {
-                    Circle()
+                    circle()
                         .foregroundColor(.red)
                 }
             }
         }
         .frame(maxHeight: spacing * 4)
+    }
+
+    private func circle() -> some View {
+        Circle()
+            .frame(width: size, height: size)
     }
 }
 
@@ -40,5 +47,7 @@ struct MoonMask: Shape {
 }
 
 #Preview {
-    return ImageStack(urls: ["test", "rest"])
+    VStack {
+        ImageStack(urls: ["test", "rest"])
+    }
 }

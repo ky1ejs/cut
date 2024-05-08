@@ -2,6 +2,8 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
 import { WatchListCacheKey } from './watchListDataLoader';
+import ContentID from '../../types/ContentID';
+import Provider from '../../types/providers';
 
 // TODO - this is a dupe of watchListDataLoader, refactor to one file
 export default class AnnonymousWatchListDataLoader {
@@ -16,24 +18,23 @@ export default class AnnonymousWatchListDataLoader {
       {
         where: {
           OR: ids.map((id) => {
-            // fix this by putting the IDs for providers in the same row?
-            const [provider, movieId] = id.movieId.split(':');
+            const contentId = ContentID.fromString(id.movieId);
             let movieWhere: Prisma.AnnonymousWatchListWhereInput = {
               userId: id.userId,
             };
-            switch (provider) {
-              case 'TMDB':
+            switch (contentId.provider) {
+              case Provider.TMDB:
                 movieWhere = {
                   ...movieWhere,
                   movie: {
-                    tmdbId: parseInt(movieId)
+                    tmdbId: parseInt(contentId.id)
                   }
                 };
                 break;
               default:
                 movieWhere = {
                   ...movieWhere,
-                  movieId: movieId
+                  movieId: contentId.id
                 }
                 break;
             }
@@ -48,9 +49,8 @@ export default class AnnonymousWatchListDataLoader {
     let movieIds = result.map((r) => r.movieId);
     let tmdbIds = result.map((r) => r.movie.tmdbId);
     return ids.map((id) => {
-      const [provider, movieId] = id.movieId.split(':');
-      const parsedMovieId = movieId || provider;
-      return provider === 'TMDB' ? tmdbIds.includes(parseInt(parsedMovieId)) : movieIds.includes(parsedMovieId);
+      const contentId = ContentID.fromString(id.movieId);
+      return contentId.provider === Provider.TMDB ? tmdbIds.includes(parseInt(contentId.id)) : movieIds.includes(contentId.id);
     });
   })
 

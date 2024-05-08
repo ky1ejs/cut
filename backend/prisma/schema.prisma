@@ -186,14 +186,20 @@ model AnnonymousWatchList {
 // -----------------------------------------------------------
 // Movie metadata
 // -----------------------------------------------------------
+enum ContentType {
+  MOVIE
+  TV_SHOW
+}
+
 model Movie {
-  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now())
-  releaseDate      DateTime? @db.Date
+  id               String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now())
+  releaseDate      DateTime?   @db.Date
   originalLanguage String
   originalTitle    String
   synopsis         String
+  contentType      ContentType
 
   mainGenreId Int?
   mainGenre   Genre? @relation(fields: [mainGenreId], references: [id], onDelete: Restrict, onUpdate: Cascade)
@@ -256,6 +262,29 @@ model MovieImage {
   movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
+enum CollectionType {
+  POPULAR
+  TOP_RATED
+  UPCOMING
+  NOW_PLAYING
+  TRENDING_DAILY
+  TRENDING_WEEKLY
+}
+
+model MovieCollection {
+  id        String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type      CollectionType
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now())
+  movieId   String         @db.Uuid
+  movie     Movie          @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([type, movieId])
+}
+
+// -----------------------------------------------------------
+// Genres
+// -----------------------------------------------------------
 model Genre {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -279,24 +308,4 @@ model LocalizedGenre {
   genre              Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([genreId, language_ISO_639_1, country_ISO_3166_1])
-}
-
-enum CollectionType {
-  POPULAR
-  TOP_RATED
-  UPCOMING
-  NOW_PLAYING
-  TRENDING_DAILY
-  TRENDING_WEEKLY
-}
-
-model MovieCollection {
-  id        String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  type      CollectionType
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @default(now())
-  movieId   String         @db.Uuid
-  movie     Movie          @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@unique([type, movieId])
 }

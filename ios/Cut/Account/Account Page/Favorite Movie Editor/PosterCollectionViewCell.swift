@@ -16,7 +16,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
             guard let movie = movie else { return }
             let placeholder = UIView()
             placeholder.backgroundColor = .cut_gray08
-            imageView.kf.setImage(with: URL(string: movie.poster_url)!, placeholder: placeholder, options: [.transition(.fade(2))])
+            imageView.kf.setImage(with: movie.poster_url, placeholder: placeholder, options: [.transition(.fade(2))])
         }
     }
     var isWiggling = false

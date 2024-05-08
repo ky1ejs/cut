@@ -3,10 +3,10 @@ fragment ProfileInterfaceFragment on ProfileInterface {
   id
   name
   username
-  url
+  bio_url
+  share_url
   bio
   imageUrl
-  link
   followerCount
 }
 

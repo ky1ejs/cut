@@ -5,7 +5,7 @@ import prisma from "../../prisma";
 import { decrypt } from "../../services/cipher";
 import sha256 from "../../services/sha-256";
 
-export const completeAccount = async (args: MutationCompleteAccountArgs, context: GraphQLContext) => {
+export const completeAccountResolver: MutationResolvers["completeAccount"] = async (_, args, context) => {
   const { username, name, password, emailToken } = args.params
 
   if (!context.annonymousUserDevice) {
@@ -91,6 +91,7 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
       followerCount: 0,
       name: completedUser.name,
       link: "https://cut.watch/p/" + username,
+      share_url: "https://cut.watch/p/" + username,
     },
     updatedDevice: {
       name: completedUser.devices[0].name,
@@ -98,7 +99,5 @@ export const completeAccount = async (args: MutationCompleteAccountArgs, context
     }
   }
 }
-
-const completeAccountResolver: MutationResolvers["completeAccount"] = (_, args, context) => completeAccount(args, context)
 
 export default completeAccountResolver;

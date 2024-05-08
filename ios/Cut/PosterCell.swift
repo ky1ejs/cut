@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct PosterCell: View {
-    let url: String
+    let url: URL
 
     var body: some View {
-        URLImage(url)
+        URLImage(url: url)
             .clipped()
             .aspectRatio(0.5, contentMode: .fill)
     }
 }
 
 #Preview {
-    PosterCell(url: "https://image.tmdb.org/t/p/original/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg")
+    PosterCell(
+        url: URL(string: "https://image.tmdb.org/t/p/original/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg")!)
 }

@@ -15,7 +15,7 @@ struct EditAccount: View {
     @State private var username: String
     @State private var name: String
     @State private var bio: String
-    @State private var url: String
+    @State private var bioUrl: String
     @State private var phoneNumber: String
     @State private var inFlightRequest: Apollo.Cancellable?
     @State private var error: Error?
@@ -26,7 +26,7 @@ struct EditAccount: View {
         username = user.username
         name = user.name
         bio = user.bio ?? ""
-        url = user.url ?? ""
+        bioUrl = user.bio_url?.absoluteString ?? ""
         phoneNumber = user.phoneNumber ?? ""
     }
 
@@ -55,7 +55,7 @@ struct EditAccount: View {
                 }
                 CutTextField(text: $name, label: "Name")
                 CutTextField(text: $bio, label: "Bio")
-                CutTextField(text: $url, label: "Url")
+                CutTextField(text: $bioUrl, label: "Url")
                 CutTextField(text: $phoneNumber, label: "Phone Number")
             }
             .padding(.horizontal, 18)
@@ -73,7 +73,7 @@ struct EditAccount: View {
             phoneNumber: .some(phoneNumber),
             name: .some(name),
             bio: .some(bio),
-            url: .some(url))
+            url: .some(URL(string: bioUrl)!))
         ), resultHandler: { result in
             switch result.parseGraphQL() {
             case .success:

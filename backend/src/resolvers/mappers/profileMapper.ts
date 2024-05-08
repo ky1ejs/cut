@@ -7,9 +7,9 @@ export function mapProfileInterface(user: User): DeepPartial<ProfileInterface> {
     id: user.id,
     username: user.username,
     name: user.name,
-    url: user.url,
+    bio_url: user.url,
     bio: user.bio,
-    link: "https://cut.watch/p/" + user.username,
+    share_url: "https://cut.watch/p/" + user.username,
     followerCount: user.followerCount,
     followingCount: user.followingCount,
   }

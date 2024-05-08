@@ -9,7 +9,7 @@ import SwiftUI
 
 extension Font {
     static var cut_largeTitle: Font {
-        fontWithSize(34)
+        fontWithSize(34, .bold)
     }
 
     static var cut_title1: Font {

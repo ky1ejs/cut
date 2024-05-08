@@ -76,6 +76,7 @@ class WatchListViewModel {
                             allIds: movie.allIds,
                             poster_url: movie.poster_url,
                             url: movie.url,
+                            type: movie.type,
                             genres: movie.genres,
                             isOnWatchList: true
                         ))
@@ -83,7 +84,7 @@ class WatchListViewModel {
                         let findIndex = {
                             let existing = try txn.read(query: CutGraphQL.WatchListQuery())
                             return existing.watchList.firstIndex{ item in
-                                item.id == movieId
+                                item.id == movieId || item.allIds.contains(movieId)
                             }!
                         }
                         let finalIndex = try index ?? findIndex()

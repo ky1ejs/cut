@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { QueryResolvers } from '../../__generated__/graphql';
 import prisma from '../../prisma';
 import dbMovieToGqlMovie, { movieInclude } from '../mappers/dbMovieToGqlMovie';
