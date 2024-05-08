@@ -1,9 +1,9 @@
-import { Prisma, ImageType, Movie, Genre } from "@prisma/client";
+import { Prisma, ImageType, Movie, Genre, ContentType } from "@prisma/client";
 import prisma from "../prisma"
 import { randomUUID } from "crypto";
 import { ResolvedMovie } from "../resolvers/mappers/dbMovieToGqlMovie";
 
-export default async function importTmbdMovie(movie: any, lang: string, country: string): Promise<ResolvedMovie> {
+export default async function importTmbdMovie(movie: any, lang: string, country: string, type: ContentType): Promise<ResolvedMovie> {
   let cutMovie = await prisma.movie.findUnique({
     where: {
       tmdbId: movie.id
@@ -58,7 +58,7 @@ export default async function importTmbdMovie(movie: any, lang: string, country:
       }
     }) : []
 
-    const parsedMovie = tmdbMovieToCutMovie(movie, mainGenre ? mainGenre.id : undefined);
+    const parsedMovie = tmdbMovieToCutMovie(movie, mainGenre ? mainGenre.id : undefined, type);
     const movieId = randomUUID().toString()
     cutMovie = await prisma.movie.create({
       data: {
@@ -122,12 +122,14 @@ export default async function importTmbdMovie(movie: any, lang: string, country:
   return cutMovie
 }
 
-function tmdbMovieToCutMovie(tmdbMovie: any, mainGenreId: number | undefined): Prisma.MovieCreateInput {
+function tmdbMovieToCutMovie(tmdbMovie: any, mainGenreId: number | undefined, contentType: ContentType): Prisma.MovieCreateInput {
+  const releaseDateString = contentType === ContentType.MOVIE ? tmdbMovie.release_date : tmdbMovie.first_air_date
   let cutMovie: Prisma.MovieCreateInput = {
-    originalTitle: tmdbMovie.title,
-    releaseDate: new Date(tmdbMovie.release_date),
+    originalTitle: contentType === ContentType.MOVIE ? tmdbMovie.title : tmdbMovie.name,
+    releaseDate: releaseDateString ? new Date(releaseDateString) : null,
     synopsis: tmdbMovie.overview,
     originalLanguage: tmdbMovie.original_language,
+    contentType,
   }
   if (mainGenreId) {
     cutMovie.mainGenre = {

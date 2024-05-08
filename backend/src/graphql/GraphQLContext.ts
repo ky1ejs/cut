@@ -4,6 +4,7 @@ import AnnonymousWatchListDataLoader from "../dataloaders/watchlist/annonymousWa
 import IsFollowingDataLoader from "../dataloaders/isFollowingDataLoader"
 import MovieDataLoader from "../dataloaders/MovieDataLoader"
 import UserDataLoader from "../dataloaders/UserDataLoader"
+import TMDB from "../datasources/TMDB"
 
 export interface GraphQLContext {
   annonymousUserDevice?: AnnonymousDevice & { user: AnonymousUser }
@@ -13,6 +14,7 @@ export interface GraphQLContext {
     annonymousWatchList: AnnonymousWatchListDataLoader,
     isFollowing: IsFollowingDataLoader,
     movies: MovieDataLoader,
-    users: UserDataLoader
+    users: UserDataLoader,
+    tmdb: TMDB
   }
 }

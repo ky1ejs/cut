@@ -16,7 +16,7 @@ struct WatchList: View {
         NavigationStack {
             List {
                 ForEach(viewModels, id: \.movie.id) { vm in
-                    NavigationLink(destination: DetailView(movie: vm.movie)) {
+                    NavigationLink(destination: DetailView(content: vm.movie)) {
                         ContentRow(viewModel: vm)
                     }
                 }

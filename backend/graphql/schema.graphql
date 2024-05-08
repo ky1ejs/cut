@@ -1,8 +1,11 @@
+scalar Date
+scalar URL
+
 type Query {
   movies(collection: Collection!): [Movie!]!
   search(term: String!): [Movie!]!
   watchList: [Movie!]!
-  movie(id: String!): ExtendedMovie!
+  content(id: String!): ContentResponse!
 
   contactMatches: [Profile!]!
 
@@ -19,6 +22,12 @@ type Query {
 }
 
 union ProfileUnion = Profile | CompleteAccount
+union ContentUnion = ExtendedMovie | ExtendedTVShow
+
+type ContentResponse {
+  type: ContentType!
+  result: ContentUnion!
+}
 
 type Mutation {
   signUp(deviceName: String!): Device!
@@ -57,7 +66,7 @@ input UpdateAccountInput {
   phoneNumber: String
   name: String
   bio: String
-  url: String
+  url: URL
   favoriteMovies: [String!]
 }
 
@@ -82,10 +91,10 @@ interface ProfileInterface {
   id: String!
   username: String!
   name: String!
-  url: String
+  bio_url: URL
+  share_url: URL!
   bio: String
-  imageUrl: String
-  link: String!
+  imageUrl: URL
   favoriteMovies: [Movie!]!
   watchList: [Movie!]!
   followerCount: Int!
@@ -97,10 +106,10 @@ type Profile implements ProfileInterface {
   id: String!
   username: String!
   name: String!
-  url: String
+  bio_url: URL
+  share_url: URL!
   bio: String
-  imageUrl: String
-  link: String!
+  imageUrl: URL
   favoriteMovies: [Movie!]!
   watchList: [Movie!]!
   followerCount: Int!
@@ -119,10 +128,10 @@ type CompleteAccount implements ProfileInterface {
   id: String!
   username: String!
   name: String!
-  url: String
+  bio_url: URL
+  share_url: URL!
   bio: String
-  imageUrl: String
-  link: String!
+  imageUrl: URL
   favoriteMovies: [Movie!]!
   watchList: [Movie!]!
   followerCount: Int!
@@ -155,52 +164,71 @@ type Device {
   session_id: String!
 }
 
+enum ContentType { 
+  TV_SHOW
+  MOVIE
+}
+
 interface MovieInterface {
   id: String!
   title: String!
-  poster_url: String!
-  release_date: String
+  poster_url: URL!
+  releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
   allIds: [String!]!
-  url: String!
+  url: URL!
+  type: ContentType!
 }
 
 type Movie implements MovieInterface {
   id: String!
   title: String!
-  poster_url: String!
-  release_date: String
+  poster_url: URL!
+  releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
   allIds: [String!]!
-  url: String!
+  url: URL!
+  type: ContentType!
 }
 
-type ExtendedMovie implements MovieInterface {
+interface ExtendedContent {
+  overview: String!
+  cast: [Actor!]!
+  crew: [Person!]!
+  watchProviders: [WatchProvider!]!
+  userRating: Float!
+  trailerUrl: URL
+}
+
+type ExtendedMovie implements MovieInterface & ExtendedContent {
   # MovieInterface fields
   id: String!
   title: String!
-  poster_url: String!
-  release_date: String
+  poster_url: URL!
+  releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
   isOnWatchList: Boolean!
   allIds: [String!]!
-  url: String!
+  url: URL!
+  type: ContentType!
 
-  # ExtendedMovie fields
+  # ExtendedContent fields
   overview: String!
-  backdrop_url: String!
-  runtime: Int!
-  watchProviders: WatchProviders!
   cast: [Actor!]!
   crew: [Person!]!
+  watchProviders: [WatchProvider!]!
   userRating: Float!
+  trailerUrl: URL
+
+  # ExtendedMovie fields
+  backdrop_url: URL!
+  runtime: Int!
   productionCountries: [ProductionCountry!]!
-  trailerUrl: String
   director: Person!
 }
 
@@ -210,17 +238,18 @@ type ProductionCountry {
   emoji: String!
 }
 
-type WatchProviders {
-  stream: [WatchProvider!]!
-  rent: [WatchProvider!]!
-  buy: [WatchProvider!]!
-}
-
 type WatchProvider {
   provider_id: Int!
   provider_name: String!
-  logo_url: String!
-  link: String!
+  logo_url: URL!
+  link: URL!
+  accessModels: [AccessModel!]!
+}
+
+enum AccessModel {
+  BUY
+  RENT
+  STREAM
 }
 
 enum PersonRole {
@@ -233,13 +262,13 @@ enum PersonRole {
 interface PersonInterface {
   id: String!
   name: String!
-  profile_url: String
+  profile_url: URL
 }
 
 type Person implements PersonInterface {
   id: String!
   name: String!
-  profile_url: String
+  profile_url: URL
 
   role: PersonRole!
 }
@@ -247,7 +276,7 @@ type Person implements PersonInterface {
 type Actor implements PersonInterface {
   id: String!
   name: String!
-  profile_url: String
+  profile_url: URL
 
   character: String!
 }
@@ -261,3 +290,39 @@ type GenreMetadata {
   name: String!
 }
 
+type ExtendedTVShow implements MovieInterface & ExtendedContent {
+  # MovieInterface fields
+  id: String!
+  title: String!
+  poster_url: URL!
+  releaseDate: Date
+  mainGenre: Genre
+  genres: [Genre!]!
+  isOnWatchList: Boolean!
+  allIds: [String!]!
+  url: URL!
+  type: ContentType!
+
+  # ExtendedContent fields
+  overview: String!
+  cast: [Actor!]!
+  crew: [Person!]!
+  watchProviders: [WatchProvider!]!
+  userRating: Float!
+  trailerUrl: URL
+
+  # ExtendedTVShow fields
+  seasons: [Season!]!
+  seasonCount: Int!
+  episodeCount: Int!
+}
+
+type Season {
+  id: String!
+  name: String!
+  overview: String!
+  season_number: Int!
+  episode_count: Int!
+  air_date: Date
+  poster_url: URL!
+}

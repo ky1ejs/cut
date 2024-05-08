@@ -44,7 +44,7 @@ class PlaceholderCollectionViewCell: UICollectionViewCell {
 
     private func setIsHighlighted(_ isHighlighted: Bool, animated: Bool = true) {
         let t = Theme.current
-        let color = isHighlighted ? t.darkgray : t.lightgray
+        let color = isHighlighted ? t.subtitle : t.lightgray
         let change = {
             self.contentView.layer.borderColor = color.cgColor
             self.xbar.backgroundColor = color

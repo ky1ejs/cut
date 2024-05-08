@@ -105,7 +105,7 @@ struct Profile: View {
                 ProfileHeader(profile: profile.profileInterface)
                 HStack {
                     cta()
-                    ShareLink(item: URL(string: profile.profileInterface.link)!) {
+                    ShareLink(item: profile.profileInterface.share_url) {
                         Text("Share")
                     }
                     .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme))
@@ -177,7 +177,7 @@ struct Profile: View {
             FindFriendsViaContacts(isPresented: $findContacts)
         })
         .sheet(item: $presentedMovie, content: { m in
-            DetailView(movie: m)
+            DetailView(content: m)
         })
         .task {
             watch?.cancel()

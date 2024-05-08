@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-struct WatchListButton: View {
+protocol WatchListButtonProtocol: View {
+    init(isOnWatchList: Bool, action: @escaping () -> Void)
+}
+
+/// Description: I experienced some issue where if this level of the view hierarchy owned both the view model and the button, state would get lost on re-renders sometimes, particularly when changing watch state on other surfaces and coming back. For some reason the diff that SwiftUI did would consider it unchanged.
+struct WatchListButtonContainer<B: WatchListButtonProtocol>: View {
     @State var watchListViewModel: WatchListViewModel
 
     init(movie: Movie, index: Int? = nil) {
@@ -15,19 +20,38 @@ struct WatchListButton: View {
     }
 
     var body: some View {
-        _WatchListButton(isOnWatchList: watchListViewModel.isOnWatchList) {
+        B(isOnWatchList: watchListViewModel.isOnWatchList) {
             watchListViewModel.toggleWatchList()
         }
     }
 }
 
-private struct _WatchListButton: View {
+typealias CircleWatchListButton = WatchListButtonContainer<_CircleWatchListButton>
+struct _CircleWatchListButton: WatchListButtonProtocol {
     let isOnWatchList: Bool
-    let buttonTapped: () -> Void
+    let action: () -> Void
+
+    var body: some View {
+            Button(action: {
+                action()
+            }, label: {
+                let image: UIImage = isOnWatchList ? .init(named: "check")! : .init(named: "plus")!
+                Image(uiImage: image)
+                    .tint(isOnWatchList ? .black : .white)
+            })
+            .buttonStyle(CircleButtonStyle())
+            .background(Circle().foregroundStyle(isOnWatchList ? Color.black : Color.cut_sub))
+    }
+}
+
+typealias SmallWatchListButton = WatchListButtonContainer<_SmallWatchListButton>
+struct _SmallWatchListButton: WatchListButtonProtocol {
+    let isOnWatchList: Bool
+    let action: () -> Void
 
     var body: some View {
         Button(action: {
-            buttonTapped()
+            action()
         }, label: {
             let image: UIImage = isOnWatchList ? .init(named: "check")! : .init(named: "plus")!
             Image(uiImage: image)
@@ -44,7 +68,7 @@ struct TodoRow_Previews: PreviewProvider {
         @State var on: Bool = false
 
         var body: some View {
-            _WatchListButton(isOnWatchList: on) {
+            _SmallWatchListButton(isOnWatchList: on) {
                 on.toggle()
             }
         }

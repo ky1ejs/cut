@@ -73,7 +73,7 @@ struct Search: View {
                 case .results(let results):
                     ForEach(results, id: \.id) { movie in
                         NavigationLink {
-                            DetailView(movie: movie)
+                            DetailView(content: movie)
                         } label: {
                             ContentRow(viewModel: ContentRowViewModel(movie: movie))
                         }

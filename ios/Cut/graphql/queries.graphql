@@ -5,8 +5,9 @@ fragment MovieFragment on MovieInterface {
   id
   allIds
   poster_url
-  release_date
+  releaseDate
   url
+  type
   mainGenre {
     id
     name
@@ -65,6 +66,7 @@ fragment WatchProviderFragment on WatchProvider {
   provider_name
   link
   logo_url
+  accessModels
 }
 
 fragment PersonInterfaceFragment on PersonInterface {
@@ -91,28 +93,8 @@ fragment ProductionCountryFragment on ProductionCountry {
 
 fragment ExtendedMovieFragment on ExtendedMovie {
   ...MovieFragment
-  overview
-  backdrop_url
+  ...ExtendedContentFragment
   runtime
-  trailerUrl
-  userRating
-  watchProviders {
-    buy {
-      ...WatchProviderFragment
-    }
-    stream {
-      ...WatchProviderFragment
-    }
-    rent {
-      ...WatchProviderFragment
-    }
-  }
-  cast {
-    ...ActorFragment
-  }
-  crew {
-    ...PersonFragment
-  }
   productionCountries {
     ...ProductionCountryFragment
   }
@@ -121,13 +103,52 @@ fragment ExtendedMovieFragment on ExtendedMovie {
   }
 }
 
+fragment ExtendedTVShowFragment on ExtendedTVShow {
+  ...MovieFragment
+  ...ExtendedContentFragment
+  seasonCount
+  episodeCount
+  seasons {
+    id
+    name
+    overview
+    season_number
+    episode_count
+    air_date
+    poster_url
+  }
+}
+
 fragment MutableExtendedMovieFragment on ExtendedMovie @apollo_client_ios_localCacheMutation {
   isOnWatchList
 }
 
-query Movie($movieId: String!) {
-  movie(id: $movieId) {
-    ...ExtendedMovieFragment
+fragment ExtendedContentFragment on ExtendedContent {
+  overview
+  cast {
+    ...ActorFragment
+  }
+  crew {
+    ...PersonFragment
+  }
+  watchProviders {
+    ...WatchProviderFragment
+  }
+  userRating
+  trailerUrl
+}
+
+query GetContent($id: String!) {
+  content(id: $id) {
+    type
+    result {
+      ... on ExtendedMovie {
+        ...ExtendedMovieFragment
+      }
+      ... on ExtendedTVShow {
+        ...ExtendedTVShowFragment
+      }
+    }
   }
 }
 

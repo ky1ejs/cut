@@ -20,7 +20,7 @@ struct ContentRow<Accessory: View>: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            URLImage(url: URL(string: viewModel.imageUrl)!)
+            URLImage(url: viewModel.imageUrl)
                 .foregroundStyle(.red)
                 .frame(height: 140)
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
@@ -48,10 +48,10 @@ extension ContentRow where Accessory == EmptyView {
     }
 }
 
-extension ContentRow where Accessory == WatchListButton {
+extension ContentRow where Accessory == SmallWatchListButton {
     init(viewModel: ContentRowViewModel, index: Int? = nil) {
         self.viewModel = viewModel
-        self.accessory = WatchListButton(movie: viewModel.movie, index: index)
+        self.accessory = SmallWatchListButton(movie: viewModel.movie, index: index)
         self.index = index
     }
 }

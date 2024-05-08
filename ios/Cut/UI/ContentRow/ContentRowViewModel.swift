@@ -16,8 +16,8 @@ class ContentRowViewModel: ObservableObject {
         self.movie = movie
     }
 
-    var imageUrl: String { return movie.poster_url }
-    var title: String { return movie.title }
+    var imageUrl: URL { movie.poster_url }
+    var title: String { movie.title }
 
     var subtitle: String? {
         return movie.mainGenre?.name ?? movie.genres.first?.name
