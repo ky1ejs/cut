@@ -64,6 +64,8 @@ struct PosterCarousel: View {
     let title: String
     let movies: [Movie]
     let style: Style
+    @State var presentedContent: Movie?
+
     enum Style {
         case ordered, unordered
     }
@@ -75,7 +77,9 @@ struct PosterCarousel: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(content: {
                 ForEach(Array(movies.enumerated()), id: \.element.id) { i, m in
-                    NavigationLink(destination: DetailView(content: m)) {
+                    Button {
+                        presentedContent = m
+                    } label: {
                         switch style {
                         case .ordered:
                             OrderedPosterCard(movie: m, index: i + 1)
@@ -87,6 +91,9 @@ struct PosterCarousel: View {
                 }
             })
         }
+        .sheet(item: $presentedContent, content: { m in
+            DetailView(content: m)
+        })
         .frame(height: 165)
     }
 }
