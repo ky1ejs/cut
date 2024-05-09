@@ -63,6 +63,7 @@ class SearchViewModel: ObservableObject {
 
 struct Search: View {
     @ObservedObject private var viewModel = SearchViewModel()
+    @State var presentedContent: Movie?
 
     var body: some View {
         NavigationStack {
@@ -72,8 +73,8 @@ struct Search: View {
                     ProgressView()
                 case .results(let results):
                     ForEach(results, id: \.id) { movie in
-                        NavigationLink {
-                            DetailView(content: movie)
+                        Button {
+                            presentedContent = movie
                         } label: {
                             ContentRow(viewModel: ContentRowViewModel(movie: movie))
                         }
@@ -86,6 +87,9 @@ struct Search: View {
             .navigationTitle("Search")
         }
         .searchable(text: $viewModel.searchTerm, prompt: "Look for something")
+        .sheet(item: $presentedContent) { m in
+            DetailView(content: m)
+        }
     }
 }
 
