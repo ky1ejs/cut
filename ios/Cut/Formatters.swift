@@ -12,7 +12,7 @@ struct Formatters  {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 1
-        formatter.maximumFractionDigits = 1
+        formatter.maximumFractionDigits = 2
         return formatter
     }()
     static let df = DateFormatter()

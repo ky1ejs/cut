@@ -114,7 +114,7 @@ struct ContentHeader: View {
     private func rating(_ rating: Double) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "star.fill")
-            Text(Formatters.twoFractionDigits.string(from: NSNumber(floatLiteral: rating))!)
+            Text(Formatters.twoFractionDigits.string(from: NSNumber(floatLiteral: rating * 10))!)
         }
     }
 }
