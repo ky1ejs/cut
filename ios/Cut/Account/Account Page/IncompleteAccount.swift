@@ -11,13 +11,14 @@ import SwiftUI
 
 struct IncompleteAccount: View {
     @ObservedObject var viewModel: AccountViewModel
+    @State private var isSettingsPresented = false
 
     var body: some View {
         ScrollView {
             HStack {
                 Spacer()
-                NavigationLink {
-                    Settings()
+                Button {
+                    isSettingsPresented = true
                 } label: {
                     Image(systemName: "gear")
                         .resizable()
@@ -39,6 +40,11 @@ struct IncompleteAccount: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
         }
+        .sheet(isPresented: $isSettingsPresented, content: {
+            NavigationStack {
+                Settings(isPresented: $isSettingsPresented)
+            }
+        })
     }
 }
 

@@ -6,8 +6,19 @@
 //
 
 import Foundation
+import ApolloAPI
 
 struct Mocks {
+    static func parse<T: RootSelectionSet>(_ json: String) -> T {
+        do {
+            let jsonObject = try JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
+            return try T(data: jsonObject)
+        } catch {
+            print(error.localizedDescription)
+            fatalError(error.localizedDescription)
+        }
+    }
+
     static var movie: Movie {
         let json = """
             {
@@ -41,8 +52,7 @@ struct Mocks {
                 "isOnWatchList": false
               }
         """
-        let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-        return try! CutGraphQL.MovieFragment(data: jsonObject)
+        return parse(json)
     }
 
     static var extendedTvShow: CutGraphQL.ExtendedTVShowFragment {
@@ -319,13 +329,7 @@ struct Mocks {
               ]
             }
         """
-        do {
-            let jsonObject = try JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-            return try CutGraphQL.ExtendedTVShowFragment(data: jsonObject)
-        } catch {
-            print(error.localizedDescription)
-            fatalError(error.localizedDescription)
-        }
+        return parse(json)
     }
 
     static var completeAccount: CutGraphQL.CompleteAccountFragment {
@@ -335,77 +339,110 @@ struct Mocks {
               "username": "kylejs",
               "name": "Kyle Satti",
               "bio": "Co-founder of Cut",
-              "url": "https://kylejs.dev",
+              "bio_url": "https://kylejs.dev",
               "id": "72686e5d-025f-46ef-b78d-a1511fd01383",
-              "followerCount": 0,
-              "followingCount": 0,
-              "link": "https://cut.watch/p/fab",
+              "followerCount": 100,
+              "followingCount": 100,
+              "share_url": "https://cut.watch/p/fab",
               "watchList": [
                   {
-                    "__typename": "Movie",
-                    "title": "12 Angry Men",
-                    "id": "e2754aa7-7d73-474a-bf53-7fcffdc7ac57",
-                    "poster_url": "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
-                    "release_date": "Tue Apr 09 1957 19:00:00 GMT-0500 (Eastern Daylight Time)",
-                    "mainGenre": {
-                      "__typename": "Genre",
-                      "id": 7,
-                      "name": "Drama"
-                    },
-                    "genres": [
-                      {
+                      "__typename": "Movie",
+                      "type": "MOVIE",
+                      "title": "Godzilla x Kong: The New Empire",
+                      "id": "MOVIE:27f3ad05-5959-4d57-9165-679b0b795722",
+                      "allIds": [
+                        "MOVIE:27f3ad05-5959-4d57-9165-679b0b795722",
+                        "MOVIE:TMDB:823464"
+                      ],
+                      "poster_url": "https://image.tmdb.org/t/p/original/tMefBSflR6PGQLv7WvFPpKLZkyk.jpg",
+                      "releaseDate": "2024-03-27T00:00:00.000Z",
+                      "url": "https://cut.watch/movie/27f3ad05-5959-4d57-9165-679b0b795722",
+                      "mainGenre": {
                         "__typename": "Genre",
-                        "name": "Drama",
-                        "id": 7
-                      }
-                    ],
-                    "isOnWatchList": false
-                  }
+                        "id": 1,
+                        "name": "Action"
+                      },
+                      "genres": [
+                        {
+                          "__typename": "Genre",
+                          "name": "Action",
+                          "id": 1
+                        },
+                        {
+                          "__typename": "Genre",
+                          "name": "Adventure",
+                          "id": 2
+                        },
+                        {
+                          "__typename": "Genre",
+                          "name": "Science Fiction",
+                          "id": 15
+                        }
+                      ],
+                      "isOnWatchList": true
+                    }
               ],
               "favoriteMovies": [
                   {
-                    "__typename": "Movie",
-                    "title": "12 Angry Men",
-                    "id": "e2754aa7-7d73-474a-bf53-7fcffdc7ac57",
-                    "poster_url": "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
-                    "release_date": "Tue Apr 09 1957 19:00:00 GMT-0500 (Eastern Daylight Time)",
-                    "mainGenre": {
-                      "__typename": "Genre",
-                      "id": 7,
-                      "name": "Drama"
-                    },
-                    "genres": [
-                      {
+                      "__typename": "Movie",
+                      "type": "MOVIE",
+                      "title": "Godzilla x Kong: The New Empire",
+                      "id": "MOVIE:27f3ad05-5959-4d57-9165-679b0b795722",
+                      "allIds": [
+                        "MOVIE:27f3ad05-5959-4d57-9165-679b0b795722",
+                        "MOVIE:TMDB:823464"
+                      ],
+                      "poster_url": "https://image.tmdb.org/t/p/original/tMefBSflR6PGQLv7WvFPpKLZkyk.jpg",
+                      "releaseDate": "2024-03-27T00:00:00.000Z",
+                      "url": "https://cut.watch/movie/27f3ad05-5959-4d57-9165-679b0b795722",
+                      "mainGenre": {
                         "__typename": "Genre",
-                        "name": "Drama",
-                        "id": 7
-                      }
-                    ],
-                    "isOnWatchList": false
-                  }
+                        "id": 1,
+                        "name": "Action"
+                      },
+                      "genres": [
+                        {
+                          "__typename": "Genre",
+                          "name": "Action",
+                          "id": 1
+                        },
+                        {
+                          "__typename": "Genre",
+                          "name": "Adventure",
+                          "id": 2
+                        },
+                        {
+                          "__typename": "Genre",
+                          "name": "Science Fiction",
+                          "id": 15
+                        }
+                      ],
+                      "isOnWatchList": false
+                    }
               ]
         }
         """
-        let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-        return try! CutGraphQL.CompleteAccountFragment(data: jsonObject)
+        return parse(json)
     }
 
     static var profile: CutGraphQL.ProfileFragment {
         let json = """
         {
-          "__typename": "Profile",
-          "id": "72e64fb2-5f32-4a4f-9144-cdb16b86629b",
-          "username": "fab",
-          "name": "Fabiano Souza",
-          "url": "https://threads.com/fab",
-          "bio": "Co-founder of Cut",
+          "__typename": "CompleteAccount",
+          "id": "70ffec09-2416-425b-8794-e7e35cafd1b2",
+          "username": "kylejs",
+          "name": "Kyle",
+          "bio_url": "https://kylejs.dev",
+          "share_url": "https://cut.watch/p/kylejs",
+          "bio": "Lisan Al-Gaib",
           "imageUrl": null,
-          "isFollowing": false,
-          "link": "https://cut.watch/p/fab"
+          "followerCount": 100,
+          "followingCount": 100,
+          "phoneNumber": null
         }
         """
         let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
-        return try! CutGraphQL.ProfileFragment(data: jsonObject)
+        return parse(json)
     }
 
     static var profileInterface: CutGraphQL.ProfileInterfaceFragment {

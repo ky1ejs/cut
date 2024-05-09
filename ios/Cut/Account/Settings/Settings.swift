@@ -10,13 +10,12 @@ import Apollo
 
 struct Settings: View {
     @State private var inFlightRequest: Cancellable?
+    @Binding var isPresented: Bool
 
     var body: some View {
         List {
             NavigationLink("Changelog", destination: {
                 Changelog()
-                    .navigationTitle("Changelog")
-                    .navigationBarTitleDisplayMode(.inline)
             })
             HStack {
                 Button(inFlightRequest != nil ? "Sending test push..." : "Send test push") {
@@ -36,9 +35,17 @@ struct Settings: View {
             })
         }
         .navigationTitle("Settings")
+        .toolbar {
+            Button("Done") {
+                isPresented = false
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    Settings()
+    NavigationStack {
+        Settings(isPresented: Binding.constant(true))
+    }
 }

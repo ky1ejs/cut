@@ -60,10 +60,10 @@ struct Profile: View {
     @State var profile: ProfileInput
     @State var state = ListState.rated
     @State private var editAccount = false
-    @State private var findContacts = false
     @State private var isEditingFavoriteMovies = false
     @State private var watch: Apollo.Cancellable?
     @State private var presentedMovie: Movie?
+    @State private var presentSettings = false
     @Environment(\.colorScheme) private var colorScheme
 
     enum ListState: CaseIterable, Identifiable {
@@ -84,16 +84,16 @@ struct Profile: View {
                 if case .loggedInUser = profile {
                     HStack(spacing: 18) {
                         Spacer()
-                        NavigationLink {
-                            Settings()
+                        Button {
+                            presentSettings = true
                         } label: {
                             Image(systemName: "at")
                                 .resizable()
                                 .frame(width: 28, height: 28)
                                 .foregroundStyle(.gray)
                         }
-                        NavigationLink {
-                            Settings()
+                        Button {
+                            presentSettings = true
                         } label: {
                             Image(systemName: "gear")
                                 .resizable()
@@ -158,9 +158,8 @@ struct Profile: View {
                     }
                 }
             }
-
+            .padding(.horizontal, 18)
         }
-        .padding(.horizontal, 24)
         .scrollBounceBehavior(.basedOnSize)
         .scrollClipDisabled()
         .sheet(isPresented: $editAccount, content: {
@@ -173,11 +172,13 @@ struct Profile: View {
                 fatalError("tried to present edit account on another user")
             }
         })
-        .sheet(isPresented: $findContacts, content: {
-            FindFriendsViaContacts(isPresented: $findContacts)
-        })
         .sheet(item: $presentedMovie, content: { m in
             DetailView(content: m)
+        })
+        .sheet(isPresented: $presentSettings, content: {
+            NavigationStack {
+                Settings(isPresented: $presentSettings)
+            }
         })
         .task {
             watch?.cancel()
@@ -231,9 +232,11 @@ struct Profile: View {
 }
 
 #Preview {
-    Profile(profile: .loggedInUser(Mocks.completeAccount))
+    NavigationStack {
+        Profile(profile: .loggedInUser(Mocks.completeAccount))
+    }
 }
 
-#Preview {
-    Profile(profile: .otherUser(.loading(Mocks.profile)))
-}
+//#Preview {
+//    Profile(profile: .otherUser(.loading(Mocks.profile)))
+//}

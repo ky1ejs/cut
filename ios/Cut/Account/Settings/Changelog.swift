@@ -25,7 +25,10 @@ struct Changelog: View {
                     Spacer()
                 }.padding()
 
-        }.scrollBounceBehavior(.basedOnSize)
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .navigationTitle("Changelog")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
