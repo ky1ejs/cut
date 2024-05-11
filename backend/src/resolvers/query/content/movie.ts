@@ -1,5 +1,5 @@
 import { ContentType } from "@prisma/client";
-import { ExtendedMovie, PersonRole, ProductionCountry, ContentType as GqlContentType } from "../../../__generated__/graphql";
+import { ExtendedMovie, ProductionCountry, ContentType as GqlContentType } from "../../../__generated__/graphql";
 import prisma from "../../../prisma";
 import importTmbdMovie from "../../../db/tmdbImporter";
 import dbMovieToGqlMovie, { ResolvedMovie, movieInclude } from "../../mappers/dbMovieToGqlMovie";
@@ -51,7 +51,7 @@ export default async function movieResolver(id: ContentID, tmdb: TMDB): Promise<
     runtime: extendedMovie.runtime,
     backdrop_url: `https://image.tmdb.org/t/p/original${extendedMovie.backdrop_path}`,
     productionCountries,
-    director: extendedContent.crew.find(c => c.role === PersonRole.Director),
+    director: extendedContent.crew.find(c => c.role.toLowerCase() === "director"),
     type: GqlContentType.Movie
   };
 }

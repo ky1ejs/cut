@@ -1,4 +1,4 @@
-import { ExtendedContent, Actor, Person, PersonRole } from "../../__generated__/graphql";
+import { ExtendedContent, Person } from "../../__generated__/graphql";
 import watchProviderMapper from "./watchProviderMapper";
 
 export default function extendedContentMapper(content: any): ExtendedContent {
@@ -9,43 +9,28 @@ export default function extendedContentMapper(content: any): ExtendedContent {
   }
 
   const cast = content.credits.cast.slice(0, 10).map((actor: any) => {
-    const a: Actor = {
+    const person: Person = {
       id: actor.id,
       name: actor.name,
-      character: actor.character,
-      profile_url: `https://image.tmdb.org/t/p/original${actor.profile_path}`
+      role: actor.character,
+      imageUrl: `https://image.tmdb.org/t/p/original${actor.profile_path}`,
+      share_url: `https://cut.watch/person/${actor.id}`
     }
-    return a
+    return person
   })
 
   const watchProviders = watchProviderMapper(content["watch/providers"].results["US"])
 
   const crew: Person[] = content.credits.crew.map((c: any) => {
-    let role: PersonRole
-    switch (c.job) {
-      case "Director":
-        role = PersonRole.Director
-        break;
-      case "Writer":
-        role = PersonRole.Writer
-        break;
-      case "Producer":
-        role = PersonRole.Producer
-        break;
-      case "Executive Producer":
-        role = PersonRole.ExecutiveProducer
-        break;
-      default:
-        return null
-    }
-    const a: Person = {
+    const person: Person = {
       id: c.id,
       name: c.name,
-      profile_url: `https://image.tmdb.org/t/p/original${c.profile_path}`,
-      role: role
-    }
-    return a
-  }).filter((c: any) => c !== null)
+      imageUrl: `https://image.tmdb.org/t/p/original${c.profile_path}`,
+      share_url: `https://cut.watch/person/${c.id}`,
+      role: c.job
+    };
+    return person
+  })
 
   return {
     cast,

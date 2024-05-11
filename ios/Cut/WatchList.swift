@@ -9,15 +9,15 @@ import SwiftUI
 import Apollo
 
 struct WatchList: View {
-    @State var viewModels: [ContentRowViewModel] = []
+    @State var movies: [Movie] = []
     @State private var watcher: GraphQLQueryWatcher<CutGraphQL.WatchListQuery>?
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModels, id: \.movie.id) { vm in
-                    NavigationLink(destination: DetailView(content: vm.movie)) {
-                        ContentRow(viewModel: vm)
+                ForEach(movies, id: \.id) { m in
+                    NavigationLink(destination: DetailView(content: m)) {
+                        ContentRow(movie: m)
                     }
                 }
             }
@@ -26,8 +26,12 @@ struct WatchList: View {
         .task {
             self.watcher?.cancel()
             self.watcher = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.WatchListQuery(), resultHandler: { result in
-                guard let data = try? result.get().data?.watchList else { return }
-                self.viewModels = data.enumerated().map { index, movie in ContentRowViewModel(movie: movie.fragments.movieFragment) }
+                switch result.parseGraphQL() {
+                case .success(let data):
+                    self.movies = data.watchList.map { $0.fragments.movieFragment }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             })
         }
     }

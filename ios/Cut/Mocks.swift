@@ -441,11 +441,37 @@ struct Mocks {
           "phoneNumber": null
         }
         """
-        let jsonObject = try! JSONSerialization.jsonObject(with: json.data(using: .utf8)!) as! [String: AnyHashable]
         return parse(json)
     }
 
     static var profileInterface: CutGraphQL.ProfileInterfaceFragment {
         profile.fragments.profileInterfaceFragment
+    }
+
+    static var personFragment: CutGraphQL.PersonInterfaceFragment {
+        let json = """
+        {
+            "__typename": "Person",
+            "id": "29779",
+            "name": "Michelle MacLaren",
+            "imageUrl": "https://image.tmdb.org/t/p/original/3LcH5eNiysMWaepARllVrS4Dzn7.jpg",
+            "share_url": "https://cut.watch"
+        }
+        """
+        return parse(json)
+    }
+
+    static var personWithRoleFragment: CutGraphQL.PersonFragment {
+        let json = """
+        {
+            "__typename": "Person",
+            "id": "29779",
+            "name": "Michelle MacLaren",
+            "imageUrl": "https://image.tmdb.org/t/p/original/3LcH5eNiysMWaepARllVrS4Dzn7.jpg",
+            "share_url": "https://cut.watch",
+            "role": "PRODUCER"
+        }
+        """
+        return parse(json)
     }
 }

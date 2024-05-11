@@ -72,12 +72,8 @@ fragment WatchProviderFragment on WatchProvider {
 fragment PersonInterfaceFragment on PersonInterface {
   id
   name
-  profile_url
-}
-
-fragment ActorFragment on Actor {
-  ...PersonInterfaceFragment
-  character
+  imageUrl
+  share_url
 }
 
 fragment PersonFragment on Person {
@@ -126,7 +122,7 @@ fragment MutableExtendedMovieFragment on ExtendedMovie @apollo_client_ios_localC
 fragment ExtendedContentFragment on ExtendedContent {
   overview
   cast {
-    ...ActorFragment
+    ...PersonFragment
   }
   crew {
     ...PersonFragment
@@ -181,4 +177,23 @@ mutation SetPushToken($tokenParams: PushTokenInput!) {
 
 query SendTestPush {
   sendTestPush
+}
+
+fragment ExtendedPersonFragment on ExtendedPerson {
+  ...PersonInterfaceFragment
+  biography
+  birthday
+  deathday
+  placeOfBirth
+  knownFor
+  works {
+    ...MovieFragment
+    role
+  }
+}
+
+query GetPerson($id: String!) {
+  person(id: $id) {
+    ...ExtendedPersonFragment
+  }
 }

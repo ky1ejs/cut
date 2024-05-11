@@ -17,6 +17,8 @@ type Query {
   profileByUsername(username: String!): ProfileUnion
   profileById(id: String!): ProfileUnion
 
+  person(id: String!): ExtendedPerson!
+
   # activityFeed: [Activity!]!
   # notifications: [Notification!]!
 }
@@ -197,7 +199,7 @@ type Movie implements MovieInterface {
 
 interface ExtendedContent {
   overview: String!
-  cast: [Actor!]!
+  cast: [Person!]!
   crew: [Person!]!
   watchProviders: [WatchProvider!]!
   userRating: Float!
@@ -219,7 +221,7 @@ type ExtendedMovie implements MovieInterface & ExtendedContent {
 
   # ExtendedContent fields
   overview: String!
-  cast: [Actor!]!
+  cast: [Person!]!
   crew: [Person!]!
   watchProviders: [WatchProvider!]!
   userRating: Float!
@@ -252,33 +254,49 @@ enum AccessModel {
   STREAM
 }
 
-enum PersonRole {
-  DIRECTOR
-  WRITER
-  EXECUTIVE_PRODUCER
-  PRODUCER
-}
-
 interface PersonInterface {
   id: String!
   name: String!
-  profile_url: URL
+  imageUrl: URL
+  share_url: URL!
 }
 
 type Person implements PersonInterface {
   id: String!
   name: String!
-  profile_url: URL
+  imageUrl: URL
+  share_url: URL!
 
-  role: PersonRole!
+  role: String!
 }
 
-type Actor implements PersonInterface {
+type Work implements MovieInterface {
+  id: String!
+  title: String!
+  poster_url: URL!
+  releaseDate: Date
+  mainGenre: Genre
+  genres: [Genre!]!
+  isOnWatchList: Boolean!
+  allIds: [String!]!
+  url: URL!
+  type: ContentType!
+
+  role: String!
+}
+
+type ExtendedPerson implements PersonInterface {
   id: String!
   name: String!
-  profile_url: URL
+  imageUrl: URL
+  share_url: URL!
 
-  character: String!
+  biography: String!
+  birthday: Date
+  deathday: Date
+  placeOfBirth: String
+  knownFor: String!
+  works: [Work!]!
 }
 
 type Genre {
@@ -305,7 +323,7 @@ type ExtendedTVShow implements MovieInterface & ExtendedContent {
 
   # ExtendedContent fields
   overview: String!
-  cast: [Actor!]!
+  cast: [Person!]!
   crew: [Person!]!
   watchProviders: [WatchProvider!]!
   userRating: Float!

@@ -76,7 +76,7 @@ struct Search: View {
                         Button {
                             presentedContent = movie
                         } label: {
-                            ContentRow(viewModel: ContentRowViewModel(movie: movie))
+                            ContentRow(movie: movie)
                         }
                     }
                 case .error(let error):
@@ -88,7 +88,9 @@ struct Search: View {
         }
         .searchable(text: $viewModel.searchTerm, prompt: "Look for something")
         .sheet(item: $presentedContent) { m in
-            DetailView(content: m)
+            NavigationStack {
+                DetailView(content: m)
+            }
         }
     }
 }

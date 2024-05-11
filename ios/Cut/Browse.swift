@@ -92,7 +92,9 @@ struct PosterCarousel: View {
             })
         }
         .sheet(item: $presentedContent, content: { m in
-            DetailView(content: m)
+            NavigationStack {
+                DetailView(content: m)
+            }
         })
         .frame(height: 165)
     }
