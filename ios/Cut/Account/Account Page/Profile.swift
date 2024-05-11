@@ -173,7 +173,9 @@ struct Profile: View {
             }
         })
         .sheet(item: $presentedMovie, content: { m in
-            DetailView(content: m)
+            NavigationStack {
+                DetailView(content: m)
+            }
         })
         .sheet(isPresented: $presentSettings, content: {
             NavigationStack {

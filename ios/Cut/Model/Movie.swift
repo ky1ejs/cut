@@ -6,5 +6,4 @@
 //
 
 typealias Movie = CutGraphQL.MovieFragment
-
 extension Movie: Identifiable {}

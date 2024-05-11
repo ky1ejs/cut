@@ -24,6 +24,16 @@ export default class TMDB {
     return response.data;
   }
 
+  async fetchPerson(id: string) {
+    const params = new URLSearchParams({
+      append_to_response: 'combined_credits',
+      language: 'en-US'
+    });
+    const endpoint = `${TMDB.BASE_URL}/person/${id}?${params.toString()}`
+    const response = await this.createRequest(endpoint)
+    return response.data;
+  }
+
   private createRequest(endpoint: string) {
     return axios.get(endpoint, {
       headers: {

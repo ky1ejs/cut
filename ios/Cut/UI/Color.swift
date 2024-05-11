@@ -114,15 +114,3 @@ extension UIColor {
     static var gray90 = UIColor(white: 0.90, alpha: 1)
     static var gray95 = UIColor(white: 0.95, alpha: 1)
 }
-
-extension Color {
-    static var cut_sub: Color {
-        Color(white: 0, opacity: 0.2)
-    }
-    static var cut_orange: Color {
-        Color(uiColor: .cut_orange)
-    }
-    static var cut_black: Color {
-        Color(uiColor: .cut_black)
-    }
-}

@@ -1,5 +1,5 @@
 import { ContentType } from "@prisma/client";
-import { Actor, ExtendedTvShow, Person, PersonRole, ContentType as GqlContentType, ExtendedContent } from "../../../__generated__/graphql";
+import { ExtendedTvShow, ContentType as GqlContentType } from "../../../__generated__/graphql";
 import prisma from "../../../prisma";
 import importTmbdMovie from "../../../db/tmdbImporter";
 import dbMovieToGqlMovie, { ResolvedMovie, movieInclude } from "../../mappers/dbMovieToGqlMovie";

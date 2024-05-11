@@ -242,7 +242,7 @@ extension MovieSelectionViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "movie-cell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! Optional<ContentRowCell> ?? ContentRowCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! Optional<EntityRowCell> ?? EntityRowCell()
         let movie = searchViewModel.state.results[indexPath.row]
         cell.set(movie)
         return cell

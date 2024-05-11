@@ -27,7 +27,10 @@ struct TVShowDetailView: View {
             ContentHeader(content: movie, tvShow: tvShow, movie: nil, width: width)
             seasons()
             WhereToWatchCarousel(watchProviders: tvShow?.watchProviders.map { $0.fragments.watchProviderFragment })
-            CastCarousel(cast: tvShow?.cast.map { $0.fragments.actorFragment })
+            CastCarousel(
+                cast: tvShow?.cast.map { $0.fragments.personFragment },
+                crew: tvShow?.crew.map { $0.fragments.personFragment }
+            )
         }
     }
 

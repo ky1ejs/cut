@@ -43,6 +43,7 @@ import contentResolver from './resolvers/query/content/content';
 import TMDB from './datasources/TMDB';
 import dateScalar from './graphql/scalars/DateScalar';
 import urlScalar from './graphql/scalars/UrlScalar';
+import personResolver from './resolvers/query/person';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -63,6 +64,7 @@ const boot = async () => {
       contactMatches,
       profileById: getProfileById,
       profileByUsername: getProfileByUsername,
+      person: personResolver,
       sendTestPush
     },
     Mutation: {
@@ -93,6 +95,9 @@ const boot = async () => {
       isOnWatchList: isOnWatchlistResolver
     },
     Movie: {
+      isOnWatchList: isOnWatchlistResolver
+    },
+    Work: {
       isOnWatchList: isOnWatchlistResolver
     },
     AccountUnion: {

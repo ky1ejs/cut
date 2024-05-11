@@ -27,9 +27,15 @@ struct WatchListButtonContainer<B: WatchListButtonProtocol>: View {
 }
 
 typealias CircleWatchListButton = WatchListButtonContainer<_CircleWatchListButton>
-struct _CircleWatchListButton: WatchListButtonProtocol {
+struct _CircleWatchListButton: WatchListButtonProtocol, Themed {
+    @Environment(\.colorScheme) var colorScheme
     let isOnWatchList: Bool
     let action: () -> Void
+
+    init(isOnWatchList: Bool, action: @escaping () -> Void) {
+        self.isOnWatchList = isOnWatchList
+        self.action = action
+    }
 
     var body: some View {
             Button(action: {
@@ -40,14 +46,24 @@ struct _CircleWatchListButton: WatchListButtonProtocol {
                     .tint(isOnWatchList ? .black : .white)
             })
             .buttonStyle(CircleButtonStyle())
-            .background(Circle().foregroundStyle(isOnWatchList ? Color.black : Color.cut_sub))
+            .background(Circle()
+                .foregroundStyle(
+                    isOnWatchList ? theme.primaryButton.color : theme.subtitle.color
+                )
+            )
     }
 }
 
 typealias SmallWatchListButton = WatchListButtonContainer<_SmallWatchListButton>
-struct _SmallWatchListButton: WatchListButtonProtocol {
+struct _SmallWatchListButton: WatchListButtonProtocol, Themed {
+    @Environment(\.colorScheme) var colorScheme
     let isOnWatchList: Bool
     let action: () -> Void
+
+    init(isOnWatchList: Bool, action: @escaping () -> Void) {
+        self.isOnWatchList = isOnWatchList
+        self.action = action
+    }
 
     var body: some View {
         Button(action: {
@@ -59,7 +75,7 @@ struct _SmallWatchListButton: WatchListButtonProtocol {
         })
         .buttonStyle(PlainButtonStyle())
         .frame(width: 36, height: 36)
-        .background(Circle().foregroundStyle(isOnWatchList ? Color.black : Color.cut_sub))
+        .background(Circle().foregroundStyle(isOnWatchList ? theme.primaryButton.color : theme.subtitle.color))
     }
 }
 

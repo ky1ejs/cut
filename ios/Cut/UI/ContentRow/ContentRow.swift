@@ -8,30 +8,50 @@
 import SwiftUI
 
 struct ContentRow<Accessory: View>: View {
-    let viewModel: ContentRowViewModel
-    let index: Int?
+    let movie: Movie
     let accessory: Accessory?
 
-    init(viewModel: ContentRowViewModel, accessory: Accessory, index: Int? = nil) {
-        self.viewModel = viewModel
+    init(movie: Movie, accessory: Accessory?) {
+        self.movie = movie
         self.accessory = accessory
-        self.index = index
+    }
+
+    var body: some View {
+        EntityRow(
+            entity: Entity.from(movie),
+            accessory: accessory
+        )
+    }
+}
+
+extension ContentRow where Accessory == SmallWatchListButton {
+    init(movie: Movie, index: Int? = nil) {
+        self.movie = movie
+        self.accessory = SmallWatchListButton(movie: movie, index: index)
+    }
+}
+
+struct EntityRow<Accessory: View>: View, Themed {
+    @Environment(\.colorScheme) var colorScheme
+    let entity: Entity
+    let accessory: Accessory?
+
+    init(entity: Entity, accessory: Accessory) {
+        self.entity = entity
+        self.accessory = accessory
     }
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            URLImage(url: viewModel.imageUrl)
-                .foregroundStyle(.red)
+            URLImage(url: entity.imageUrl)
                 .frame(height: 140)
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
             VStack(alignment: .leading, spacing: 6) {
-                Text(viewModel.title)
+                Text(entity.title)
                     .font(.title3)
-                if let subtitle = viewModel.subtitle {
-                    Text(subtitle)
+                Text(entity.subtitle)
                         .font(.subheadline)
-                        .foregroundStyle(Color.cut_sub)
-                }
+                        .foregroundStyle(theme.subtitle.color)
             }
             Spacer()
             accessory
@@ -40,32 +60,36 @@ struct ContentRow<Accessory: View>: View {
     }
 }
 
-extension ContentRow where Accessory == EmptyView {
-    init(viewModel: ContentRowViewModel, accessory: Accessory? = nil, index: Int? = nil) {
-        self.viewModel = viewModel
+extension EntityRow where Accessory == EmptyView {
+    init(entity: Entity, accessory: Accessory? = nil) {
+        self.entity = entity
         self.accessory = accessory
-        self.index = index
     }
 }
 
-extension ContentRow where Accessory == SmallWatchListButton {
-    init(viewModel: ContentRowViewModel, index: Int? = nil) {
-        self.viewModel = viewModel
-        self.accessory = SmallWatchListButton(movie: viewModel.movie, index: index)
-        self.index = index
-    }
-}
-
-class ContentRowCell: UITableViewCell {
+class EntityRowCell: UITableViewCell {
     func set(_ movie: Movie) {
         let content = UIHostingConfiguration {
-            ContentRow(viewModel: ContentRowViewModel(movie: movie), accessory: nil)
+            EntityRow(entity: Entity.from(movie))
         }
         contentConfiguration = content
     }
 }
 
+
+
+
 #Preview {
-    let viewModel = ContentRowViewModel(movie: Mocks.movie)
-    return ContentRow(viewModel: viewModel)
+    return EntityRow(
+        entity: Entity(
+            id: "123",
+            title: "123",
+            subtitle: "123",
+            imageUrl: nil
+        )
+    )
+}
+
+#Preview {
+    return ContentRow(movie: Mocks.movie)
 }
