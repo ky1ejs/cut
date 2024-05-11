@@ -112,6 +112,7 @@
 		9354D3CC2BF0015900D28B0C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3CB2BF0015900D28B0C /* Person.swift */; };
 		9354D3CE2BF0047F00D28B0C /* PeopleTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3CD2BF0047F00D28B0C /* PeopleTableView.swift */; };
 		9354D3D02BF0053100D28B0C /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3CF2BF0053100D28B0C /* Entity.swift */; };
+		9354D3D22BF0253300D28B0C /* TruncatedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3D12BF0253300D28B0C /* TruncatedText.swift */; };
 		93796AF62BAF5C9E00091578 /* Changelog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AD02BAF5C9E00091578 /* Changelog.swift */; };
 		93796AF72BAF5C9E00091578 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AD12BAF5C9E00091578 /* Settings.swift */; };
 		93796AFA2BAF5C9E00091578 /* UsernameAvailabilityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AD42BAF5C9E00091578 /* UsernameAvailabilityIndicator.swift */; };
@@ -289,6 +290,7 @@
 		9354D3CB2BF0015900D28B0C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		9354D3CD2BF0047F00D28B0C /* PeopleTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleTableView.swift; sourceTree = "<group>"; };
 		9354D3CF2BF0053100D28B0C /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		9354D3D12BF0253300D28B0C /* TruncatedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruncatedText.swift; sourceTree = "<group>"; };
 		936E60922B8ED9F80092EA59 /* account.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = account.graphql; sourceTree = "<group>"; };
 		93796AD02BAF5C9E00091578 /* Changelog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Changelog.swift; sourceTree = "<group>"; };
 		93796AD12BAF5C9E00091578 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 				930F67912BDEAC9E008C6CF2 /* TVShowDetailView.swift */,
 				93D64DA12BE863BF009F5C01 /* CastCarousel.swift */,
 				93DE35A82BEE433F0072DF53 /* PersonDetailView.swift */,
+				9354D3D12BF0253300D28B0C /* TruncatedText.swift */,
 				93D64D9F2BE86345009F5C01 /* WhereToWatchCarousel.swift */,
 				93FBC8312BE7E4A600308C0E /* MovieDetailView.swift */,
 				933B79602B8AD5AD009CBC27 /* WrappingHStack.swift */,
@@ -952,6 +955,7 @@
 				93DE36582BEEF17F0072DF53 /* StringExtensions.swift in Sources */,
 				9354D3AE2BEFC13800D28B0C /* IncompleteAccount.graphql.swift in Sources */,
 				9354D3D02BF0053100D28B0C /* Entity.swift in Sources */,
+				9354D3D22BF0253300D28B0C /* TruncatedText.swift in Sources */,
 				93796B092BAF5C9E00091578 /* EditAccount.swift in Sources */,
 				9354D3C12BEFC13800D28B0C /* SchemaConfiguration.swift in Sources */,
 				930F66E22BD429AF008C6CF2 /* UIViewExtensions.swift in Sources */,

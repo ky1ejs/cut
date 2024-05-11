@@ -474,4 +474,503 @@ struct Mocks {
         """
         return parse(json)
     }
+
+    static var extendedPerson: CutGraphQL.ExtendedPersonFragment {
+        let json = """
+        {
+              "__typename": "ExtendedPerson",
+              "id": "1136406",
+              "name": "Tom Holland",
+              "imageUrl": "https://image.tmdb.org/t/p/original/yxYOaalFh8SUwNE5C0wzOwF89Ny.jpg",
+              "share_url": "https://www.themoviedb.org/person/1136406",
+              "biography": "Thomas Tom Stanley Holland is an English actor and dancer. He is best known for playing Peter Parker / Spider-Man in the Marvel Cinematic Universe and has appeared as the character in six films: Captain America: Civil War (2016), Spider-Man: Homecoming (2017), Avengers: Infinity War (2018), Avengers: Endgame (2019), Spider-Man: Far From Home (2019), and Spider-Man: No Way Home (2021). He is also known for playing the title role in Billy Elliot the Musical at the Victoria Palace Theatre, London, as well as for starring in the 2012 film The Impossible.",
+              "birthday": "1996-06-01T00:00:00.000Z",
+              "deathday": null,
+              "placeOfBirth": "Surrey, England, UK",
+              "knownFor": "Acting",
+              "works": [
+                {
+                  "__typename": "Work",
+                  "title": "The Impossible",
+                  "id": "MOVIE:TMDB:80278",
+                  "allIds": [
+                    "MOVIE:TMDB:80278"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/1kBYwWu24QKf47mumWEIAzo5tIu.jpg",
+                  "releaseDate": "2012-09-09T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/80278",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 2,
+                    "name": "Adventure"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Thriller",
+                      "id": 17
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Lucas Bennett"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "How I Live Now",
+                  "id": "MOVIE:TMDB:162215",
+                  "allIds": [
+                    "MOVIE:TMDB:162215"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/4FyDHVuuiy6XObYLyXxFUb4oX8J.jpg",
+                  "releaseDate": "2013-09-10T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/162215",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 7,
+                    "name": "Drama"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Action",
+                      "id": 1
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Thriller",
+                      "id": 17
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "War",
+                      "id": 18
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Isaac"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Locke",
+                  "id": "MOVIE:TMDB:210479",
+                  "allIds": [
+                    "MOVIE:TMDB:210479"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/mZTMFDk5VRQuvkJaCFFAXFV65G6.jpg",
+                  "releaseDate": "2014-04-10T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/210479",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 7,
+                    "name": "Drama"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Thriller",
+                      "id": 17
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Eddie (voice)"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Captain America: Civil War",
+                  "id": "MOVIE:TMDB:271110",
+                  "allIds": [
+                    "MOVIE:TMDB:271110"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg",
+                  "releaseDate": "2016-04-27T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/271110",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 2,
+                    "name": "Adventure"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Action",
+                      "id": 1
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Science Fiction",
+                      "id": 15
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Peter Parker / Spider-Man"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Spider-Man: Homecoming",
+                  "id": "MOVIE:TMDB:315635",
+                  "allIds": [
+                    "MOVIE:TMDB:315635"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg",
+                  "releaseDate": "2017-07-05T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/315635",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 1,
+                    "name": "Action"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Action",
+                      "id": 1
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Science Fiction",
+                      "id": 15
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Peter Parker / Spider-Man"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "In the Heart of the Sea",
+                  "id": "MOVIE:TMDB:205775",
+                  "allIds": [
+                    "MOVIE:TMDB:205775"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/weVvNPfk6FM9vBg3BXtRtNAmiYM.jpg",
+                  "releaseDate": "2015-12-03T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/205775",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 17,
+                    "name": "Thriller"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Thriller",
+                      "id": 17
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Action",
+                      "id": 1
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "History",
+                      "id": 10
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Young Thomas Nickerson"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Edge of Winter",
+                  "id": "MOVIE:TMDB:402446",
+                  "allIds": [
+                    "MOVIE:TMDB:402446"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/6SyQ9ebUm90yPrIfQtIKvrFwxnj.jpg",
+                  "releaseDate": "2016-07-31T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/402446",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 7,
+                    "name": "Drama"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Thriller",
+                      "id": 17
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Bradley Baker"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "The Lost City of Z",
+                  "id": "MOVIE:TMDB:314095",
+                  "allIds": [
+                    "MOVIE:TMDB:314095"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/ik3ebv7J18fs6cHkmu91oxz7EGt.jpg",
+                  "releaseDate": "2017-03-15T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/314095",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 2,
+                    "name": "Adventure"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "History",
+                      "id": 10
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Jack Fawcett"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "The Current War",
+                  "id": "MOVIE:TMDB:418879",
+                  "allIds": [
+                    "MOVIE:TMDB:418879"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/eqTjO8yTaPRSKWj7i6Qnr7R5cls.jpg",
+                  "releaseDate": "2018-02-01T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/418879",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 7,
+                    "name": "Drama"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "History",
+                      "id": 10
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Samuel Insull"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Chaos Walking",
+                  "id": "MOVIE:TMDB:412656",
+                  "allIds": [
+                    "MOVIE:TMDB:412656"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/6FzOcNh6hdn9MNsuqpR6o9jCucM.jpg",
+                  "releaseDate": "2021-02-24T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/412656",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 9,
+                    "name": "Fantasy"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Fantasy",
+                      "id": 9
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Science Fiction",
+                      "id": 15
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Todd Hewitt"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "A Monster Calls",
+                  "id": "MOVIE:TMDB:258230",
+                  "allIds": [
+                    "MOVIE:TMDB:258230"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/vNzWJwVqjszWwXrA7ZfsrJmhgV9.jpg",
+                  "releaseDate": "2016-10-07T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/258230",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 7,
+                    "name": "Drama"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Fantasy",
+                      "id": 9
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Stand In"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Uncharted",
+                  "id": "MOVIE:TMDB:335787",
+                  "allIds": [
+                    "MOVIE:TMDB:335787"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/rJHC1RUORuUhtfNb4Npclx0xnOf.jpg",
+                  "releaseDate": "2022-02-10T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/335787",
+                  "type": "MOVIE",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 1,
+                    "name": "Action"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Action",
+                      "id": 1
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Adventure",
+                      "id": 2
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Executive Producer"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "Bunny Army",
+                  "id": "MOVIE:TMDB:960397",
+                  "allIds": [
+                    "MOVIE:TMDB:960397"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500null",
+                  "releaseDate": null,
+                  "url": "https://cut.watch/movie/960397",
+                  "type": "MOVIE",
+                  "mainGenre": null,
+                  "genres": [],
+                  "isOnWatchList": false,
+                  "role": "Set Decorating Coordinator"
+                },
+                {
+                  "__typename": "Work",
+                  "title": "The Crowded Room",
+                  "id": "TV_SHOW:TMDB:123192",
+                  "allIds": [
+                    "TV_SHOW:TMDB:123192"
+                  ],
+                  "poster_url": "https://image.tmdb.org/t/p/w500/vRmopCFp0j1eJGbILLsYsYzxmL8.jpg",
+                  "releaseDate": "2023-06-08T00:00:00.000Z",
+                  "url": "https://cut.watch/movie/123192",
+                  "type": "TV_SHOW",
+                  "mainGenre": {
+                    "__typename": "Genre",
+                    "id": 7,
+                    "name": "Drama"
+                  },
+                  "genres": [
+                    {
+                      "__typename": "Genre",
+                      "name": "Drama",
+                      "id": 7
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Crime",
+                      "id": 5
+                    },
+                    {
+                      "__typename": "Genre",
+                      "name": "Mystery",
+                      "id": 13
+                    }
+                  ],
+                  "isOnWatchList": false,
+                  "role": "Executive Producer"
+                }
+              ]
+            }
+        """
+        return parse(json)
+    }
 }

@@ -79,7 +79,9 @@ struct CastCarousel: View {
                 PersonDetailView(person: person)
             }
             .sheet(item: $presentedPeople) { people in
-                PeopleTableView(people: people.array)
+                NavigationStack {
+                    PeopleTableView(people: people.array)
+                }
             }
         }
     }

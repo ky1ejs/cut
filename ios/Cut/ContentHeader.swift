@@ -19,7 +19,6 @@ struct ContentHeader: View {
     var extendedContent: CutGraphQL.ExtendedContentFragment? {
         tvShow?.fragments.extendedContentFragment ?? movie?.fragments.extendedContentFragment
     }
-    @State var isExpanded = false
 
     var subtitle: String {
         var subtitleArray = [String]()
@@ -95,20 +94,10 @@ struct ContentHeader: View {
                 }
             }
         }
-        VStack(spacing: 0) {
-            Text(extendedContent?.overview ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ultricies orci non fringilla. Vestibulum efficitur semper nisi, ac vehicula magna laoreet ac. Integer eu dapibus nunc. Duis et urna nec purus tempor sollicitudin. Quisque vitae sagittis purus, ut tincidunt enim. Proin vitae purus ligula. Sed vehicula velit non lacinia lobortis. Nullam vitae purus eu justo placerat convallis. Sed pretium justo nisi, vitae scelerisque risus tempus in. Sed ac leo neque. Sed et pulvinar justo. Maecenas non orci vitae purus mattis efficitur eget a nisi. Nunc tempus, dolor id molestie ultricies, elit elit fringilla sapien, vel accumsan felis velit at sapien. Suspendisse potenti.")
-                .frame(maxHeight: isExpanded ? nil : 100)
-                .multilineTextAlignment(.center)
-                .redacted(reason: isLoading ? .placeholder : [])
-                .shimmering(active: isLoading)
-            Button(isExpanded ? "less..." : "more...") {
-                isExpanded.toggle()
-            }
+        LongText(extendedContent?.overview ?? .placeholder(length: 300))
+            .multilineTextAlignment(.center)
             .redacted(reason: isLoading ? .placeholder : [])
-            .disabled(isLoading)
-            .shimmering(active: isLoading, bandSize: 0.6)
-        }
-        .animation(.default, value: isExpanded)
+            .shimmering(active: isLoading)
     }
 
     private func rating(_ rating: Double) -> some View {
@@ -123,6 +112,15 @@ struct ContentHeader: View {
     GeometryReader { proxy in
         VStack {
             ContentHeader(content: Mocks.movie, tvShow: nil, movie: nil, width: proxy.size.width)
+        }
+        .safeAreaPadding(.horizontal, 20)
+    }
+}
+
+#Preview {
+    GeometryReader { proxy in
+        VStack {
+            ContentHeader(content: Mocks.movie, tvShow: Mocks.extendedTvShow, movie: nil, width: proxy.size.width)
         }
         .safeAreaPadding(.horizontal, 20)
     }
