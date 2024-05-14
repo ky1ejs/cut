@@ -19,7 +19,6 @@ struct URLImage: View {
             .fade(duration: 0.25)
             .resizable()
             .aspectRatio(0.64, contentMode: .fit)
-
     }
 }
 

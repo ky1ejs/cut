@@ -13,6 +13,9 @@ struct TVShowDetailView: View {
     @State var isExpanded = false
     let movie: Movie
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
+    @State var previewSeason = 1
+    @State var season: CutGraphQL.ExtendedSeasonFragment?
+    @State var showSeasonPicker = false
     private var theme: Themeable { Theme.for(colorScheme) }
 
     func seasonSubtitle(_ season: CutGraphQL.ExtendedTVShowFragment.Season) -> String {
@@ -25,12 +28,65 @@ struct TVShowDetailView: View {
     var body: some View {
         DetailViewContainer(content: movie) { width in
             ContentHeader(content: movie, tvShow: tvShow, movie: nil, width: width)
+            HStack {
+                if let seasonCount = tvShow?.seasonCount {
+                    Button {
+                        showSeasonPicker = true
+                    } label: {
+                        Text(String("Season \(previewSeason) ˅"))
+                            .font(.cut_title1)
+                    }
+                    .popover(isPresented: $showSeasonPicker, attachmentAnchor: .point(.trailing), content: {
+                        VStack {
+                            ForEach(1...seasonCount, id: \.self) { i in
+                                Button {
+                                    previewSeason = i
+                                    season = nil
+                                    reloadSeason()
+                                    showSeasonPicker = false
+                                } label: {
+                                    Text("Season \(i)")
+                                }
+                                if i < seasonCount {
+                                    Divider()
+                                }
+                            }
+                        }
+                        .padding()
+                        .presentationCompactAdaptation(.popover)
+                    })
+                } else {
+                    Text(String.placeholder(length: 10))
+                        .font(.cut_title1)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
+                }
+                Spacer()
+            }
+            EpisodeCarousel(episodes: season?.episodes.map { $0.fragments.episodeFragment })
             seasons()
             WhereToWatchCarousel(watchProviders: tvShow?.watchProviders.map { $0.fragments.watchProviderFragment })
             CastCarousel(
                 cast: tvShow?.cast.map { $0.fragments.personFragment },
-                crew: tvShow?.crew.map { $0.fragments.personFragment }
+                crew: tvShow?.crew.map { $0.fragments.personFragment },
+                mapper: PersonPersonable(),
+                tableMapper: PersonEntityMapper()
             )
+        }
+        .animation(.linear(duration: 0.4), value: season)
+        .onAppear {
+            reloadSeason()
+        }
+    }
+
+    func reloadSeason() {
+        AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetSeasonQuery(seriesId: movie.id, seasonNumber: previewSeason)) { result in
+            switch result.parseGraphQL() {
+            case .success(let data):
+                season = data.season.fragments.extendedSeasonFragment
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 
@@ -42,20 +98,27 @@ struct TVShowDetailView: View {
                 LazyHStack(spacing: 8) {
                     if let tvShow {
                         ForEach(tvShow.seasons, id: \.id) { season in
-                            VStack {
-                                URLImage(url: season.poster_url)
-                                    .frame(width: 80, height: 80 * 1.62)
-                                    .mask {
-                                        RoundedRectangle(cornerRadius: 10)
+                            NavigationLink {
+                                SeasonDetailView(
+                                    show: movie,
+                                    season: season.fragments.seasonFragment
+                                )
+                            } label: {
+                                VStack {
+                                    URLImage(url: season.poster_url)
+                                        .frame(width: 80, height: 80 * 1.62)
+                                        .mask {
+                                            RoundedRectangle(cornerRadius: 10)
+                                        }
+                                    VStack(alignment: .center) {
+                                        Text("Season \(season.season_number)")
+                                        Text(seasonSubtitle(season))
+                                            .font(.cut_caption2)
+                                            .foregroundStyle(theme.subtitle.color)
                                     }
-                                VStack(alignment: .center) {
-                                    Text("Season \(season.season_number)")
-                                    Text(seasonSubtitle(season))
-                                        .font(.cut_caption2)
-                                        .foregroundStyle(theme.subtitle.color)
+                                    .padding(.horizontal, 8)
+                                    .padding(.bottom, 6)
                                 }
-                                .padding(.horizontal, 8)
-                                .padding(.bottom, 6)
                             }
                         }
                     } else {
@@ -137,4 +200,10 @@ extension CutGraphQL.AccessModel {
 
 #Preview {
     TVShowDetailView(movie: Mocks.movie, tvShow: nil)
+}
+
+#Preview {
+    NavigationStack {
+        TVShowDetailView(movie: Mocks.movie, tvShow: Mocks.extendedTvShow)
+    }
 }

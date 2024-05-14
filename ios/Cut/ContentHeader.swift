@@ -36,16 +36,7 @@ struct ContentHeader: View {
         }
 
         if let movie = movie {
-            let hours = movie.runtime / 60
-            let remainingMinutes = movie.runtime % 60
-
-            if hours == 0 {
-                subtitleArray.append("\(remainingMinutes)min")
-            } else if remainingMinutes == 0 {
-                subtitleArray.append("\(hours)h")
-            } else {
-                subtitleArray.append("\(hours)h \(remainingMinutes)min")
-            }
+            subtitleArray.append(movie.runtime.runtimeString)
         }
 
         return subtitleArray.joined(separator: " • ")

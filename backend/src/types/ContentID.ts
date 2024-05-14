@@ -1,4 +1,5 @@
 import { ContentType } from "../__generated__/graphql";
+import prisma from "../prisma";
 import Provider from "./providers";
 import { ContentType as DbContentType } from "@prisma/client";
 
@@ -57,5 +58,23 @@ export default class ContentID {
       case ContentType.TvShow:
         return DbContentType.TV_SHOW;
     }
+  }
+
+  async tmdbId(): Promise<string> {
+    if (this.provider === Provider.TMDB) {
+      return this.id;
+    }
+    const content = await prisma.movie.findUnique({
+      where: {
+        id: this.id
+      }
+    });
+    if (!content) {
+      throw new Error(`Content with id ${this.id} not found`);
+    }
+    if (!content.tmdbId) {
+      throw new Error(`Content with id ${this.id} has no tmdbId`);
+    }
+    return content.tmdbId.toString();
   }
 }

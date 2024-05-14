@@ -18,6 +18,7 @@ type Query {
   profileById(id: String!): ProfileUnion
 
   person(id: String!): ExtendedPerson!
+  season(seriesId: String!, seasonNumber: Int!): ExtendedSeason!
 
   # activityFeed: [Activity!]!
   # notifications: [Notification!]!
@@ -334,8 +335,7 @@ type ExtendedTVShow implements MovieInterface & ExtendedContent {
   seasonCount: Int!
   episodeCount: Int!
 }
-
-type Season {
+interface SeasonInterface {
   id: String!
   name: String!
   overview: String!
@@ -344,3 +344,53 @@ type Season {
   air_date: Date
   poster_url: URL!
 }
+
+type Season implements SeasonInterface {
+  id: String!
+  name: String!
+  overview: String!
+  season_number: Int!
+  episode_count: Int!
+  air_date: Date
+  poster_url: URL!
+}
+
+type SeasonRole {
+  id: String!
+  role: String!
+  episodeCount: Int!
+}
+
+type SeasonPerson implements PersonInterface {
+  id: String!
+  name: String!
+  imageUrl: URL
+  share_url: URL!
+
+  roles: [SeasonRole!]!
+}
+
+type ExtendedSeason implements SeasonInterface {
+  id: String!
+  name: String!
+  overview: String!
+  season_number: Int!
+  episode_count: Int!
+  air_date: Date
+  poster_url: URL!
+
+  episodes: [Episode!]!
+  cast: [SeasonPerson!]!
+  crew: [SeasonPerson!]!
+}
+
+type Episode {
+  id: String!
+  name: String!
+  overview: String!
+  episode_number: Int!
+  air_date: Date
+  still_url: URL!
+  runtime: Int
+}
+

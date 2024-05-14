@@ -99,19 +99,61 @@ fragment ExtendedMovieFragment on ExtendedMovie {
   }
 }
 
+fragment SeasonFragment on SeasonInterface {
+  id
+  name
+  overview
+  season_number
+  episode_count
+  air_date
+  poster_url
+}
+
+fragment SeasonPersonFragment on SeasonPerson {
+  ...PersonInterfaceFragment
+  roles {
+    id
+    role
+    episodeCount
+  }
+}
+
+fragment EpisodeFragment on Episode {
+  id
+  name
+  overview
+  episode_number
+  air_date
+  still_url
+  runtime
+}
+
+fragment ExtendedSeasonFragment on ExtendedSeason {
+  ...SeasonFragment
+  cast {
+    ...SeasonPersonFragment
+  }
+  crew {
+    ...SeasonPersonFragment
+  }
+  episodes {
+    ...EpisodeFragment
+  }
+}
+
 fragment ExtendedTVShowFragment on ExtendedTVShow {
   ...MovieFragment
   ...ExtendedContentFragment
   seasonCount
   episodeCount
   seasons {
-    id
-    name
-    overview
-    season_number
-    episode_count
-    air_date
-    poster_url
+    ...SeasonFragment
+  }
+}
+
+query GetSeason($seriesId: String!, $seasonNumber: Int!) {
+  season(seriesId: $seriesId, seasonNumber: $seasonNumber) {
+    ...ExtendedSeasonFragment
   }
 }
 
