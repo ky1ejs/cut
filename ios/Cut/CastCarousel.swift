@@ -7,11 +7,19 @@
 
 import SwiftUI
 
-struct CastCarousel: View {
-    let cast: [PersonWithRole]?
-    let crew: [PersonWithRole]?
+protocol Personable {
+    associatedtype InputType
+    func map(_ input: InputType) -> Entity
+    func person(_ input: InputType) -> Person
+}
+
+struct CastCarousel<T: Identifiable, M: Personable, TM: EntityMapper>: View where T == M.InputType, T == TM.InputType {
+    let cast: [T]?
+    let crew: [T]?
+    let mapper: M
+    let tableMapper: TM
     @State var presentedPerson: Person?
-    @State fileprivate var presentedPeople: IdentifiableArray<PersonWithRole>?
+    @State fileprivate var presentedPeople: IdentifiableArray<T>?
 
     var isLoading: Bool { crew == nil && crew == nil }
     
@@ -40,33 +48,13 @@ struct CastCarousel: View {
                 ScrollView(.horizontal) {
                     LazyHStack {
                         if let cast = cast, cast.count > 0 {
-                                PersonCard(
-                                    title: (crew?.count ?? 1) > 0 ? "Cast" : nil,
-                                    entities: cast.map(Entity.from),
-                                    entityTapped: { index in
-                                        presentedPerson = cast[index].fragments.personInterfaceFragment
-                                    }, moreAction:  {
-                                        presentedPeople = IdentifiableArray(array: cast)
-                                    })
+                            card(for: cast, title: (crew?.count ?? 1) > 0 ? "Crew" : nil)
                         } else if crew == nil {
                             placeholderCard()
                         }
 
                         if let crew = crew, crew.count > 0 {
-                                PersonCard(
-                                    title: (cast?.count ?? 1) > 0 ? "Crew" : nil,
-                                    entities: crew.map { c in
-                                        return Entity(
-                                            id: c.id,
-                                            title: c.name,
-                                            subtitle: c.role,
-                                            imageUrl: c.imageUrl
-                                        )
-                                    }, entityTapped: { index in
-                                        presentedPerson = crew[index].fragments.personInterfaceFragment
-                                    }, moreAction:  {
-                                        presentedPeople = IdentifiableArray(array: crew)
-                                    })
+                            card(for: crew, title: (cast?.count ?? 1) > 0 ? "Cast" : nil)
                         } else if crew == nil {
                             placeholderCard()
                         }
@@ -80,10 +68,26 @@ struct CastCarousel: View {
             }
             .sheet(item: $presentedPeople) { people in
                 NavigationStack {
-                    PeopleTableView(people: people.array)
+                    TableView(
+                        entites: people.array,
+                        mapper: tableMapper
+                    )
                 }
             }
         }
+    }
+
+    private func card(for entities: [T], title: String?) -> some View {
+        PersonCard(
+            title: title,
+            entities: entities.map(mapper.map(_:)),
+            entityTapped: { index in
+                presentedPerson = mapper.person(entities[index])
+            }, moreAction:  {
+                presentedPeople = IdentifiableArray(
+                    array: entities
+                )
+            })
     }
 
     private func placeholderCard() -> some View {
@@ -101,21 +105,50 @@ struct CastCarousel: View {
         .redacted(reason: isLoading ? .placeholder : [])
         .shimmering(active: isLoading)
     }
+}
 
-    fileprivate struct IdentifiableArray<T>: Identifiable {
-        let id = UUID()
-        let array: [T]
+fileprivate struct IdentifiableArray<T>: Identifiable {
+    let id = UUID()
+    let array: [T]
+}
+
+struct PersonPersonable: Personable {
+    func map(_ input: PersonWithRole) -> Entity {
+        Entity(
+            id: input.id,
+            title: input.name,
+            subtitle: input.role,
+            imageUrl: input.imageUrl
+        )
+    }
+    func person(_ input: PersonWithRole) -> Person {
+        input.fragments.personInterfaceFragment
     }
 }
 
 #Preview {
-    CastCarousel(cast: nil, crew: nil)
+    CastCarousel(
+        cast: nil,
+        crew: nil,
+        mapper: PersonPersonable(),
+        tableMapper: PersonEntityMapper()
+    )
 }
 
 #Preview {
-    CastCarousel(cast: [], crew: [])
+    CastCarousel(
+        cast: [], 
+        crew: [],
+        mapper: PersonPersonable(),
+        tableMapper: PersonEntityMapper()
+    )
 }
 
 #Preview {
-    CastCarousel(cast: [Mocks.personWithRoleFragment], crew: [Mocks.personWithRoleFragment])
+    CastCarousel(
+        cast: [Mocks.personWithRoleFragment],
+        crew: [Mocks.personWithRoleFragment],
+        mapper: PersonPersonable(),
+        tableMapper: PersonEntityMapper()
+    )
 }

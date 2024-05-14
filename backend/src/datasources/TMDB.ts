@@ -34,6 +34,16 @@ export default class TMDB {
     return response.data;
   }
 
+  async fetchSeason(id: string, seasonNumber: number) {
+    const params = new URLSearchParams({
+      append_to_response: 'aggregate_credits',
+      language: 'en-US'
+    });
+    const endpoint = `${TMDB.BASE_URL}/tv/${id}/season/${seasonNumber}?${params.toString()}`
+    const response = await this.createRequest(endpoint)
+    return response.data;
+  }
+
   private createRequest(endpoint: string) {
     return axios.get(endpoint, {
       headers: {

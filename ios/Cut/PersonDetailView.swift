@@ -8,14 +8,6 @@
 import SwiftUI
 import Kingfisher
 
-func calculateAge(birthDate: Date) -> Int {
-    let calendar = Calendar.current
-    let currentDate = Date()
-    let ageComponents = calendar.dateComponents([.year], from: birthDate, to: currentDate)
-    let age = ageComponents.year ?? 0
-    return age
-}
-
 struct PersonDetailView: View, Themed {
     @Environment(\.colorScheme) var colorScheme
     let person: CutGraphQL.PersonInterfaceFragment
@@ -26,13 +18,7 @@ struct PersonDetailView: View, Themed {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 HStack(spacing: 18) {
-                    KFImage(person.imageUrl)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100 * 1.64)
-                        .mask {
-                            RoundedRectangle(cornerRadius: 10)
-                        }
+                    PosterImage(url: extendedPerson?.imageUrl)
                     VStack(alignment: .leading) {
                         Text(person.name)
                             .font(.cut_title1)

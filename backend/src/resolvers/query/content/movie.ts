@@ -18,7 +18,6 @@ export default async function movieResolver(id: ContentID, tmdb: TMDB): Promise<
       movie = await importTmbdMovie(extendedMovie, "en", "US", ContentType.MOVIE);
       break;
     default:
-      console.log('id', id)
       const cutMovie = await prisma.movie.findUnique({
         where: { id: id.id },
         include: movieInclude

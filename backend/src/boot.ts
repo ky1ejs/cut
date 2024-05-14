@@ -44,6 +44,7 @@ import TMDB from './datasources/TMDB';
 import dateScalar from './graphql/scalars/DateScalar';
 import urlScalar from './graphql/scalars/UrlScalar';
 import personResolver from './resolvers/query/person';
+import seasonResolver from './resolvers/query/season';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -65,7 +66,8 @@ const boot = async () => {
       profileById: getProfileById,
       profileByUsername: getProfileByUsername,
       person: personResolver,
-      sendTestPush
+      sendTestPush,
+      season: seasonResolver
     },
     Mutation: {
       signUp: (_, args) => signUp(args),

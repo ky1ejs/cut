@@ -30,8 +30,6 @@ const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, cont
     cutId = id.id;
   }
 
-  console.log('cutId', cutId);
-
   if (context.userDevice) {
     await prisma.watchList.upsert({
       where: { movieId_userId: { movieId: cutId, userId: context.userDevice.user.id } },

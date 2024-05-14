@@ -18,7 +18,9 @@ struct MovieDetailView: View {
             WhereToWatchCarousel(watchProviders: extendedMovie?.watchProviders.map { $0.fragments.watchProviderFragment })
             CastCarousel(
                 cast: extendedMovie?.cast.map { $0.fragments.personFragment },
-                crew: extendedMovie?.crew.map { $0.fragments.personFragment }
+                crew: extendedMovie?.crew.map { $0.fragments.personFragment },
+                mapper: PersonPersonable(),
+                tableMapper: PersonEntityMapper()
             )
         }
     }
