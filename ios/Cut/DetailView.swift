@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Apollo
+import Kingfisher
 
 struct DetailView: View {
     let content: Movie
@@ -26,6 +27,7 @@ struct DetailView: View {
                 fatalError("Unknown content")
             }
         }
+        .environment(\.theme, DarkTheme())
         .animation(.linear(duration: 0.4), value: extendedContent)
         .onAppear {
             watched?.cancel()
@@ -41,16 +43,8 @@ struct DetailView: View {
     }
 }
 
-protocol Themed {
-    var colorScheme: ColorScheme { get }
-}
-
-extension Themed {
-    var theme: Themeable { Theme.for(colorScheme) }
-}
-
-struct DetailViewContainer<C: View>: View, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct DetailViewContainer<C: View>: View {
+    @Environment(\.theme) var theme
     let content: Movie
     @ViewBuilder let child: (CGFloat) -> C
 
@@ -61,8 +55,9 @@ struct DetailViewContainer<C: View>: View, Themed {
                     VStack(spacing: 24) {
                         child(proxy.size.width)
                     }
+                    .safeAreaPadding(.top, 20)
                     .safeAreaPadding(.horizontal, 20)
-                    .padding(.bottom, 80)
+                    .padding(.bottom, 100)
                     .scrollClipDisabled()
                 }
                 VStack {
@@ -83,17 +78,25 @@ struct DetailViewContainer<C: View>: View, Themed {
                     .padding(.top, 18)
                     .safeAreaPadding(.bottom, 32)
                     .background {
-                        LinearGradient(gradient: Gradient(colors: [.clear, theme.background.color]), startPoint: .init(x: 0.5, y: 0), endPoint: .init(x: 0.5, y: 0.8))
+                        LinearGradient(gradient: Gradient(colors: [.clear, theme.background.color]), startPoint: .init(x: 0.5, y: 0), endPoint: .init(x: 0.5, y: 0.5))
                             .fixedSize(horizontal: false, vertical: false)
+                            .ignoresSafeArea()
                     }
                 }
+            }
+            .background {
+                KFImage(content.poster_url)
+                    .resizable()
+                    .blur(radius: 90)
+                    .saturation(0.4)
+                    .brightness(-0.3)
+                    .aspectRatio(contentMode: .fill)
+                    .ignoresSafeArea()
             }
         }
     }
 }
 
 #Preview {
-    TabView {
-        DetailView(content: Mocks.movie)
-    }
+    DetailView(content: Mocks.movie)
 }

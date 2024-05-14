@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct WhereToWatchCarousel: View, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct WhereToWatchCarousel: View {
+    @Environment(\.theme) var theme
     let watchProviders: [CutGraphQL.WatchProviderFragment]?
 
     var body: some View {
@@ -17,6 +17,7 @@ struct WhereToWatchCarousel: View, Themed {
                 VStack(alignment: .leading) {
                     Text("Where to Watch")
                         .font(.cut_title1)
+                        .foregroundStyle(theme.text.color)
                     if !watchProviders.isEmpty {
                         Table(views: (watchProviders).map { i in
                             RoundedRectImageRow(
@@ -38,6 +39,7 @@ struct WhereToWatchCarousel: View, Themed {
             VStack(alignment: .leading) {
                 Text("Where to Watch")
                     .font(.cut_title1)
+                    .foregroundStyle(theme.text.color)
                     .redacted(reason: .placeholder)
                     .shimmering()
                 Table(views: (0..<5).map { i in
@@ -58,6 +60,7 @@ struct WhereToWatchCarousel: View, Themed {
 
 #Preview {
     WhereToWatchCarousel(watchProviders: nil)
+        .background(.black)
 }
 
 #Preview {

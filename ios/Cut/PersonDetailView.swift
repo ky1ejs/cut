@@ -8,8 +8,8 @@
 import SwiftUI
 import Kingfisher
 
-struct PersonDetailView: View, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct PersonDetailView: View {
+    @Environment(\.theme) var theme
     let person: CutGraphQL.PersonInterfaceFragment
     @State var extendedPerson: CutGraphQL.ExtendedPersonFragment?
     var isLoading: Bool { extendedPerson == nil }

@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct PersonCard: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.theme) var theme
     let title: String?
     let entities: [Entity]
     let entityTapped: ((Int) -> Void)?
@@ -28,6 +28,7 @@ struct PersonCard: View {
                 if let title = title {
                     Text(title)
                         .font(.cut_title2)
+                        .foregroundStyle(theme.text.color)
                 }
                 Table(
                     views: (0..<min(4, entities.count)).map { i in
@@ -47,7 +48,7 @@ struct PersonCard: View {
         .padding(.horizontal, 12)
         .padding(.top, 18)
         .padding(.bottom, 12)
-        .background(Theme.for(colorScheme).overlayBackground.color)
+        .background(theme.overlayBackground.color)
         .mask {
             RoundedRectangle(cornerRadius: 15)
         }
@@ -89,8 +90,8 @@ struct CircleImageRow: View {
     }
 }
 
-struct ImageRow<Shape: View>: View, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct ImageRow<Shape: View>: View {
+    @Environment(\.theme) var theme
     let entity: Entity
     let shape: () -> Shape
 
@@ -108,11 +109,11 @@ struct ImageRow<Shape: View>: View, Themed {
             } else {
                 shape()
                     .frame(width: 44, height: 44)
-                    .foregroundStyle(Theme.for(colorScheme).imagePlaceholder.color)
+                    .foregroundStyle(theme.imagePlaceholder.color)
             }
             VStack(alignment: .leading) {
                 Text(entity.title)
-                    .foregroundStyle(theme.primaryButton.color)
+                    .foregroundStyle(theme.text.color)
                 Text(entity.subtitle)
                     .font(.cut_footnote)
                     .foregroundStyle(theme.subtitle.color)

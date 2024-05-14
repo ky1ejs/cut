@@ -14,6 +14,8 @@ protocol Personable {
 }
 
 struct CastCarousel<T: Identifiable, M: Personable, TM: EntityMapper>: View where T == M.InputType, T == TM.InputType {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.theme) var theme
     let cast: [T]?
     let crew: [T]?
     let mapper: M
@@ -45,6 +47,7 @@ struct CastCarousel<T: Identifiable, M: Personable, TM: EntityMapper>: View wher
                     .font(.cut_title1)
                     .redacted(reason: isLoading ? .placeholder : [])
                     .shimmering(active: isLoading)
+                    .foregroundStyle(theme.text.color)
                 ScrollView(.horizontal) {
                     LazyHStack {
                         if let cast = cast, cast.count > 0 {
@@ -65,6 +68,7 @@ struct CastCarousel<T: Identifiable, M: Personable, TM: EntityMapper>: View wher
             }
             .navigationDestination(item: $presentedPerson) { person in
                 PersonDetailView(person: person)
+                    .environment(\.theme, Theme.for(colorScheme))
             }
             .sheet(item: $presentedPeople) { people in
                 NavigationStack {
@@ -73,6 +77,7 @@ struct CastCarousel<T: Identifiable, M: Personable, TM: EntityMapper>: View wher
                         mapper: tableMapper
                     )
                 }
+                .environment(\.theme, Theme.for(colorScheme))
             }
         }
     }
