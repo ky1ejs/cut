@@ -16,8 +16,8 @@ struct StillCardEntity {
     let imageUrl: URL?
 }
 
-struct StillCard: View, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct StillCard: View {
+    @Environment(\.theme) var theme
     let entity: StillCardEntity
 
     var body: some View {
@@ -41,6 +41,7 @@ struct StillCard: View, Themed {
                         .font(.cut_subheadline)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .foregroundStyle(theme.text.color)
                 Spacer()
             }
             .padding(.horizontal, 8)

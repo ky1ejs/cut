@@ -9,6 +9,8 @@ import SwiftUI
 import Kingfisher
 
 struct Root: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         TabView {
             Browse().tabItem { Label("Feed", systemImage: "film")}
@@ -19,6 +21,7 @@ struct Root: View {
             Account()
                 .tabItem { Label("Account", systemImage: "person.crop.circle.fill") }
         }
+        .environment(\.theme, Theme.for(colorScheme))
     }
 }
 

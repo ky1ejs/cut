@@ -31,8 +31,8 @@ extension ContentRow where Accessory == SmallWatchListButton {
     }
 }
 
-struct EntityRow<Accessory: View>: View, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct EntityRow<Accessory: View>: View {
+    @Environment(\.theme) var theme
     let entity: Entity
     let accessory: Accessory?
 

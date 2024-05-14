@@ -9,12 +9,11 @@ import SwiftUI
 import Kingfisher
 
 struct ContentHeader: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.theme) var theme
     let content: Movie
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
     let movie: CutGraphQL.ExtendedMovieFragment?
     let width: CGFloat
-    var theme: Themeable { Theme.for(colorScheme) }
     var isLoading: Bool { tvShow == nil && movie == nil }
     var extendedContent: CutGraphQL.ExtendedContentFragment? {
         tvShow?.fragments.extendedContentFragment ?? movie?.fragments.extendedContentFragment
@@ -71,6 +70,8 @@ struct ContentHeader: View {
                 .shimmering(active: isLoading)
             Text(content.title)
                 .font(.cut_largeTitle)
+                .foregroundColor(theme.text.color)
+//                .blendMode(.colorDodge)
             HStack(spacing: 16) {
                 //                                HStack(spacing: 4) {
                 //                                    ImageStack(urls: ["https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg", "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg", "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg"])
@@ -84,17 +85,20 @@ struct ContentHeader: View {
                     rating(movie.userRating)
                 }
             }
+            LongText(extendedContent?.overview ?? .placeholder(length: 300))
+                .foregroundColor(theme.text.color)
+                .multilineTextAlignment(.center)
+                .redacted(reason: isLoading ? .placeholder : [])
+                .shimmering(active: isLoading)
         }
-        LongText(extendedContent?.overview ?? .placeholder(length: 300))
-            .multilineTextAlignment(.center)
-            .redacted(reason: isLoading ? .placeholder : [])
-            .shimmering(active: isLoading)
     }
 
     private func rating(_ rating: Double) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "star.fill")
+                .foregroundStyle(theme.text.color)
             Text(Formatters.twoFractionDigits.string(from: NSNumber(floatLiteral: rating * 10))!)
+                .foregroundStyle(theme.text.color)
         }
     }
 }
@@ -103,6 +107,7 @@ struct ContentHeader: View {
     GeometryReader { proxy in
         VStack {
             ContentHeader(content: Mocks.movie, tvShow: nil, movie: nil, width: proxy.size.width)
+                .background(.black)
         }
         .safeAreaPadding(.horizontal, 20)
     }
@@ -114,5 +119,6 @@ struct ContentHeader: View {
             ContentHeader(content: Mocks.movie, tvShow: Mocks.extendedTvShow, movie: nil, width: proxy.size.width)
         }
         .safeAreaPadding(.horizontal, 20)
+        .backgroundStyle(.black)
     }
 }

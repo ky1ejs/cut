@@ -45,4 +45,5 @@ struct EpisodeCarousel: View {
 
 #Preview {
     EpisodeCarousel(episodes: nil)
+        .background(.black)
 }

@@ -27,8 +27,8 @@ struct WatchListButtonContainer<B: WatchListButtonProtocol>: View {
 }
 
 typealias CircleWatchListButton = WatchListButtonContainer<_CircleWatchListButton>
-struct _CircleWatchListButton: WatchListButtonProtocol, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct _CircleWatchListButton: WatchListButtonProtocol {
+    @Environment(\.theme) var theme
     let isOnWatchList: Bool
     let action: () -> Void
 
@@ -55,8 +55,8 @@ struct _CircleWatchListButton: WatchListButtonProtocol, Themed {
 }
 
 typealias SmallWatchListButton = WatchListButtonContainer<_SmallWatchListButton>
-struct _SmallWatchListButton: WatchListButtonProtocol, Themed {
-    @Environment(\.colorScheme) var colorScheme
+struct _SmallWatchListButton: WatchListButtonProtocol {
+    @Environment(\.theme) var theme
     let isOnWatchList: Bool
     let action: () -> Void
 

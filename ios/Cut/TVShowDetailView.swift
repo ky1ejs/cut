@@ -9,14 +9,13 @@ import SwiftUI
 import Kingfisher
 
 struct TVShowDetailView: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.theme) var theme
     @State var isExpanded = false
     let movie: Movie
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
     @State var previewSeason = 1
     @State var season: CutGraphQL.ExtendedSeasonFragment?
     @State var showSeasonPicker = false
-    private var theme: Themeable { Theme.for(colorScheme) }
 
     func seasonSubtitle(_ season: CutGraphQL.ExtendedTVShowFragment.Season) -> String {
         if case .some(let date) = season.air_date {
@@ -35,6 +34,7 @@ struct TVShowDetailView: View {
                     } label: {
                         Text(String("Season \(previewSeason) ˅"))
                             .font(.cut_title1)
+                            .foregroundStyle(theme.text.color)
                     }
                     .popover(isPresented: $showSeasonPicker, attachmentAnchor: .point(.trailing), content: {
                         VStack {
@@ -60,6 +60,7 @@ struct TVShowDetailView: View {
                         .font(.cut_title1)
                         .redacted(reason: .placeholder)
                         .shimmering()
+                        .foregroundStyle(theme.text.color)
                 }
                 Spacer()
             }
@@ -94,6 +95,7 @@ struct TVShowDetailView: View {
         VStack(alignment: .leading) {
             Text("Seasons")
                 .font(.cut_title1)
+                .foregroundStyle(theme.text.color)
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 8) {
                     if let tvShow {
@@ -109,6 +111,7 @@ struct TVShowDetailView: View {
                                         .frame(width: 80, height: 80 * 1.62)
                                         .mask {
                                             RoundedRectangle(cornerRadius: 10)
+                                                .background(theme.background.color)
                                         }
                                     VStack(alignment: .center) {
                                         Text("Season \(season.season_number)")

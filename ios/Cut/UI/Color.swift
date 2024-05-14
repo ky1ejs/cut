@@ -8,6 +8,17 @@
 import SwiftUI
 import UIKit
 
+private struct ThemeEnvironmentKey: EnvironmentKey {
+    static var defaultValue: Themeable = LightTheme()
+}
+
+extension EnvironmentValues {
+  var theme: Themeable {
+    get { self[ThemeEnvironmentKey.self] }
+    set { self[ThemeEnvironmentKey.self] = newValue }
+  }
+}
+
 protocol Themeable {
     var background: UIColor { get }
     var grayBackground: UIColor { get }
@@ -81,7 +92,7 @@ struct DarkTheme: Themeable {
         let gradient = [tranlucent, .gray90.withAlphaComponent(0.8), tranlucent]
         return Gradient(colors: gradient.map { $0.color })
     }
-    var overlayBackground: UIColor { .gray10 }
+    var overlayBackground: UIColor { .gray10.withAlphaComponent(0.6) }
     var imagePlaceholder: UIColor { .gray20 }
 }
 
