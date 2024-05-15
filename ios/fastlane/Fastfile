@@ -104,7 +104,8 @@ platform :ios do
     upload_to_testflight(
       groups: "Alpha", 
       submit_beta_review: false,
-      changelog: options[:changelog]
+      changelog: options[:changelog],
+      skip_waiting_for_build_processing: true
     )
   end
 
