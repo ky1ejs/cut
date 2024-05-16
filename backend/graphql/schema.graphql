@@ -19,6 +19,7 @@ type Query {
 
   person(id: String!): ExtendedPerson!
   season(seriesId: String!, seasonNumber: Int!): ExtendedSeason!
+  episode(seriesId: String!, seasonNumber: Int!, episodeNumber: Int!): ExtendedEpisode!
 
   # activityFeed: [Activity!]!
   # notifications: [Notification!]!
@@ -384,13 +385,41 @@ type ExtendedSeason implements SeasonInterface {
   crew: [SeasonPerson!]!
 }
 
-type Episode {
+interface EpisodeInterface {
   id: String!
   name: String!
   overview: String!
+  season_number: Int!
   episode_number: Int!
   air_date: Date
   still_url: URL!
   runtime: Int
+}
+
+type Episode implements EpisodeInterface {
+  id: String!
+  name: String!
+  overview: String!
+  season_number: Int!
+  episode_number: Int!
+  air_date: Date
+  still_url: URL!
+  runtime: Int
+}
+
+type ExtendedEpisode implements EpisodeInterface {
+  id: String!
+  name: String!
+  overview: String!
+  season_number: Int!
+  episode_number: Int!
+  air_date: Date
+  still_url: URL!
+  runtime: Int
+
+  crew: [Person!]!
+  cast: [Person!]!
+  guestStars: [Person!]!
+  stills: [URL!]!
 }
 

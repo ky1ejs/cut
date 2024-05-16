@@ -64,7 +64,10 @@ struct TVShowDetailView: View {
                 }
                 Spacer()
             }
-            EpisodeCarousel(episodes: season?.episodes.map { $0.fragments.episodeFragment })
+            EpisodeCarousel(
+                seriesId: movie.id,
+                episodes: season?.episodes.map { $0.fragments.episodeFragment }
+            )
             seasons()
             WhereToWatchCarousel(watchProviders: tvShow?.watchProviders.map { $0.fragments.watchProviderFragment })
             CastCarousel(

@@ -118,14 +118,29 @@ fragment SeasonPersonFragment on SeasonPerson {
   }
 }
 
-fragment EpisodeFragment on Episode {
+fragment EpisodeFragment on EpisodeInterface {
   id
   name
   overview
+  season_number
   episode_number
   air_date
   still_url
   runtime
+}
+
+fragment ExtendedEpisodeFragment on ExtendedEpisode {
+  ...EpisodeFragment
+  crew {
+    ...PersonFragment
+  }
+  cast {
+    ...PersonFragment
+  }
+  guestStars {
+    ...PersonFragment
+  }
+  stills
 }
 
 fragment ExtendedSeasonFragment on ExtendedSeason {
@@ -237,5 +252,12 @@ fragment ExtendedPersonFragment on ExtendedPerson {
 query GetPerson($id: String!) {
   person(id: $id) {
     ...ExtendedPersonFragment
+  }
+}
+
+
+query GetEpisode($seriesId: String!, $seasonNumber: Int!, $episodeNumber: Int!) {
+  episode(seriesId: $seriesId, seasonNumber: $seasonNumber, episodeNumber: $episodeNumber) {
+    ...ExtendedEpisodeFragment
   }
 }

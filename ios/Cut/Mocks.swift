@@ -2676,4 +2676,21 @@ struct Mocks {
         """
         return parse(json)
     }
+
+    static var episode: CutGraphQL.EpisodeFragment {
+        let json = """
+        {
+          "__typename": "Episode",
+          "id": "3335303",
+          "name": "To Me, My X-Men",
+          "overview": "Cyclops races to find the source of new anti-mutant technology.",
+          "season_number": 2,
+          "episode_number": 1,
+          "air_date": "2008-01-20T00:00:00.000Z",
+          "still_url": "https://image.tmdb.org/t/p/original/zLXRYta8yBVXvl1Hr6jjgL6Ofxh.jpg",
+          "runtime": 33
+        }
+        """
+        return parse(json)
+    }
 }

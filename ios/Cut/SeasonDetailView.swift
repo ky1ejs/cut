@@ -39,7 +39,10 @@ struct SeasonDetailView: View {
                         .redacted(reason: .placeholder)
                         .shimmering()
                 }
-                EpisodeCarousel(episodes: extendedSeason?.episodes.map { $0.fragments.episodeFragment })
+                EpisodeCarousel(
+                    seriesId: show.id,
+                    episodes: extendedSeason?.episodes.map { $0.fragments.episodeFragment }
+                )
                 CastCarousel(
                     cast: extendedSeason?.cast.map { $0.fragments.seasonPersonFragment },
                     crew: extendedSeason?.crew.map { $0.fragments.seasonPersonFragment },
