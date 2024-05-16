@@ -40,8 +40,8 @@ struct EpisodeDetailView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(
-                                            width: proxy.size.width - padding * 2 - imagePadding * 2,
-                                            height: proxy.size.width * 0.8 * 0.7
+                                            width: max(0, proxy.size.width - padding * 2 - imagePadding * 2),
+                                            height: max(proxy.size.width * 0.8 * 0.7, 0)
                                         )
                                         .mask {
                                             RoundedRectangle(cornerRadius: 16)
