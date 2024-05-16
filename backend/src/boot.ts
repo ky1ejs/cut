@@ -45,6 +45,7 @@ import dateScalar from './graphql/scalars/DateScalar';
 import urlScalar from './graphql/scalars/UrlScalar';
 import personResolver from './resolvers/query/person';
 import seasonResolver from './resolvers/query/season';
+import episodeResolver from './resolvers/query/episode';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -67,7 +68,8 @@ const boot = async () => {
       profileByUsername: getProfileByUsername,
       person: personResolver,
       sendTestPush,
-      season: seasonResolver
+      season: seasonResolver,
+      episode: episodeResolver
     },
     Mutation: {
       signUp: (_, args) => signUp(args),

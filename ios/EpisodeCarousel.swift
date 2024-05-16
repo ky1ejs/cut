@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EpisodeCarousel: View {
+    let seriesId: String
     let episodes: [CutGraphQL.EpisodeFragment]?
 
     var body: some View {
@@ -15,13 +16,20 @@ struct EpisodeCarousel: View {
             LazyHStack {
                 if let episodes = episodes, episodes.count > 0 {
                     ForEach(episodes, id: \.id) { e in
-                        StillCard(entity: StillCardEntity(
-                            id: e.id,
-                            title: e.name,
-                            subtitle1: e.runtime?.runtimeString ?? "",
-                            subtitle2: e.overview,
-                            imageUrl: e.still_url)
-                        )
+                        NavigationLink {
+                            EpisodeDetailView(
+                                seriesId: seriesId,
+                                episode: e
+                            )
+                        } label: {
+                            StillCard(entity: StillCardEntity(
+                                id: e.id,
+                                title: e.name,
+                                subtitle1: e.runtime?.runtimeString ?? "",
+                                subtitle2: e.overview,
+                                imageUrl: e.still_url)
+                            )
+                        }
                     }
                 } else if episodes == nil {
                     ForEach(0..<9, id: \.self) { i in
@@ -44,6 +52,9 @@ struct EpisodeCarousel: View {
 }
 
 #Preview {
-    EpisodeCarousel(episodes: nil)
+    EpisodeCarousel(
+        seriesId: "2134",
+        episodes: nil
+    )
         .background(.black)
 }

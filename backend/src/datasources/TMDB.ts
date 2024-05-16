@@ -44,6 +44,16 @@ export default class TMDB {
     return response.data;
   }
 
+  async fetchEpisode(id: string, seasonNumber: number, episodeNumber: number) {
+    const params = new URLSearchParams({
+      append_to_response: 'credits,images',
+      language: 'en-US'
+    });
+    const endpoint = `${TMDB.BASE_URL}/tv/${id}/season/${seasonNumber}/episode/${episodeNumber}?${params.toString()}`
+    const response = await this.createRequest(endpoint)
+    return response.data;
+  }
+
   private createRequest(endpoint: string) {
     return axios.get(endpoint, {
       headers: {

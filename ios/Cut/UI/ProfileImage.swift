@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileImage: View {
     @State private var width: CGFloat = 0
     var body: some View {
-        RoundedRectangle(cornerRadius: width * 0.3)
+        RoundedRectangle(cornerRadius: width * 0.28)
             .background(content: {
                 GeometryReader { proxy in
                     Color.clear
