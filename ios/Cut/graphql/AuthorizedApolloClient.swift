@@ -29,6 +29,7 @@ class AuthorizedApolloClient {
 
 class AuthorizationInterceptor: ApolloInterceptor {
     var id: String = UUID().uuidString
+    lazy var version = getAppVersion()
 
     func interceptAsync<Operation>(
         chain: RequestChain,
@@ -39,6 +40,10 @@ class AuthorizationInterceptor: ApolloInterceptor {
         if let sessionId = SessionManager.shared.sessionId {
             request.addHeader(name: "Authorization", value: sessionId)
         }
+        if let version = version {
+            request.addHeader(name: "client_version", value: version)
+        }
+        request.addHeader(name: "platform", value: "ios")
         chain.proceedAsync(
             request: request,
             response: response,
@@ -46,6 +51,13 @@ class AuthorizationInterceptor: ApolloInterceptor {
             completion: completion)
     }
 
+    func getAppVersion() -> String? {
+        if let infoDictionary = Bundle.main.infoDictionary,
+           let version = infoDictionary["CFBundleShortVersionString"] as? String {
+            return version
+        }
+        return nil
+    }
 }
 
 class ErrorInterceptor: ApolloErrorInterceptor {
