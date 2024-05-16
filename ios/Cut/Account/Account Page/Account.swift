@@ -34,7 +34,7 @@ struct Account: View {
     @ObservedObject var viewModel = AccountViewModel()
     @State private var state = ViewState.loading
 
-    enum ViewState {
+    enum ViewState: Equatable {
         case loading
         case complete(CutGraphQL.CompleteAccountFragment)
         case incomplete(CutGraphQL.GetAccountQuery.Data.Account.AsIncompleteAccount)
@@ -64,7 +64,6 @@ struct Account: View {
                 .environmentObject(viewModel.accountCompletionController)
         })
         .task {
-            state = .loading
             viewModel.watch?.cancel()
             viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery()) { result in
                 switch result.parseGraphQL() {
@@ -81,6 +80,7 @@ struct Account: View {
                 }
             }
         }
+        .animation(.linear(duration: 0.2), value: state)
     }
 }
 
