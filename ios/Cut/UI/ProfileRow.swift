@@ -8,6 +8,7 @@
 import SwiftUI
 import Apollo
 import ApolloAPI
+import Kingfisher
 
 class ProfileRowViewModel {
     var watch: Apollo.Cancellable? = nil
@@ -25,19 +26,22 @@ struct ProfileRow: View {
     }
 
     var body: some View {
-        HStack {
-            ProfileImage(url: profile.imageUrl)
-                .frame(width: 80)
-                .frame(height: 80)
-                .padding(.trailing, 8)
+        HStack(spacing: 16) {
+            KFImage(profile.imageUrl)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
+                .mask { Circle() }
+
             VStack(alignment: .leading) {
                 Text(profile.name).font(.cut_headline)
                 Text(profile.username).font(.cut_footnote)
             }
             Spacer()
-            FollowButton(profile: profile)
-            .frame(maxWidth: 90)
-        }.padding(.horizontal, 18)
+            if !profile.isCurrentUser {
+                FollowButton(profile: profile).frame(maxWidth: 90)
+            }
+        }
     }
 }
 

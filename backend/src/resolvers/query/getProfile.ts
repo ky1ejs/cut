@@ -9,20 +9,20 @@ export const getProfileById: QueryResolvers["profileById"] = async (_, args, con
     }
   })
 
-  const id = context.userDevice?.userId || context.annonymousUserDevice?.userId
-
   if (result) {
-    const mappedProfile = mapProfile(result, undefined)
+    const userId = context.userDevice?.userId || context.annonymousUserDevice?.userId
+    const isCurrentUser = userId === result.id
+    const mappedProfile = mapProfile(result, undefined, isCurrentUser)
     return {
       ...mappedProfile,
-      __typename: id === result.id ? "CompleteAccount" : "Profile"
+      __typename: isCurrentUser ? "CompleteAccount" : "Profile"
     }
   }
 
   return null
 }
 
-export const getProfileByUsername: QueryResolvers["profileByUsername"] = async (_, args) => {
+export const getProfileByUsername: QueryResolvers["profileByUsername"] = async (_, args, context) => {
   const result = await prisma.user.findUnique({
     where: {
       username: args.username
@@ -30,7 +30,9 @@ export const getProfileByUsername: QueryResolvers["profileByUsername"] = async (
   })
 
   if (result) {
-    return mapProfile(result, undefined)
+    const userId = context.userDevice?.userId || context.annonymousUserDevice?.userId
+    const isCurrentUser = userId === result.id
+    return mapProfile(result, undefined, isCurrentUser)
   }
   return null
 }

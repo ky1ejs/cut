@@ -8,6 +8,7 @@ fragment ProfileInterfaceFragment on ProfileInterface {
   bio
   imageUrl
   followerCount
+  isCurrentUser
 }
 
 fragment ProfileFragment on Profile {
