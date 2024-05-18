@@ -33,6 +33,7 @@ class AccountViewModel: ObservableObject {
 struct Account: View {
     @ObservedObject var viewModel = AccountViewModel()
     @State private var state = ViewState.loading
+    @State private var presentSettings = false
 
     enum ViewState: Equatable {
         case loading
@@ -47,14 +48,34 @@ struct Account: View {
             case .loading:
                 Text("loading...")
             case .complete(let account):
-                Profile(profile: .loggedInUser(account), isLoggedInUser: true)
+                HStack(spacing: 18) {
+                    Spacer()
+                    Button {
+                        presentSettings = true
+                    } label: {
+                        Image(systemName: "at")
+                            .resizable()
+                            .frame(width: 28, height: 28)
+                            .foregroundStyle(.gray)
+                    }
+                    Button {
+                        presentSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .frame(width: 28, height: 28)
+                            .foregroundStyle(.gray)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
+                Profile(profile: .completeAccount(account))
             case .incomplete:
                 IncompleteAccount(viewModel: viewModel)
             case .error(let message):
                 Text("Error: \(message)")
             }
         }
-        .padding(.horizontal, 12)
         .sheet(isPresented: $viewModel.isCompleteAccountPresented, content: {
             InitiateEmailConfirm()
                 .environmentObject(viewModel.accountCompletionController)
@@ -62,6 +83,11 @@ struct Account: View {
         .sheet(isPresented: $viewModel.isAccountExplainerPresented, content: {
             CompleteAccountBenefits(isPresented: $viewModel.isAccountExplainerPresented)
                 .environmentObject(viewModel.accountCompletionController)
+        })
+        .sheet(isPresented: $presentSettings, content: {
+            NavigationStack {
+                Settings(isPresented: $presentSettings)
+            }
         })
         .task {
             viewModel.watch?.cancel()

@@ -48,6 +48,7 @@ import seasonResolver from './resolvers/query/season';
 import episodeResolver from './resolvers/query/episode';
 import imageUploadUrl from './resolvers/query/image-upload-url';
 import profileImageUploadResponse from './resolvers/mutation/profileImageUploadResponse';
+import searchUsers from './resolvers/query/searchUsers';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -72,7 +73,8 @@ const boot = async () => {
       sendTestPush,
       season: seasonResolver,
       episode: episodeResolver,
-      imageUploadUrl: imageUploadUrl
+      imageUploadUrl: imageUploadUrl,
+      searchUsers
     },
     Mutation: {
       signUp: (_, args) => signUp(args),

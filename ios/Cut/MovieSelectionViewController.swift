@@ -155,12 +155,12 @@ class MovieSelectionViewController: KeyboardAnimationVC {
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
-        searchSubscription = searchViewModel.$state.receive(on: DispatchQueue.main).sink { [weak self] state in
+        searchSubscription = searchViewModel.$contentState.receive(on: DispatchQueue.main).sink { [weak self] state in
             self?.updateView(state)
         }
     }
 
-    private func updateView(_ state: SearchViewModel.State) {
+    private func updateView(_ state: SearchViewModel.State<Movie>) {
         loadingIndicator.stopAnimating()
         tableView.reloadData()
         switch state {
@@ -237,13 +237,13 @@ extension MovieSelectionViewController: UINavigationBarDelegate {
 
 extension MovieSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchViewModel.state.results.count
+        searchViewModel.contentState.results.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "movie-cell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as! Optional<EntityRowCell> ?? EntityRowCell()
-        let movie = searchViewModel.state.results[indexPath.row]
+        let movie = searchViewModel.contentState.results[indexPath.row]
         cell.set(movie)
         return cell
     }
@@ -252,7 +252,7 @@ extension MovieSelectionViewController: UITableViewDataSource {
 extension MovieSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         keyboardConstraint?.isActive = false
-        movieSelected(searchViewModel.state.results[indexPath.row])
+        movieSelected(searchViewModel.contentState.results[indexPath.row])
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -30,40 +30,59 @@ struct GenericError: Error {
 }
 
 enum ProfileInput {
-    case loggedInUser(CutGraphQL.CompleteAccountFragment)
-    case loggedInUserError(CutGraphQL.CompleteAccountFragment, Error)
-    case otherUser(OtherUserState)
+    case profile(CutGraphQL.ProfileFragment)
+    case fullProfile(CutGraphQL.FullProfileFragment)
+    case completeAccount(CutGraphQL.CompleteAccountFragment)
 
     var profileInterface: CutGraphQL.ProfileInterfaceFragment {
         switch self {
-        case .loggedInUser(let user), let .loggedInUserError(user, _): 
-            return user.fragments.profileInterfaceFragment
-        case .otherUser(let state):
-            switch state {
-            case .loaded(let user): return user.fragments.profileInterfaceFragment
-            case .loading(let user): return user.fragments.profileInterfaceFragment
-            case .error(let user, _): return user.fragments.profileInterfaceFragment
-            }
+        case .profile(let profileFragment):
+            return profileFragment.fragments.profileInterfaceFragment
+        case .fullProfile(let profile):
+            return profile.fragments.profileInterfaceFragment
+        case .completeAccount(let completeAccount):
+            return completeAccount.fragments.profileInterfaceFragment
         }
     }
+}
 
-    var isLoggedInUser: Bool {
-        switch self {
-        case .loggedInUser, .loggedInUserError:
-            return true
-        case .otherUser:
-            return false
-        }
+struct ProfileContainer: View {
+    let profile: CutGraphQL.ProfileFragment
+    @State var input: ProfileInput
+    @State var error: Error?
+
+    init(profile: CutGraphQL.ProfileFragment) {
+        self.profile = profile
+        _input = .init(initialValue: .profile(profile))
+    }
+
+    var body: some View {
+        Profile(profile: input)
+            .task {
+                AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id)) { result in
+                    switch result.parseGraphQL() {
+                    case .success(let response):
+                        if let profile = response.profileById?.asProfile?.fragments.fullProfileFragment {
+                            input = .fullProfile(profile)
+                        } else if let account = response.profileById?.asCompleteAccount?.fragments.completeAccountFragment {
+                            input = .completeAccount(account)
+                        } else {
+                            fatalError("data missing")
+                        }
+                    case .failure(let error):
+                        self.error = error
+                    }
+                }
+            }
+            .errorAlert(error: $error)
     }
 }
 
 struct Profile: View {
     let profile: ProfileInput
-    let isLoggedInUser: Bool
     @State private var state = ListState.rated
     @State private var editAccount = false
     @State private var isEditingFavoriteMovies = false
-    @State private var presentSettings = false
     @State private var presentedMovie: Movie?
 
     enum ListState: CaseIterable, Identifiable {
@@ -81,27 +100,6 @@ struct Profile: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                if case .loggedInUser = profile {
-                    HStack(spacing: 18) {
-                        Spacer()
-                        Button {
-                            presentSettings = true
-                        } label: {
-                            Image(systemName: "at")
-                                .resizable()
-                                .frame(width: 28, height: 28)
-                                .foregroundStyle(.gray)
-                        }
-                        Button {
-                            presentSettings = true
-                        } label: {
-                            Image(systemName: "gear")
-                                .resizable()
-                                .frame(width: 28, height: 28)
-                                .foregroundStyle(.gray)
-                        }
-                    }
-                }
                 ProfileHeader(profile: profile.profileInterface)
                 HStack {
                     cta()
@@ -129,57 +127,42 @@ struct Profile: View {
                             }
                         }
                         switch profile {
-                        case .loggedInUser(let completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                            coverShelf(movies: completeAccountFragment.favoriteMovies.map { $0.fragments.movieFragment })
-                        case .otherUser(let otherUserState):
-                            switch otherUserState {
-                            case .loading:
-                                ProgressView()
-                            case .loaded(let fullProfileFragment):
-                                coverShelf(movies: fullProfileFragment.favoriteMovies.map { $0.fragments.movieFragment })
-                            case .error(_, let error):
-                                Text("Error: " + error.localizedDescription)
-                            }
+                        case .completeAccount(let account):
+                            coverShelf(movies: account.favoriteMovies.map { $0.fragments.movieFragment })
+                        case .profile:
+                            ProgressView()
+                        case .fullProfile(let profile):
+                            coverShelf(movies: profile.favoriteMovies.map { $0.fragments.movieFragment })
                         }
                     }
                 case .watchList:
                     switch profile {
-                    case .loggedInUser(let completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                        PosterGrid(movies: completeAccountFragment.watchList.map { $0.fragments.movieFragment })
-                    case .otherUser(let otherUserState):
-                        switch otherUserState {
-                        case .loading:
-                            ProgressView()
-                        case .loaded(let fullProfileFragment):
-                            PosterGrid(movies: fullProfileFragment.watchList.map { $0.fragments.movieFragment })
-                        case .error(_, let error):
-                            Text("Error: " + error.localizedDescription)
-                        }
+                    case .completeAccount(let account):
+                        PosterGrid(movies: account.watchList.map { $0.fragments.movieFragment })
+                    case .profile:
+                        ProgressView()
+                    case .fullProfile(let profile):
+                        PosterGrid(movies: profile.watchList.map { $0.fragments.movieFragment })
                     }
                 }
             }
-            .padding(.horizontal, 18)
+            .padding(.horizontal, 16)
         }
         .scrollBounceBehavior(.basedOnSize)
         .scrollClipDisabled()
         .sheet(isPresented: $editAccount, content: {
             switch profile {
-            case let .loggedInUser(account), let .loggedInUserError(account, _) :
+            case .completeAccount(let account):
                 EditAccount(user: account) {
                     editAccount = false
                 }
-            case .otherUser:
+            default:
                 fatalError("tried to present edit account on another user")
             }
         })
         .sheet(item: $presentedMovie, content: { m in
             NavigationStack {
                 DetailView(content: m)
-            }
-        })
-        .sheet(isPresented: $presentSettings, content: {
-            NavigationStack {
-                Settings(isPresented: $presentSettings)
             }
         })
     }
@@ -194,10 +177,16 @@ struct Profile: View {
     func cta() -> some View {
         ZStack {
             switch profile {
-            case .loggedInUser,. loggedInUserError:
+            case .profile(let profile):
+                if !profile.isCurrentUser {
+                    FollowButton(profile: profile)
+                }
+            case .fullProfile(let profile):
+                if !profile.isCurrentUser {
+                    FollowButton(profile: profile.fragments.profileFragment)
+                }
+            case .completeAccount:
                 Button("Edit Profile") { editAccount = true }
-            case .otherUser(let state):
-                FollowButton(profile: state.profile)
             }
         }
         .buttonStyle(PrimaryButtonStyle())
@@ -206,10 +195,7 @@ struct Profile: View {
 
 #Preview {
     NavigationStack {
-        Profile(
-            profile: .loggedInUser(Mocks.completeAccount),
-            isLoggedInUser: false
-        )
+        Profile(profile: .completeAccount(Mocks.completeAccount))
     }
 }
 

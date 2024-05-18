@@ -24,7 +24,6 @@ struct ProfileImage: View {
         state = .loaded(url)
     }
 
-    @State private var width: CGFloat = 0
     var body: some View {
         ZStack {
             switch state {
@@ -41,18 +40,10 @@ struct ProfileImage: View {
                 ProgressView()
             }
         }
-        .frame(maxWidth: 100, maxHeight: 100)
         .mask {
-            RoundedRectangle(cornerRadius: width * 0.28)
-                .background(content: {
-                    GeometryReader { proxy in
-                        Color.clear
-                            .onAppear {
-                                width = proxy.size.width
-                            }
-                    }
-                })
+            RoundedRectangle(cornerRadius: 20)
         }
+        .frame(width: 100, height: 100)
     }
 }
 

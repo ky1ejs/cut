@@ -34,7 +34,8 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       followingCount: userWithFollowing.following.length,
       share_url: "https://cut.watch/p/" + context.userDevice.user.username,
       __typename: "CompleteAccount",
-      imageUrl: profileImageUrl(context.userDevice.user)
+      imageUrl: profileImageUrl(context.userDevice.user),
+      isCurrentUser: true,
     }
     return completeUser
   } else if (context.annonymousUserDevice) {

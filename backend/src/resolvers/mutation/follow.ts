@@ -69,7 +69,7 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
     })
   }
 
-  return mapProfile(result.following, true)
+  return mapProfile(result.following, true, false)
 }
 
 export default follow;

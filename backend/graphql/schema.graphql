@@ -4,6 +4,7 @@ scalar URL
 type Query {
   movies(collection: Collection!): [Movie!]!
   search(term: String!): [Movie!]!
+  searchUsers(term: String!): [Profile!]!
   watchList: [Movie!]!
   content(id: String!): ContentResponse!
 
@@ -105,6 +106,7 @@ interface ProfileInterface {
   watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+  isCurrentUser: Boolean!
 }
 
 type Profile implements ProfileInterface {
@@ -120,6 +122,7 @@ type Profile implements ProfileInterface {
   watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+  isCurrentUser: Boolean!
 
   isFollowing: Boolean!
 }
@@ -142,6 +145,7 @@ type CompleteAccount implements ProfileInterface {
   watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+  isCurrentUser: Boolean!
 
   phoneNumber: String
 }

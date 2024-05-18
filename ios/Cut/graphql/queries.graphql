@@ -278,3 +278,9 @@ mutation ProfileImageUploadResponse($response: String!) {
     ...CompleteAccountFragment
   }
 }
+
+query SearchAccounts($term: String!) {
+  searchUsers(term: $term) {
+    ...ProfileFragment
+  }
+}
