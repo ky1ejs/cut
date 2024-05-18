@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import { CompleteAccount, IncompleteAccount, Profile, ProfileInterface, QueryResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
 import { GraphQLError } from "graphql";
+import { profileImageUrl } from "../mappers/cdnUrls";
 
 const getAccount: QueryResolvers["account"] = async (_, __, context) => {
   if (context.userDevice) {
@@ -32,7 +33,8 @@ const getAccount: QueryResolvers["account"] = async (_, __, context) => {
       followerCount: userWithFollowing.followers.length,
       followingCount: userWithFollowing.following.length,
       share_url: "https://cut.watch/p/" + context.userDevice.user.username,
-      __typename: "CompleteAccount"
+      __typename: "CompleteAccount",
+      imageUrl: profileImageUrl(context.userDevice.user)
     }
     return completeUser
   } else if (context.annonymousUserDevice) {

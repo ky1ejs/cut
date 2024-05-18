@@ -41,6 +41,7 @@ model User {
   favoriteMovies    String[] @db.Uuid
   followerCount     Int      @default(0)
   followingCount    Int      @default(0)
+  imageId           String?
 
   devices       Device[]
   watchList     WatchList[]

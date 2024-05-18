@@ -13,6 +13,7 @@ type Query {
   isUsernameAvailable(username: String!): Boolean!
   initiateEmailVerification(email: String!): Boolean!
   sendTestPush: Boolean!
+  imageUploadUrl: ImageUploadUrl!
 
   profileByUsername(username: String!): ProfileUnion
   profileById(id: String!): ProfileUnion
@@ -39,6 +40,7 @@ type Mutation {
   completeAccount(params: CompleteAccountInput!): CompleteAccountResult!
   updateAccount(params: UpdateAccountInput!): CompleteAccount!
   setPushToken(token: PushTokenInput!): Boolean!
+  profileImageUploadResponse(response: String!): CompleteAccount!
 
   follow(userId: String!): Profile!
   unfollow(userId: String!): Profile!
@@ -423,3 +425,13 @@ type ExtendedEpisode implements EpisodeInterface {
   stills: [URL!]!
 }
 
+type Header {
+  key: String!
+  value: String!
+}
+
+type ImageUploadUrl {
+  url: URL!
+  fileName: String!
+  headers: [Header!]!
+}

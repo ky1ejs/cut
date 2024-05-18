@@ -95,7 +95,8 @@ public class SessionManager: ObservableObject {
                                 id: data.completeAccount.completeAccount.id,
                                 name: data.completeAccount.completeAccount.name,
                                 username: data.completeAccount.completeAccount.username,
-                                share_url: data.completeAccount.completeAccount.share_url
+                                share_url: data.completeAccount.completeAccount.share_url,
+                                imageUrl: data.completeAccount.completeAccount.imageUrl
                             )
                         }
                     }

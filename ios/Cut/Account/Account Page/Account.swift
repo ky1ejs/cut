@@ -47,7 +47,7 @@ struct Account: View {
             case .loading:
                 Text("loading...")
             case .complete(let account):
-                Profile(profile: .loggedInUser(account))
+                Profile(profile: .loggedInUser(account), isLoggedInUser: true)
             case .incomplete:
                 IncompleteAccount(viewModel: viewModel)
             case .error(let message):

@@ -80,7 +80,7 @@ class MovieSelectionViewController: KeyboardAnimationVC {
 
         let item = UINavigationItem(title: "Add movie")
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissAnimated))
-        cancelButton.tintColor = t.primaryButton
+        cancelButton.tintColor = t.primaryButtonBackground
         item.rightBarButtonItem = cancelButton
 
         let nav = UINavigationBar()

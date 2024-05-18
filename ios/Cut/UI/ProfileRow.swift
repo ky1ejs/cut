@@ -26,7 +26,7 @@ struct ProfileRow: View {
 
     var body: some View {
         HStack {
-            ProfileImage()
+            ProfileImage(url: profile.imageUrl)
                 .frame(width: 80)
                 .frame(height: 80)
                 .padding(.trailing, 8)

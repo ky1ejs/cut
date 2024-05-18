@@ -51,7 +51,7 @@ struct FindFriendsViaContacts: View {
             NavigationStack {
                 List {
                     ForEach(data, id: \.id) { profile in
-                        NavigationLink(destination: Profile(profile: .otherUser(.loading(profile)))) {
+                        NavigationLink(destination: Profile(profile: .otherUser(.loading(profile)), isLoggedInUser: false)) {
                             ProfileRow(profile: profile)
                         }
                     }

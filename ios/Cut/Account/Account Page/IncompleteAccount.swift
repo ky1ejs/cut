@@ -27,7 +27,7 @@ struct IncompleteAccount: View {
                         .padding(.horizontal, 18)
                 }
             }
-            ProfileImage()
+            ProfileImage(url: nil)
                 .padding(.bottom, 16)
             Text("Complete your account to keep your data safe and follow friends").font(.title2).multilineTextAlignment(.center)
             Spacer(minLength: 48)

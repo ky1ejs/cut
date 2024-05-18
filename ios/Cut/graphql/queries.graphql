@@ -261,3 +261,20 @@ query GetEpisode($seriesId: String!, $seasonNumber: Int!, $episodeNumber: Int!) 
     ...ExtendedEpisodeFragment
   }
 }
+
+query GetImageUploadUrl {
+  imageUploadUrl {
+    url
+    fileName
+    headers {
+      key
+      value
+    }
+  }
+}
+
+mutation ProfileImageUploadResponse($response: String!) {
+  profileImageUploadResponse(response: $response) {
+    ...CompleteAccountFragment
+  }
+}

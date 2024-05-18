@@ -26,7 +26,7 @@ struct CheckEmailVerification: View {
         .navigationDestination(item: $deepLinkObserver.deepLinkToken) { token in
             CompleteAccountForm(emailVerificationToken: token)
         }.onOpenURL(perform: { url in
-            deepLinkObserver.open(url)
+            _ = deepLinkObserver.open(url)
         })
     }
 }
