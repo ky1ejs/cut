@@ -48,7 +48,7 @@ struct _CircleWatchListButton: WatchListButtonProtocol {
             .buttonStyle(CircleButtonStyle())
             .background(Circle()
                 .foregroundStyle(
-                    isOnWatchList ? theme.primaryButton.color : theme.subtitle.color
+                    isOnWatchList ? theme.primaryButtonBackground.color : theme.secondaryButtonBackground.color
                 )
             )
     }
@@ -75,7 +75,7 @@ struct _SmallWatchListButton: WatchListButtonProtocol {
         })
         .buttonStyle(PlainButtonStyle())
         .frame(width: 36, height: 36)
-        .background(Circle().foregroundStyle(isOnWatchList ? theme.primaryButton.color : theme.subtitle.color))
+        .background(Circle().foregroundStyle(isOnWatchList ? theme.primaryButtonBackground.color : theme.secondaryButtonBackground.color))
     }
 }
 

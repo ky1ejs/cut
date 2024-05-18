@@ -8,6 +8,7 @@ import Provider from "../../types/providers";
 import importTmbdMovie from "../../db/tmdbImporter";
 import TMDB from "../../datasources/TMDB";
 import ContentID from "../../types/ContentID";
+import dbUserToGqlUser from "../mappers/dbUserToGqlUser";
 
 const updateAccount: MutationResolvers["updateAccount"] = async (_, args, context) => {
   if (!context.userDevice) {
@@ -68,12 +69,7 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
 
   context.userDevice.user = updatedUser
 
-  return {
-    ...updatedUser,
-    favoriteMovies: undefined,
-    link: `https://cut.watch/p/${updatedUser.username}`,
-    phoneNumber: updatedUser.phoneNumber ? `${updatedUser.countryCode}${updatedUser.phoneNumber}` : null
-  }
+  return dbUserToGqlUser(updatedUser)
 }
 
 async function importFavoriteMovie(contentId: ContentID, tmdb: TMDB): Promise<string> {

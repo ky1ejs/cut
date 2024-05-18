@@ -50,7 +50,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
         [imageView, highlightedView, removeButton].forEach { contentView.addSubview($0) }
         contentView.disableAutoresizing()
         removeButton.layer.cornerRadius = removeButtonSize / 2
-        removeButton.backgroundColor = Theme.current.primaryButton
+        removeButton.backgroundColor = Theme.current.primaryButtonBackground
         let line = UIView()
         line.backgroundColor = Theme.current.lightgray
         line.translatesAutoresizingMaskIntoConstraints = false

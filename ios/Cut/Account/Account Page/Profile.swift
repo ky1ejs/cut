@@ -36,7 +36,8 @@ enum ProfileInput {
 
     var profileInterface: CutGraphQL.ProfileInterfaceFragment {
         switch self {
-        case .loggedInUser(let user), let .loggedInUserError(user, _): return user.fragments.profileInterfaceFragment
+        case .loggedInUser(let user), let .loggedInUserError(user, _): 
+            return user.fragments.profileInterfaceFragment
         case .otherUser(let state):
             switch state {
             case .loaded(let user): return user.fragments.profileInterfaceFragment
@@ -57,14 +58,13 @@ enum ProfileInput {
 }
 
 struct Profile: View {
-    @State var profile: ProfileInput
-    @State var state = ListState.rated
+    let profile: ProfileInput
+    let isLoggedInUser: Bool
+    @State private var state = ListState.rated
     @State private var editAccount = false
     @State private var isEditingFavoriteMovies = false
-    @State private var watch: Apollo.Cancellable?
-    @State private var presentedMovie: Movie?
     @State private var presentSettings = false
-    @Environment(\.colorScheme) private var colorScheme
+    @State private var presentedMovie: Movie?
 
     enum ListState: CaseIterable, Identifiable {
         var id: Self { self }
@@ -108,7 +108,7 @@ struct Profile: View {
                     ShareLink(item: profile.profileInterface.share_url) {
                         Text("Share")
                     }
-                    .buttonStyle(SecondaryButtonStyle(colorScheme: colorScheme))
+                    .buttonStyle(SecondaryButtonStyle())
                 }
                 Picker(selection: $state) {
                     ForEach(ListState.allCases) { s in
@@ -182,35 +182,6 @@ struct Profile: View {
                 Settings(isPresented: $presentSettings)
             }
         })
-        .task {
-            watch?.cancel()
-            watch = nil
-            watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.profileInterface.id)) { result in
-                switch result.parseGraphQL() {
-                case .success(let data):
-                    if let completeUser = data.profileById?.asCompleteAccount {
-                        profile = .loggedInUser(completeUser.fragments.completeAccountFragment)
-                    } else if let otherUser = data.profileById?.asProfile {
-                        self.profile = .otherUser(.loaded(otherUser.fragments.fullProfileFragment))
-                    } else {
-                        let error = GenericError(description: "Error loading full profile")
-                        switch profile {
-                        case let .loggedInUser(completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                            profile = .loggedInUserError(completeAccountFragment, error)
-                        case .otherUser(let otherUserState):
-                            profile = .otherUser(.error(otherUserState.profile, error))
-                        }
-                    }
-                case .failure(let error):
-                    switch profile {
-                    case let .loggedInUser(completeAccountFragment), let .loggedInUserError(completeAccountFragment, _):
-                        profile = .loggedInUserError(completeAccountFragment, error)
-                    case .otherUser(let otherUserState):
-                        profile = .otherUser(.error(otherUserState.profile, error))
-                    }
-                }
-            }
-        }
     }
 
     func coverShelf(movies: [Movie]) -> some View {
@@ -229,13 +200,16 @@ struct Profile: View {
                 FollowButton(profile: state.profile)
             }
         }
-        .buttonStyle(PrimaryButtonStyle(colorScheme: colorScheme))
+        .buttonStyle(PrimaryButtonStyle())
     }
 }
 
 #Preview {
     NavigationStack {
-        Profile(profile: .loggedInUser(Mocks.completeAccount))
+        Profile(
+            profile: .loggedInUser(Mocks.completeAccount),
+            isLoggedInUser: false
+        )
     }
 }
 

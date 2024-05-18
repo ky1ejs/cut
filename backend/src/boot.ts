@@ -46,6 +46,8 @@ import urlScalar from './graphql/scalars/UrlScalar';
 import personResolver from './resolvers/query/person';
 import seasonResolver from './resolvers/query/season';
 import episodeResolver from './resolvers/query/episode';
+import imageUploadUrl from './resolvers/query/image-upload-url';
+import profileImageUploadResponse from './resolvers/mutation/profileImageUploadResponse';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -69,7 +71,8 @@ const boot = async () => {
       person: personResolver,
       sendTestPush,
       season: seasonResolver,
-      episode: episodeResolver
+      episode: episodeResolver,
+      imageUploadUrl: imageUploadUrl
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
@@ -81,7 +84,8 @@ const boot = async () => {
       updateAccount,
       uploadContactEmails,
       uploadContactNumbers,
-      setPushToken
+      setPushToken,
+      profileImageUploadResponse
     },
     MovieInterface: {
       __resolveType: (movie) => {

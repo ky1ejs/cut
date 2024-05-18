@@ -91,5 +91,8 @@ struct EditAccount: View {
 }
 
 #Preview {
-    Profile(profile: .loggedInUser(Mocks.completeAccount))
+    Profile(
+        profile: .loggedInUser(Mocks.completeAccount),
+        isLoggedInUser: true
+    )
 }

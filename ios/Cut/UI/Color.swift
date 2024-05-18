@@ -29,7 +29,10 @@ protocol Themeable {
     var redactionForeground: UIColor { get }
     var redactionBackground: UIColor { get }
     var skeletonGradient: Gradient { get }
-    var primaryButton: UIColor { get }
+    var primaryButtonBackground: UIColor { get }
+    var primaryButtonText: UIColor { get }
+    var secondaryButtonBackground: UIColor { get }
+    var secondaryButtonText: UIColor { get }
     var overlayBackground: UIColor { get }
     var imagePlaceholder: UIColor { get }
 }
@@ -67,7 +70,10 @@ struct LightTheme: Themeable {
     var grayBackground: UIColor { .cut_gray08 }
     var subtitle: UIColor { .cut_gray03 }
     var lightgray: UIColor { .cut_gray08 }
-    var primaryButton: UIColor { .cut_black }
+    var primaryButtonBackground: UIColor { .cut_black }
+    var primaryButtonText: UIColor { .white }
+    var secondaryButtonBackground: UIColor { .gray20 }
+    var secondaryButtonText: UIColor { .white }
 
     var text: UIColor { .black }
     var redactionForeground: UIColor { .gray30 }
@@ -82,7 +88,10 @@ struct DarkTheme: Themeable {
     var grayBackground: UIColor { .cut_gray02 }
     var lightgray: UIColor { .cut_gray02 }
     var subtitle: UIColor { .cut_gray08 }
-    var primaryButton: UIColor { .white }
+    var primaryButtonBackground: UIColor { .white }
+    var primaryButtonText: UIColor { .cut_black }
+    var secondaryButtonBackground: UIColor { .gray20 }
+    var secondaryButtonText: UIColor { .white }
 
     var text: UIColor { .white }
     var redactionForeground: UIColor { .white }
