@@ -4,6 +4,8 @@
 <dict>
 	<key>NSContactsUsageDescription</key>
 	<string>To help you find your friends on Cut</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
