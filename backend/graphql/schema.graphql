@@ -18,6 +18,7 @@ type Query {
 
   profileByUsername(username: String!): ProfileUnion
   profileById(id: String!): ProfileUnion
+  profileFollow(id: String!, direction: FollowDirection!): [Profile!]!
 
   person(id: String!): ExtendedPerson!
   season(seriesId: String!, seasonNumber: Int!): ExtendedSeason!
@@ -106,6 +107,8 @@ interface ProfileInterface {
   watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+  followers: [Profile!]!
+  following: [Profile!]!
   isCurrentUser: Boolean!
 }
 
@@ -122,6 +125,8 @@ type Profile implements ProfileInterface {
   watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+  followers: [Profile!]!
+  following: [Profile!]!
   isCurrentUser: Boolean!
 
   isFollowing: Boolean!
@@ -145,6 +150,8 @@ type CompleteAccount implements ProfileInterface {
   watchList: [Movie!]!
   followerCount: Int!
   followingCount: Int!
+  followers: [Profile!]!
+  following: [Profile!]!
   isCurrentUser: Boolean!
 
   phoneNumber: String
@@ -438,4 +445,9 @@ type ImageUploadUrl {
   url: URL!
   fileName: String!
   headers: [Header!]!
+}
+
+enum FollowDirection {
+  FOLLOWER
+  FOLLOWING
 }

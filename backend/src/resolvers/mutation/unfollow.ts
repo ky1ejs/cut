@@ -17,7 +17,7 @@ const unfollow: MutationResolvers["unfollow"] = async (_, args, context) => {
     }
   })
   const unfollowedUser = await prisma.user.findUniqueOrThrow({ where: { id: args.userId } })
-  return mapProfile(unfollowedUser, false, false)
+  return mapProfile(unfollowedUser, false, context.userDevice?.user)
 }
 
 export default unfollow;

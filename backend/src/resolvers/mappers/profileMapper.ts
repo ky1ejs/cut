@@ -18,8 +18,8 @@ export function mapProfileInterface(user: User, isCurrentUser: boolean): DeepPar
   }
 }
 
-export function mapProfile(user: User, isFollowing: boolean | undefined, isCurrentUser: boolean | undefined): DeepPartial<Profile> {
-
+export function mapProfile(user: User, isFollowing: boolean | undefined, currentUser: User | undefined): DeepPartial<Profile> {
+  const isCurrentUser = user.id === currentUser?.id;
   let result: DeepPartial<Profile> = mapProfileInterface(user, isCurrentUser || false);
   if (isFollowing !== undefined) {
     result.isFollowing = isFollowing

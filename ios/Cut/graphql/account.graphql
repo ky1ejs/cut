@@ -8,6 +8,7 @@ fragment ProfileInterfaceFragment on ProfileInterface {
   bio
   imageUrl
   followerCount
+  followingCount
   isCurrentUser
 }
 
@@ -30,8 +31,6 @@ fragment FullProfileFragment on Profile {
 fragment CompleteAccountFragment on CompleteAccount {
   ...ProfileInterfaceFragment
   phoneNumber
-  followerCount
-  followingCount
   favoriteMovies {
     ...MovieFragment
   }
@@ -97,6 +96,12 @@ mutation UploadContactEmails($contacts: [ContactInput!]!) {
 
 query GetContactMatches {
   contactMatches {
+    ...ProfileFragment
+  }
+}
+
+query GetFollowers($profileId: String!, $followDirection: FollowDirection!) {
+  profileFollow(id: $profileId, direction: $followDirection) {
     ...ProfileFragment
   }
 }
