@@ -78,7 +78,7 @@ struct FollowButton: View {
         .onAppear(perform: {
             viewModel.watch?.cancel()
             viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id), resultHandler: { result in
-                if let updatedProfile = try? result.get().data?.profileById?.asProfile {
+                if let updatedProfile = try? result.get().data?.profileById.asProfile {
                     profile = updatedProfile.fragments.profileFragment
                     isFollowing = updatedProfile.isFollowing
                 }

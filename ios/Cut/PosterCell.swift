@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PosterCell: View {
-    let url: URL
+    let url: URL?
 
     var body: some View {
         URLImage(url: url)

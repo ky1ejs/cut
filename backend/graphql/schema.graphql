@@ -16,8 +16,8 @@ type Query {
   sendTestPush: Boolean!
   imageUploadUrl: ImageUploadUrl!
 
-  profileByUsername(username: String!): ProfileUnion
-  profileById(id: String!): ProfileUnion
+  profileByUsername(username: String!): ProfileUnion!
+  profileById(id: String!): ProfileUnion!
   profileFollow(id: String!, direction: FollowDirection!): [Profile!]!
 
   person(id: String!): ExtendedPerson!
@@ -189,7 +189,7 @@ enum ContentType {
 interface MovieInterface {
   id: String!
   title: String!
-  poster_url: URL!
+  poster_url: URL
   releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!

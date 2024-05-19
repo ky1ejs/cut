@@ -19,7 +19,7 @@ export const getProfileById: QueryResolvers["profileById"] = async (_, args, con
     }
   }
 
-  return null
+  throw new Error("User not found")
 }
 
 export const getProfileByUsername: QueryResolvers["profileByUsername"] = async (_, args, context) => {
@@ -32,5 +32,5 @@ export const getProfileByUsername: QueryResolvers["profileByUsername"] = async (
   if (result) {
     return mapProfile(result, undefined, context.userDevice?.user)
   }
-  return null
+  throw new Error("User not found")
 }

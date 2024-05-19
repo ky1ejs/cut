@@ -62,9 +62,9 @@ struct ProfileContainer: View {
                 AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id)) { result in
                     switch result.parseGraphQL() {
                     case .success(let response):
-                        if let profile = response.profileById?.asProfile?.fragments.fullProfileFragment {
+                        if let profile = response.profileById.asProfile?.fragments.fullProfileFragment {
                             input = .fullProfile(profile)
-                        } else if let account = response.profileById?.asCompleteAccount?.fragments.completeAccountFragment {
+                        } else if let account = response.profileById.asCompleteAccount?.fragments.completeAccountFragment {
                             input = .completeAccount(account)
                         } else {
                             fatalError("data missing")
