@@ -54,10 +54,14 @@ export default function dbMovieToGqlMovie(movie: ResolvedMovie): DeepPartial<Gql
   } : null
   const cutId = new ContentID(dbContentTypeToGqlContentType(movie.contentType), Provider.CUT, movie.id)
   const tmdbId = movie.tmdbId ? new ContentID(dbContentTypeToGqlContentType(movie.contentType), Provider.TMDB, movie.tmdbId.toString()) : undefined
+  let poster_url: string | null = null;
+  if (movie.images.length > 0) {
+    poster_url = movie.images[0].url;
+  }
   return {
     id: cutId.toString(),
     title: movie.originalTitle,
-    poster_url: movie.images[0].url,
+    poster_url,
     releaseDate: movie.releaseDate,
     genres: movie.genres.map((g) => ({
       id: g.genre.id,
