@@ -202,7 +202,7 @@ interface MovieInterface {
 type Movie implements MovieInterface {
   id: String!
   title: String!
-  poster_url: URL!
+  poster_url: URL
   releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
@@ -225,7 +225,7 @@ type ExtendedMovie implements MovieInterface & ExtendedContent {
   # MovieInterface fields
   id: String!
   title: String!
-  poster_url: URL!
+  poster_url: URL
   releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
@@ -288,7 +288,7 @@ type Person implements PersonInterface {
 type Work implements MovieInterface {
   id: String!
   title: String!
-  poster_url: URL!
+  poster_url: URL
   releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
@@ -327,7 +327,7 @@ type ExtendedTVShow implements MovieInterface & ExtendedContent {
   # MovieInterface fields
   id: String!
   title: String!
-  poster_url: URL!
+  poster_url: URL
   releaseDate: Date
   mainGenre: Genre
   genres: [Genre!]!
@@ -356,7 +356,7 @@ interface SeasonInterface {
   season_number: Int!
   episode_count: Int!
   air_date: Date
-  poster_url: URL!
+  poster_url: URL
 }
 
 type Season implements SeasonInterface {
@@ -366,7 +366,7 @@ type Season implements SeasonInterface {
   season_number: Int!
   episode_count: Int!
   air_date: Date
-  poster_url: URL!
+  poster_url: URL
 }
 
 type SeasonRole {
@@ -391,7 +391,7 @@ type ExtendedSeason implements SeasonInterface {
   season_number: Int!
   episode_count: Int!
   air_date: Date
-  poster_url: URL!
+  poster_url: URL
 
   episodes: [Episode!]!
   cast: [SeasonPerson!]!
