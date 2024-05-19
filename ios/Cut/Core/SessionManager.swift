@@ -76,8 +76,6 @@ public class SessionManager: ObservableObject {
                         try txn.update(CutGraphQL.GetAccountMutationLocalCacheMutation()) { set in
                             set.account.asIncompleteAccount = nil
                             set.account.asCompleteAccount =  CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount(
-                                followerCount: data.completeAccount.completeAccount.followerCount,
-                                followingCount: data.completeAccount.completeAccount.followingCount,
                                 favoriteMovies: [],
                                 watchList: data.completeAccount.completeAccount.watchList.map({ m in
                                     CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount.WatchList(
@@ -96,12 +94,12 @@ public class SessionManager: ObservableObject {
                                 name: data.completeAccount.completeAccount.name,
                                 username: data.completeAccount.completeAccount.username,
                                 share_url: data.completeAccount.completeAccount.share_url,
-                                imageUrl: data.completeAccount.completeAccount.imageUrl, 
+                                followerCount: data.completeAccount.completeAccount.followerCount,
+                                followingCount: data.completeAccount.completeAccount.followingCount,
                                 isCurrentUser: data.completeAccount.completeAccount.isCurrentUser
                             )
                         }
                     }
-
                     completion(.success(sessionId))
                 } else {
                     completion(.failure(.unknown))

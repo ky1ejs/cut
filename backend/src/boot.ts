@@ -49,6 +49,7 @@ import episodeResolver from './resolvers/query/episode';
 import imageUploadUrl from './resolvers/query/image-upload-url';
 import profileImageUploadResponse from './resolvers/mutation/profileImageUploadResponse';
 import searchUsers from './resolvers/query/searchUsers';
+import { followersResolver, followingResolver, profileFollowResolver } from './resolvers/query/follow';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -74,7 +75,8 @@ const boot = async () => {
       season: seasonResolver,
       episode: episodeResolver,
       imageUploadUrl: imageUploadUrl,
-      searchUsers
+      searchUsers,
+      profileFollow: profileFollowResolver,
     },
     Mutation: {
       signUp: (_, args) => signUp(args),
@@ -119,15 +121,18 @@ const boot = async () => {
     Profile: {
       isFollowing,
       favoriteMovies,
-      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info)
+      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info),
+      followers: followersResolver,
+      following: followingResolver
     },
     ProfileInterface: {
       __resolveType: (parent) => parent.__typename!,
-      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info)
     },
     CompleteAccount: {
       favoriteMovies,
-      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info)
+      watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info),
+      followers: followersResolver,
+      following: followingResolver
     },
     ProfileUnion: {
       __resolveType: (parent) => parent.__typename!

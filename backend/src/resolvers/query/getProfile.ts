@@ -12,7 +12,7 @@ export const getProfileById: QueryResolvers["profileById"] = async (_, args, con
   if (result) {
     const userId = context.userDevice?.userId || context.annonymousUserDevice?.userId
     const isCurrentUser = userId === result.id
-    const mappedProfile = mapProfile(result, undefined, isCurrentUser)
+    const mappedProfile = mapProfile(result, undefined, context.userDevice?.user)
     return {
       ...mappedProfile,
       __typename: isCurrentUser ? "CompleteAccount" : "Profile"
@@ -30,9 +30,7 @@ export const getProfileByUsername: QueryResolvers["profileByUsername"] = async (
   })
 
   if (result) {
-    const userId = context.userDevice?.userId || context.annonymousUserDevice?.userId
-    const isCurrentUser = userId === result.id
-    return mapProfile(result, undefined, isCurrentUser)
+    return mapProfile(result, undefined, context.userDevice?.user)
   }
   return null
 }

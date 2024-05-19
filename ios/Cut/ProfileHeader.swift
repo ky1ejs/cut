@@ -31,11 +31,19 @@ struct ProfileHeader: View {
                 Spacer(minLength: 18)
                 HStack(spacing: 10) {
                     NavigationLink {
-                        Text("")
+                        FollowTable(userId: profile.id, direction: .followers)
                     } label: {
                         HStack(spacing: 4) {
                             Text("\(profile.followerCount)").font(.cut_footnote).bold()
                             Text("follower\(profile.followerCount > 1 ? "s" : "")").font(.cut_footnote)
+                        }
+                    }
+                    NavigationLink {
+                        FollowTable(userId: profile.id, direction: .following)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text("\(profile.followingCount)").font(.cut_footnote).bold()
+                            Text("following").font(.cut_footnote)
                         }
                     }
                     if let url = formattedProfileUrl {
