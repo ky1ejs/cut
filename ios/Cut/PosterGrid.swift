@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PosterGrid: View {
     let movies: [Movie]
+    @State private var presentedMovie: Movie?
 
     var body: some View {
         if movies.count > 0 {
@@ -21,9 +22,16 @@ struct PosterGrid: View {
                     spacing: 0
                 ) {
                     ForEach(movies, id: \.id) { movie in
-                        PosterCell(url: movie.poster_url)
+                        Button {
+                            presentedMovie = movie
+                        } label: {
+                            PosterCell(url: movie.poster_url)
+                        }
                     }
                 }
+            }
+            .sheet(item: $presentedMovie) { m in
+                DetailView(content: m)
             }
         } else {
             Text("nothing to see here")
