@@ -218,7 +218,7 @@ interface ExtendedContent {
   crew: [Person!]!
   watchProviders: [WatchProvider!]!
   userRating: Float!
-  trailerUrl: URL
+  trailer: Trailer
 }
 
 type ExtendedMovie implements MovieInterface & ExtendedContent {
@@ -240,7 +240,7 @@ type ExtendedMovie implements MovieInterface & ExtendedContent {
   crew: [Person!]!
   watchProviders: [WatchProvider!]!
   userRating: Float!
-  trailerUrl: URL
+  trailer: Trailer
 
   # ExtendedMovie fields
   backdrop_url: URL!
@@ -342,13 +342,19 @@ type ExtendedTVShow implements MovieInterface & ExtendedContent {
   crew: [Person!]!
   watchProviders: [WatchProvider!]!
   userRating: Float!
-  trailerUrl: URL
+  trailer: Trailer
 
   # ExtendedTVShow fields
   seasons: [Season!]!
   seasonCount: Int!
   episodeCount: Int!
 }
+
+type Trailer {
+  url: URL!
+  thumbnail_url: URL!
+}
+
 interface SeasonInterface {
   id: String!
   name: String!

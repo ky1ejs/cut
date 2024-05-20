@@ -7,9 +7,17 @@
 
 import SwiftUI
 import Kingfisher
+import UIKit
+struct VisualEffectView: UIViewRepresentable {
+    var effect: UIVisualEffect?
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIVisualEffectView { UIVisualEffectView()
+    }
+    func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) { uiView.effect = effect }
+}
 
 struct ContentHeader: View {
     @Environment(\.theme) var theme
+    @Environment(\.openURL) private var openURL
     let content: Movie
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
     let movie: CutGraphQL.ExtendedMovieFragment?
@@ -45,16 +53,40 @@ struct ContentHeader: View {
         VStack(spacing: 8) {
             ScrollView(.horizontal) {
                 LazyHStack {
-                    ForEach(0..<5, id: \.self) { i in
-                        VStack {
-                            KFImage(content.poster_url)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .mask {
-                                    RoundedRectangle(cornerRadius: 10)
-                                }
-                        }
-                        .frame(width: max(width - 40, 0), height: 260)
+                    VStack {
+                        KFImage(content.poster_url)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .mask {
+                                RoundedRectangle(cornerRadius: 10)
+                            }
+                    }
+                    .frame(width: max(width - 40, 0), height: 260)
+                    if let trailer = extendedContent?.trailer {
+                        Button(action: {
+                            openURL(trailer.url)
+                        }, label: {
+                            ZStack {
+                                KFImage(trailer.thumbnail_url)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .mask {
+                                        RoundedRectangle(cornerRadius: 10)
+                                    }
+                                Image(systemName: "play.circle")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .padding(12)
+                                    .background {
+                                        VisualEffectView(effect: UIBlurEffect(style: .light))
+                                    }
+                                    .mask {
+                                        RoundedRectangle(cornerRadius: 12)
+                                    }
+                                    .tint(.black)
+                            }
+                            .frame(width: max(width - 40, 0), height: 260)
+                        })
                     }
                 }
                 .scrollTargetLayout()
@@ -71,7 +103,7 @@ struct ContentHeader: View {
             Text(content.title)
                 .font(.cut_largeTitle)
                 .foregroundColor(theme.text.color)
-//                .blendMode(.colorDodge)
+            //                .blendMode(.colorDodge)
             HStack(spacing: 16) {
                 //                                HStack(spacing: 4) {
                 //                                    ImageStack(urls: ["https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg", "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg", "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg"])

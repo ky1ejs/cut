@@ -396,7 +396,11 @@ struct Mocks {
                   }
                 ],
                 "userRating": 0.8907999999999999,
-                "trailerUrl": null,
+                "trailer": {
+                  "__typename": "Trailer",
+                  "url": "https://www.youtube.com/watch?v=EM12mcTEI88",
+                  "thumbnail_url": "https://img.youtube.com/vi/EM12mcTEI88/hqdefault.jpg"
+                },
                 "seasonCount": 5,
                 "episodeCount": 62,
                 "seasons": [
