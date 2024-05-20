@@ -38,11 +38,7 @@ const follow: MutationResolvers["follow"] = async (_, args, context) => {
     }
   })
 
-  if (latestPush?.repeatLimit) {
-    console.log("Latest push", latestPush)
-    console.log("Time since last push", Date.now() - latestPush.createdAt.getTime())
-  }
-  if (!latestPush?.repeatLimit || latestPush.repeatLimit > (Date.now() - latestPush.createdAt.getTime())) {
+  if (!latestPush?.repeatLimit || latestPush.repeatLimit <= (Date.now() - latestPush.createdAt.getTime())) {
     const devices = await prisma.device.findMany({
       where: {
         userId: args.userId
