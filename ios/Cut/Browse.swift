@@ -97,6 +97,7 @@ struct PosterCarousel: View {
             }
         })
         .frame(height: 165)
+        .animation(.linear, value: movies)
     }
 }
 

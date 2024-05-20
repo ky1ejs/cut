@@ -9,22 +9,38 @@ import SwiftUI
 import Apollo
 
 struct WatchList: View {
+    @Environment(\.theme) var theme
     @State var movies: [Movie] = []
     @State private var watcher: GraphQLQueryWatcher<CutGraphQL.WatchListQuery>?
     @State private var presentedContent: Movie?
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(movies, id: \.id) { m in
-                    Button(action: {
-                        presentedContent = m
-                    }, label: {
-                        ContentRow(movie: m)
-                    })
+            if movies.isEmpty {
+                VStack {
+                    Spacer()
+                    Text("Nothing on your list")
+                        .multilineTextAlignment(.center)
+                        .font(.cut_title1)
+                        .foregroundStyle(theme.subtitle.color)
+                    Text("Movies & TV Shows you want to watch will show here")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(theme.subtitle.color)
+                    Spacer()
                 }
+                .padding(.horizontal, 32)
+            } else {
+                List {
+                    ForEach(movies, id: \.id) { m in
+                        Button(action: {
+                            presentedContent = m
+                        }, label: {
+                            ContentRow(movie: m)
+                        })
+                    }
+                }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
         }
         .sheet(item: $presentedContent, content: { c in
             DetailView(content: c)
@@ -40,6 +56,7 @@ struct WatchList: View {
                 }
             })
         }
+        .animation(.linear, value: movies)
     }
 }
 
