@@ -185,7 +185,7 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == moviesCollectionView {
+        if collectionView === moviesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TEST", for: indexPath) as! PosterCollectionViewCell
             let movie = movies[indexPath.item]
             cell.movie = movie
@@ -212,17 +212,19 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
             }
             return cell
         } else {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "TEST", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TEST", for: indexPath) as! PlaceholderCollectionViewCell
+            cell.displayAdd = isEditable
+            return cell
         }
     }
 }
 
 extension FavoriteMovieEditorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView == moviesCollectionView {
+        if collectionView === moviesCollectionView {
             let movie = movies[indexPath.item]
             movieTapped(movie)
-        } else {
+        } else if isEditable && collectionView === placeholderCollectionView {
             let vc = MovieSelectionViewController { [weak self] m in
                 defer { self?.dismiss(animated: true) }
                 guard let `self` = self else { return }

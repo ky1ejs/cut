@@ -10,6 +10,12 @@ import UIKit
 class PlaceholderCollectionViewCell: UICollectionViewCell {
     private let xbar = UIView()
     private let ybar = UIView()
+    var displayAdd = true {
+        didSet {
+            xbar.isHidden = !displayAdd
+            ybar.isHidden = !displayAdd
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
