@@ -10,12 +10,17 @@ import SwiftUI
 struct CoverShelf: UIViewControllerRepresentable {
     let movies: [Movie]
     let movieTapped: (Movie) -> Void
+    let isEditable: Bool
     @Binding var isEditing: Bool
 
     typealias UIViewControllerType = FavoriteMovieEditorViewController
 
     func makeUIViewController(context: Context) -> FavoriteMovieEditorViewController {
-        FavoriteMovieEditorViewController(movies: movies, movieTapped: movieTapped)
+        FavoriteMovieEditorViewController(
+            movies: movies,
+            movieTapped: movieTapped,
+            isEditable: isEditable
+        )
     }
 
     func updateUIViewController(_ uiViewController: FavoriteMovieEditorViewController, context: Context) {
@@ -26,5 +31,5 @@ struct CoverShelf: UIViewControllerRepresentable {
 #Preview {
     CoverShelf(movies: [Mocks.movie, Mocks.movie, Mocks.movie], movieTapped: { _ in
 
-    }, isEditing: .constant(false))
+    }, isEditable: true, isEditing: .constant(false))
 }

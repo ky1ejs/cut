@@ -87,7 +87,7 @@ struct Profile: View {
 
     enum ListState: CaseIterable, Identifiable {
         var id: Self { self }
-        
+
         case rated, watchList
         var title: String {
             return switch self {
@@ -96,7 +96,7 @@ struct Profile: View {
             }
         }
     }
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -122,8 +122,10 @@ struct Profile: View {
                         HStack {
                             Text("Favorite movies").font(.cut_title3).bold()
                             Spacer()
-                            Button(isEditingFavoriteMovies ? "Done" : "Edit") {
-                                isEditingFavoriteMovies.toggle()
+                            if (profile.profileInterface.isCurrentUser) {
+                                Button(isEditingFavoriteMovies ? "Done" : "Edit") {
+                                    isEditingFavoriteMovies.toggle()
+                                }
                             }
                         }
                         switch profile {
@@ -168,10 +170,14 @@ struct Profile: View {
     }
 
     func coverShelf(movies: [Movie]) -> some View {
-        CoverShelf(movies: movies, movieTapped: { m in
-            presentedMovie = m
-        }, isEditing: $isEditingFavoriteMovies)
-            .fixedSize(horizontal: false, vertical: true)
+        CoverShelf(
+            movies: movies,
+            movieTapped: { m in
+                presentedMovie = m
+            },
+            isEditable: profile.profileInterface.isCurrentUser, isEditing: $isEditingFavoriteMovies
+        )
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     func cta() -> some View {

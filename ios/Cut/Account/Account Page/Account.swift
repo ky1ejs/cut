@@ -106,7 +106,7 @@ struct Account: View {
                 }
             }
         }
-        .animation(.linear(duration: 0.2), value: state)
+        .animation(.linear(duration: 0.1), value: state)
     }
 }
 

@@ -25,7 +25,7 @@ class FavoriteMovieEditorViewController: UIViewController {
         c.dragDelegate = self
         c.dropDelegate = self
         c.isScrollEnabled = false
-        c.dragInteractionEnabled = true
+        c.dragInteractionEnabled = isEditable
         c.clipsToBounds = false
         c.backgroundColor = .clear
         c.reorderingCadence = .fast
@@ -45,6 +45,7 @@ class FavoriteMovieEditorViewController: UIViewController {
         return c
     }()
     let movieTapped: (Movie) -> Void
+    let isEditable: Bool
     var isWobbling = false {
         didSet {
             guard isWobbling != oldValue else { return }
@@ -64,9 +65,10 @@ class FavoriteMovieEditorViewController: UIViewController {
     }
     private var inFlightRequest: Apollo.Cancellable?
 
-    init(movies: [Movie], movieTapped: @escaping (Movie) -> Void) {
+    init(movies: [Movie], movieTapped: @escaping (Movie) -> Void, isEditable: Bool) {
         _movies = []
         self.movieTapped = movieTapped
+        self.isEditable = isEditable
         super.init(nibName: nil, bundle: nil)
         updateMovies(movies)
     }
@@ -324,5 +326,5 @@ extension UIView {
 #Preview {
     CoverShelf(movies: [Mocks.movie, Mocks.movie, Mocks.movie], movieTapped: { _ in
 
-    }, isEditing: .constant(false))
+    }, isEditable: false, isEditing: .constant(false))
 }

@@ -58,7 +58,6 @@ struct ProfileHeader: View {
                     }
                 }
             }
-
             Spacer()
             Button {
                 presentProfilePopover.toggle()
@@ -80,6 +79,7 @@ struct ProfileHeader: View {
                         .presentationCompactAdaptation(.popover)
                     }
             }
+            .disabled(!profile.isCurrentUser)
 
         }
         .fixedSize(horizontal: false, vertical: true)
