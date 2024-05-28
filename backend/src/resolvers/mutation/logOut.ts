@@ -9,7 +9,7 @@ const logOut: MutationResolvers["logOut"] = async (_, __, context) => {
       },
     });
   } else if (context.annonymousUserDevice) {
-    await prisma.device.delete({
+    await prisma.annonymousDevice.delete({
       where: {
         id: context.annonymousUserDevice.id,
       },

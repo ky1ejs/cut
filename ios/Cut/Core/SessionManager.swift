@@ -19,7 +19,6 @@ public class SessionManager: ObservableObject {
     private static let SESSION_ID_KEY = "session"
     private let keychain: Keychain
     private let client = AuthorizedApolloClient.shared.client
-    private var inFlightRequest: Apollo.Cancellable?
 
     init() throws {
         let keychain = Keychain(
@@ -38,49 +37,10 @@ public class SessionManager: ObservableObject {
         case unknown
     }
 
-    func signUp(completion: @escaping (Result<String, SignInError>) -> ()) {
-        guard sessionId == nil && inFlightRequest == nil else { return }
-        let deviceName = UIDevice.current.name
-        inFlightRequest = client.perform(mutation: CutGraphQL.AnnonymousSignUpMutation(deviceName: deviceName)) { [weak self] result in
-            self?.inFlightRequest = nil
-            guard case .success(let response) = result, let sessionId = response.data?.annonymousSignUp.session_id else {
-                completion(.failure(.unknown))
-                return
-            }
-            do {
-                try self?.storeSessionId(sessionId)
-                self?.sessionId = sessionId
-                completion(.success(sessionId))
-            } catch {
-                completion(.failure(.error(error)))
-            }
-        }
-    }
-
-    func completeAccount(_ input: CutGraphQL.CompleteAccountInput, completion: @escaping (Result<String, SignInError>) -> ()) -> Apollo.Cancellable {
-        guard sessionId != nil && inFlightRequest == nil else {
-            completion(.failure(.unknown))
-            return inFlightRequest!
-        }
-
-        let cancellable = client.perform(mutation: CutGraphQL.CompleteAccountMutation(params: input), resultHandler: { [weak self] result in
-            self?.inFlightRequest = nil
-            switch result.parseGraphQL() {
-            case .success(let data):
-                do {
-                    let account = data.completeAccount.completeAccount.fragments.completeAccountFragment
-                    let sessionId = data.completeAccount.updatedDevice.session_id
-                    try self?.userLoggedIn(account: account, sessionId: sessionId)
-                    completion(.success(sessionId))
-                } catch {
-                    completion(.failure(.error(error)))
-                }
-            case .failure(let error):
-                completion(.failure(.error(error)))
-            }
-        })
-        inFlightRequest = cancellable
-        return cancellable
+    func setAnnonymousSessionToken(_ token: String) throws {
+        try storeSessionId(token)
+        sessionId = token
+        isOnboarding = false
     }
 
     func userLoggedIn(account: CutGraphQL.CompleteAccountFragment, sessionId: String) throws {
@@ -132,6 +92,7 @@ public class SessionManager: ObservableObject {
         sessionId = nil
         isOnboarding = true
         try keychain.removeAll()
+        AuthorizedApolloClient.shared.client.store.clearCache()
     }
 
     func logOut() throws {

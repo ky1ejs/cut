@@ -12,6 +12,7 @@ struct Settings: View {
     @State private var inFlightRequest: Cancellable?
     @State private var presentDelete = false
     @Binding var isPresented: Bool
+    let isCompleteAccount: Bool
 
     var body: some View {
         List {
@@ -36,8 +37,10 @@ struct Settings: View {
                     SessionManager.shared.isOnboarding = false
                 }
             })
-            Button("Log out") {
-                try! SessionManager.shared.logOut()
+            if isCompleteAccount {
+                Button("Log out") {
+                    try! SessionManager.shared.logOut()
+                }
             }
             Button("Delete my account") {
                 presentDelete = true
@@ -117,6 +120,6 @@ struct DeleteAccountView: View {
 
 #Preview {
     NavigationStack {
-        Settings(isPresented: Binding.constant(true))
+        Settings(isPresented: Binding.constant(true), isCompleteAccount: true)
     }
 }

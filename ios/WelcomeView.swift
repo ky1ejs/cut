@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Apollo
 
 struct WelcomeView: View {
     @State var presentOnboarding = false
     @State var pushEmail = false
+    @State var annonymousSignUp: Apollo.Cancellable?
+    @State var annonymousSignUpError: Error?
 
     var body: some View {
         ZStack {
@@ -61,30 +64,46 @@ struct WelcomeView: View {
                 .padding(.horizontal, 12)
                 .sheet(isPresented: $presentOnboarding) {
                     VStack(spacing: 24) {
-                        Text("Get Started")
-                            .font(.cut_largeTitle)
-                        Text("Create a free account to make watchlists, connect with your friends, and more.")
-                            .multilineTextAlignment(.center)
-                        VStack {
-                            PrimaryButton("Continue with email") {
-                                pushEmail = true
-                                presentOnboarding = false
+                        if let error = annonymousSignUpError {
+                            Text("Error")
+                            Text(error.localizedDescription)
+                            PrimaryButton("Okay") {
+                                annonymousSignUpError = nil
                             }
-                            HStack {
-                                Button("") {
-
+                        } else if let _ = annonymousSignUp {
+                            ProgressView()
+                        } else {
+                            Text("Get Started")
+                                .font(.cut_largeTitle)
+                            Text("Create a free account to make watchlists, connect with your friends, and more.")
+                                .multilineTextAlignment(.center)
+                            VStack {
+                                PrimaryButton("Continue with email") {
+                                    pushEmail = true
+                                    presentOnboarding = false
                                 }
-                                .buttonStyle(SecondaryButtonStyle())
-                                Button("G") {
+                                HStack {
+                                    Button("") {
 
+                                    }
+                                    .buttonStyle(SecondaryButtonStyle())
+                                    Button("G") {
+
+                                    }
+                                    .buttonStyle(SecondaryButtonStyle())
                                 }
-                                .buttonStyle(SecondaryButtonStyle())
+                            }
+                            Button("Continue without an account") {
+                                annonymousSignUp = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.AnnonymousSignUpMutation(deviceName: UIDevice.current.name)) { result in
+                                    switch result.parseGraphQL() {
+                                    case .success(let data):
+                                        try! SessionManager.shared.setAnnonymousSessionToken(data.annonymousSignUp.session_id)
+                                    case .failure(let error):
+                                        annonymousSignUpError = error
+                                    }
+                                }
                             }
                         }
-                        Button("Continue without an account") {
-
-                        }
-
                     }
                     .padding(.horizontal, 12)
                     .presentationDetents([.fraction(0.45)])

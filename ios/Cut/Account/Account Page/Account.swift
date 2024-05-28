@@ -40,6 +40,13 @@ struct Account: View {
         case complete(CutGraphQL.CompleteAccountFragment)
         case incomplete(CutGraphQL.GetAccountQuery.Data.Account.AsIncompleteAccount)
         case error(String)
+
+        var isCompleteAccount: Bool {
+            if case .complete = self {
+                return true
+            }
+            return false
+        }
     }
 
     var body: some View {
@@ -86,7 +93,7 @@ struct Account: View {
         })
         .sheet(isPresented: $presentSettings, content: {
             NavigationStack {
-                Settings(isPresented: $presentSettings)
+                Settings(isPresented: $presentSettings, isCompleteAccount: state.isCompleteAccount)
             }
         })
         .task {

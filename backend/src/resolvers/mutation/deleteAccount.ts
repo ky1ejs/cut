@@ -27,15 +27,20 @@ export const deleteAccount: MutationResolvers["deleteAccount"] = async (_, args,
     throw new GraphQLError("Invalid code")
   }
   const date = new Date(parseInt(dateString))
-  if (userId !== context.userDevice?.user.id && userId !== context.annonymousUserDevice?.user.id) {
-    throw new GraphQLError("Unauthorized")
-  }
   if (Date.now() - date.getTime() > 1000 * 60 * 15) {
     throw new GraphQLError("Code expired")
   }
-  await prisma.user.delete({
-    where: { id: userId }
-  })
+  if (context.userDevice && context.userDevice.user.id === userId) {
+    await prisma.user.delete({
+      where: { id: userId }
+    })
+  } else if (context.annonymousUserDevice && context.annonymousUserDevice.user.id === userId) {
+    await prisma.anonymousUser.delete({
+      where: { id: userId }
+    })
+  } else {
+    throw new GraphQLError("Unauthorized")
+  }
   return true
 }
 

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct IncompleteAccount: View {
     @ObservedObject var viewModel: AccountViewModel
     @State private var isSettingsPresented = false
@@ -42,7 +40,7 @@ struct IncompleteAccount: View {
         }
         .sheet(isPresented: $isSettingsPresented, content: {
             NavigationStack {
-                Settings(isPresented: $isSettingsPresented)
+                Settings(isPresented: $isSettingsPresented, isCompleteAccount: false)
             }
         })
     }

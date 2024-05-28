@@ -64,7 +64,6 @@
 		93796B0C2BAF5C9E00091578 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AE82BAF5C9E00091578 /* Account.swift */; };
 		93796B0D2BAF5C9E00091578 /* IncompleteAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AE92BAF5C9E00091578 /* IncompleteAccount.swift */; };
 		93796B0E2BAF5C9E00091578 /* FindFriendsViaContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AEA2BAF5C9E00091578 /* FindFriendsViaContacts.swift */; };
-		93796B0F2BAF5C9E00091578 /* DeviceRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AEC2BAF5C9E00091578 /* DeviceRegister.swift */; };
 		93796B102BAF5C9E00091578 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AED2BAF5C9E00091578 /* AppDelegate.swift */; };
 		93796B112BAF5C9E00091578 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AEE2BAF5C9E00091578 /* DeepLinkManager.swift */; };
 		93796B122BAF5C9E00091578 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AEF2BAF5C9E00091578 /* SessionManager.swift */; };
@@ -285,7 +284,6 @@
 		93796AE82BAF5C9E00091578 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		93796AE92BAF5C9E00091578 /* IncompleteAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncompleteAccount.swift; sourceTree = "<group>"; };
 		93796AEA2BAF5C9E00091578 /* FindFriendsViaContacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViaContacts.swift; sourceTree = "<group>"; };
-		93796AEC2BAF5C9E00091578 /* DeviceRegister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceRegister.swift; sourceTree = "<group>"; };
 		93796AED2BAF5C9E00091578 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93796AEE2BAF5C9E00091578 /* DeepLinkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		93796AEF2BAF5C9E00091578 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
@@ -565,7 +563,6 @@
 		93796AEB2BAF5C9E00091578 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				93796AEC2BAF5C9E00091578 /* DeviceRegister.swift */,
 				93796AED2BAF5C9E00091578 /* AppDelegate.swift */,
 				93796AEE2BAF5C9E00091578 /* DeepLinkManager.swift */,
 				93796AEF2BAF5C9E00091578 /* SessionManager.swift */,
@@ -1160,7 +1157,6 @@
 				93C05F1C2C05390900C7DBD8 /* Device.graphql.swift in Sources */,
 				93C05F0A2C05390900C7DBD8 /* SeasonPerson.graphql.swift in Sources */,
 				933B78B32B89AE42009CBC27 /* DetailView.swift in Sources */,
-				93796B0F2BAF5C9E00091578 /* DeviceRegister.swift in Sources */,
 				933B77642B857009009CBC27 /* WatchList.swift in Sources */,
 				930F68CA2BE48812008C6CF2 /* DateScalar.swift in Sources */,
 				93C05ED32C05390900C7DBD8 /* EpisodeFragment.graphql.swift in Sources */,

@@ -47,7 +47,7 @@ const validateAuthentication: MutationResolvers["validateAuthentication"] = asyn
       completeAccount: {
         ...mapProfile(account, undefined, undefined),
         __typename: "CompleteAccount",
-        isCurrentUser: false
+        isCurrentUser: true
       },
       updatedDevice: {
         name: device.name,
