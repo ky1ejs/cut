@@ -31,10 +31,10 @@ struct IncompleteAccount: View {
                 .padding(.bottom, 16)
             Text("Complete your account to keep your data safe and follow friends").font(.title2).multilineTextAlignment(.center)
             Spacer(minLength: 48)
-            PrimaryButton(text: "Complete my account") {
+            PrimaryButton("Complete my account") {
                 viewModel.isCompleteAccountPresented = true
             }
-            SecondaryButton(text: "Why do I need an account?") {
+            TertiaryButton("Why do I need an account?") {
                 viewModel.isAccountExplainerPresented = true
             }
             .padding(.horizontal, 16)

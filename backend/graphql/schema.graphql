@@ -12,7 +12,6 @@ type Query {
 
   account: AccountUnion!
   isUsernameAvailable(username: String!): Boolean!
-  initiateEmailVerification(email: String!): Boolean!
   sendTestPush: Boolean!
   imageUploadUrl: ImageUploadUrl!
 
@@ -37,12 +36,16 @@ type ContentResponse {
 }
 
 type Mutation {
-  signUp(deviceName: String!): Device!
-  logIn(username: String!, password: String!): Device!
+  initiateAuthentication(email: String!): String!
+  validateAuthentication(id: String!, deviceName: String!, code: String!): AuthenticationResult!
+  annonymousSignUp(deviceName: String!): Device!
+  logOut: Boolean!
   completeAccount(params: CompleteAccountInput!): CompleteAccountResult!
   updateAccount(params: UpdateAccountInput!): CompleteAccount!
   setPushToken(token: PushTokenInput!): Boolean!
   profileImageUploadResponse(response: String!): CompleteAccount!
+  generateDeleteAccountCode: String!
+  deleteAccount(code: String!): Boolean!
 
   follow(userId: String!): Profile!
   unfollow(userId: String!): Profile!
@@ -55,11 +58,20 @@ type Mutation {
 
 union AccountUnion = IncompleteAccount | CompleteAccount
 
+type EmptyResponse {
+  success: Boolean!
+}
+union AuthenticationResult = CompleteAccountResult | EmptyResponse
+
 input CompleteAccountInput {
   username: String!
   name: String!
-  password: String!
-  emailToken: String!
+  email: String!
+  profileImageId: String
+  bio: String
+  code: String!
+  authenticationId: String!
+  deviceName: String!
 }
 
 input ContactInput {
@@ -70,7 +82,6 @@ input ContactInput {
 
 input UpdateAccountInput {
   username: String
-  password: String
   phoneNumber: String
   name: String
   bio: String

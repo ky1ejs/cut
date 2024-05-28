@@ -7,14 +7,20 @@
 
 import SwiftUI
 
-struct SecondaryButton: View {
+struct TertiaryButton: View {
+    @Environment(\.theme) private var theme
     let text: String
     let action: () -> Void
-    @Environment(\.colorScheme) private var colorScheme
+
+    init(_ text: String, action: @escaping () -> Void) {
+        self.text = text
+        self.action = action
+    }
 
     var body: some View {
         Button(action: action, label: {
-            Text(text).foregroundStyle(colorScheme == .light ? .black : .white)
+            Text(text)
+                .foregroundStyle(theme.primaryButtonBackground.color)
         })
         .padding(.horizontal, 12)
         .padding(.vertical, 12)
@@ -22,7 +28,7 @@ struct SecondaryButton: View {
 }
 
 #Preview {
-    SecondaryButton(text: "Test") {
+    TertiaryButton("Test") {
 
     }
 }

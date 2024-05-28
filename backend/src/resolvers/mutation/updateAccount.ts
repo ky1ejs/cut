@@ -26,10 +26,6 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
     update.name = params.name
   }
 
-  if (params.password) {
-    update.password = await hash(params.password)
-  }
-
   if (params.bio !== undefined) {
     update.bio = params.bio
   }

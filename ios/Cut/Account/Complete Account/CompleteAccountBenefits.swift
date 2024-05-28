@@ -30,11 +30,11 @@ struct CompleteAccountBenefits: View {
                 NavigationLink(destination: {
                     InitiateEmailConfirm()
                 }, label: {
-                    PrimaryButton(text: "Complete") {
+                    PrimaryButton("Complete") {
 
                     }
                 }).padding(.top, 16)
-                SecondaryButton(text: "Maybe Later"){
+                TertiaryButton("Maybe Later"){
                     isPresented = false
                 }
                 Spacer()

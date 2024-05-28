@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 private struct ThemeEnvironmentKey: EnvironmentKey {
-    static var defaultValue: Themeable = LightTheme()
+    static var defaultValue: Themeable = Theme.current
 }
 
 extension EnvironmentValues {
@@ -23,16 +23,27 @@ protocol Themeable {
     var background: UIColor { get }
     var grayBackground: UIColor { get }
     var lightgray: UIColor { get }
-    
+    var extraLightGray: UIColor { get }
+    var darkGray: UIColor { get }
+
     var text: UIColor { get }
+    var textFieldBackground: UIColor { get }
+    var textFieldPlaceholderColor: UIColor { get }
+
     var subtitle: UIColor { get }
     var redactionForeground: UIColor { get }
     var redactionBackground: UIColor { get }
     var skeletonGradient: Gradient { get }
+
     var primaryButtonBackground: UIColor { get }
     var primaryButtonText: UIColor { get }
+    var primaryDisabledBackground: UIColor { get }
+    var primaryDisabledText: UIColor { get }
     var secondaryButtonBackground: UIColor { get }
     var secondaryButtonText: UIColor { get }
+    var secondaryDisabledBackground: UIColor { get }
+    var secondaryDisabledText: UIColor { get }
+
     var overlayBackground: UIColor { get }
     var imagePlaceholder: UIColor { get }
 }
@@ -41,12 +52,17 @@ extension UIColor {
     var color: Color { Color(uiColor: self) }
 }
 
+struct ThemeReader {
+    @Environment(\.colorScheme) var colorScheme
+}
+
 struct Theme {
     static var current: Themeable {
         switch UITraitCollection.current.userInterfaceStyle {
         case .dark:
             return DarkTheme()
         case .light, .unspecified:
+
             return LightTheme()
         @unknown default:
             return LightTheme()
@@ -69,13 +85,23 @@ struct LightTheme: Themeable {
     var background: UIColor { .white }
     var grayBackground: UIColor { .cut_gray08 }
     var subtitle: UIColor { .cut_gray03 }
-    var lightgray: UIColor { .cut_gray08 }
+    var extraLightGray: UIColor { .gray90 }
+    var lightgray: UIColor { .gray20 }
+    var darkGray: UIColor { .gray20 }
+
+    // Button
     var primaryButtonBackground: UIColor { .cut_black }
     var primaryButtonText: UIColor { .white }
+    var primaryDisabledBackground: UIColor { .gray70 }
+    var primaryDisabledText: UIColor { .gray25 }
     var secondaryButtonBackground: UIColor { .gray20 }
     var secondaryButtonText: UIColor { .white }
+    var secondaryDisabledBackground: UIColor { .gray05 }
+    var secondaryDisabledText: UIColor { .gray50 }
 
     var text: UIColor { .black }
+    var textFieldBackground: UIColor { .gray90 }
+    var textFieldPlaceholderColor: UIColor { .gray40 }
     var redactionForeground: UIColor { .gray30 }
     var redactionBackground: UIColor { .gray90 }
     var skeletonGradient: Gradient { Gradient(colors: [UIColor.gray20, UIColor.gray45, UIColor.gray20].map { $0.color }) }
@@ -86,14 +112,24 @@ struct LightTheme: Themeable {
 struct DarkTheme: Themeable {
     var background: UIColor { .black }
     var grayBackground: UIColor { .cut_gray02 }
-    var lightgray: UIColor { .cut_gray02 }
+    var lightgray: UIColor { .gray20 }
+    var extraLightGray: UIColor { .gray10 }
+    var darkGray: UIColor { .gray80 }
     var subtitle: UIColor { .cut_gray08 }
+    
+    // Buttons
     var primaryButtonBackground: UIColor { .white }
     var primaryButtonText: UIColor { .cut_black }
+    var primaryDisabledBackground: UIColor { .gray30 }
+    var primaryDisabledText: UIColor { .gray70 }
     var secondaryButtonBackground: UIColor { .gray20 }
     var secondaryButtonText: UIColor { .white }
+    var secondaryDisabledBackground: UIColor { .gray15 }
+    var secondaryDisabledText: UIColor { .gray50 }
 
     var text: UIColor { .white }
+    var textFieldBackground: UIColor { .gray15 }
+    var textFieldPlaceholderColor: UIColor { .gray70 }
     var redactionForeground: UIColor { .white }
     var redactionBackground: UIColor { .gray20 }
     var skeletonGradient: Gradient {

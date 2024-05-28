@@ -9,21 +9,18 @@ import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
 import moviesResolver from './resolvers/query/movies';
 import searchResolver from './resolvers/query/search-resolver';
-import signUp from './resolvers/mutation/signUp';
 import prisma from './prisma';
 import addToWatchList from './resolvers/mutation/addToWatchlist';
 import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataLoader from './dataloaders/watchlist/watchListDataLoader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
-import watchList, { completeAccountWatchList, incompleteAccountWatchList, unknownAccountWatchList } from './resolvers/query/watchList';
+import { completeAccountWatchList, incompleteAccountWatchList, unknownAccountWatchList } from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
 import importGenres from './tmbd/import-genres';
-import movieResolver from './resolvers/query/content/movie';
 import completeAccount from './resolvers/mutation/completeAccount';
 import follow from './resolvers/mutation/follow';
 import unfollow from './resolvers/mutation/unfollow';
-import initiateEmailVerification from './resolvers/query/initiateEmailVerification';
 import isUsernameAvailable from './resolvers/query/isUsernameAvailable';
 import getAccount from './resolvers/query/getAccount';
 import AnnonymousWatchListDataLoader from './dataloaders/watchlist/annonymousWatchListDataLoader';
@@ -50,6 +47,11 @@ import imageUploadUrl from './resolvers/query/image-upload-url';
 import profileImageUploadResponse from './resolvers/mutation/profileImageUploadResponse';
 import searchUsers from './resolvers/query/searchUsers';
 import { followersResolver, followingResolver, profileFollowResolver } from './resolvers/query/follow';
+import logOut from './resolvers/mutation/logOut';
+import initiateAuthentication from './resolvers/mutation/initiateAuthentication';
+import validateAuthentication from './resolvers/mutation/validateAuthentication';
+import annonymousSignUp from './resolvers/mutation/annonymousSignUp';
+import { deleteAccount, generateDeleteAccountCode } from './resolvers/mutation/deleteAccount';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -65,7 +67,6 @@ const boot = async () => {
       search: searchResolver,
       watchList: unknownAccountWatchList,
       content: contentResolver,
-      initiateEmailVerification,
       isUsernameAvailable,
       contactMatches,
       profileById: getProfileById,
@@ -79,7 +80,8 @@ const boot = async () => {
       profileFollow: profileFollowResolver,
     },
     Mutation: {
-      signUp: (_, args) => signUp(args),
+      initiateAuthentication,
+      validateAuthentication,
       addToWatchList,
       removeFromWatchList,
       completeAccount,
@@ -89,7 +91,11 @@ const boot = async () => {
       uploadContactEmails,
       uploadContactNumbers,
       setPushToken,
-      profileImageUploadResponse
+      profileImageUploadResponse,
+      logOut,
+      annonymousSignUp,
+      deleteAccount,
+      generateDeleteAccountCode
     },
     MovieInterface: {
       __resolveType: (movie) => {

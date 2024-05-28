@@ -10,7 +10,7 @@ import Apollo
 
 struct InitiateEmailConfirm: View {
     @State private var email = ""
-    @State private var pushNextPage = false
+    @State private var authAttemptId: String?
     @State private var inFlightRequest: Apollo.Cancellable?
     @State private var error: Error?
 
@@ -39,15 +39,15 @@ struct InitiateEmailConfirm: View {
                 .keyboardType(.emailAddress)
                 .textFieldStyle(CutTextFieldStyle())
                 .padding(.top, 38)
-                PrimaryButton(text: "Confirm Email", state: inFlightRequest == nil ? .notLoading : .loading) {
+                PrimaryButton("Confirm Email", isLoading: inFlightRequest != nil) {
                     onEmailConfirm()
                 }
                 .padding(.top, 24)
                 Spacer()
             }
             .padding(.horizontal, 28)
-            .navigationDestination(isPresented: $pushNextPage) {
-                CheckEmailVerification()
+            .navigationDestination(item: $authAttemptId) { id in
+                CheckEmailVerification(email: email, attemptId: id)
             }.errorAlert(error: $error, buttonTitle: "OK")
         }
     }
@@ -56,15 +56,11 @@ struct InitiateEmailConfirm: View {
             guard inFlightRequest == nil else {
                 return
             }
-            inFlightRequest = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.InitiateEmailVerificationQuery(email: email)) { result in
+            inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.InitiateAuthenticationMutation(email: email)) { result in
                 inFlightRequest = nil
                 switch result.parseGraphQL() {
                 case .success(let data):
-                    if data.initiateEmailVerification {
-                        pushNextPage = true
-                    } else {
-                        self.error = UnknownError()
-                    }
+                    authAttemptId = data.initiateAuthentication
                 case .failure(let error):
                     self.error = error
                 }
