@@ -566,17 +566,18 @@ struct Mocks {
     static var profile: CutGraphQL.ProfileFragment {
         let json = """
         {
-          "__typename": "CompleteAccount",
-          "id": "70ffec09-2416-425b-8794-e7e35cafd1b2",
-          "username": "kylejs",
-          "name": "Kyle",
-          "bio_url": "https://kylejs.dev",
-          "share_url": "https://cut.watch/p/kylejs",
-          "bio": "Lisan Al-Gaib",
-          "imageUrl": null,
-          "followerCount": 100,
-          "followingCount": 100,
-          "phoneNumber": null
+            "__typename": "Profile",
+            "id": "70ffec09-2416-425b-8794-e7e35cafd1b2",
+            "username": "kylejs",
+            "name": "Kyle",
+            "bio_url": null,
+            "share_url": "https://cut.watch/p/kylejs",
+            "bio": null,
+            "imageUrl": "https://ucarecdn.com/8fa29a48-61f2-49cb-9ce8-4da50cbaf920/-/resize/500x500/-/format/jpeg/profile",
+            "followerCount": 0,
+            "followingCount": 0,
+            "isFollowing": false,
+            "isCurrentUser": false
         }
         """
         return parse(json)

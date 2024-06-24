@@ -1,5 +1,10 @@
 import crypto from "crypto"
 
+/* generate a key by: 
+ ```bash
+  openssl rand -hex 32
+ ```
+ */
 export function encrypt(text: string, encriptionKey: string | undefined): string {
   if (!encriptionKey) {
     throw new Error("no ENCRYPTION_KEY");

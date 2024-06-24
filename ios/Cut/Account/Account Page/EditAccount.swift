@@ -50,13 +50,13 @@ struct EditAccount: View {
                         }
                     })
                 }.padding(.bottom, 32)
-                CutTextField(text: $username, label: "Username") {
+                CutTextField(text: $username, placeholder: "Username") {
                     UsernameAvailabilityIndicator(state: .empty)
                 }
-                CutTextField(text: $name, label: "Name")
-                CutTextField(text: $bio, label: "Bio")
-                CutTextField(text: $bioUrl, label: "Url")
-                CutTextField(text: $phoneNumber, label: "Phone Number")
+                CutTextField(text: $name, placeholder: "Name")
+                CutTextField(text: $bio, placeholder: "Bio")
+                CutTextField(text: $bioUrl, placeholder: "Url")
+                CutTextField(text: $phoneNumber, placeholder: "Phone Number")
             }
             .padding(.horizontal, 18)
             .padding(.top, 32)

@@ -7,42 +7,52 @@
 
 import SwiftUI
 
+private struct OnboardingCompletionKey: EnvironmentKey {
+    static var defaultValue: () -> Void = {}
+}
 
+extension EnvironmentValues {
+  var onboardingCompletion: () -> Void {
+    get { self[OnboardingCompletionKey.self] }
+    set { self[OnboardingCompletionKey.self] = newValue }
+  }
+}
 
 struct IncompleteAccount: View {
-    @ObservedObject var viewModel: AccountViewModel
     @State private var isSettingsPresented = false
+    let onboardingCtaPressed: () -> ()
+    let explanationCtaPressed: () -> ()
 
     var body: some View {
         ScrollView {
-            HStack {
-                Spacer()
-                Button {
-                    isSettingsPresented = true
-                } label: {
-                    Image(systemName: "gear")
-                        .resizable()
-                        .frame(width: 32, height: 32)
-                        .tint(.gray)
-                        .padding(.horizontal, 18)
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        isSettingsPresented = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .tint(.gray)
+                            .padding(.horizontal, 18)
+                    }
                 }
-            }
-            ProfileImage(url: nil)
-                .padding(.bottom, 16)
-            Text("Complete your account to keep your data safe and follow friends").font(.title2).multilineTextAlignment(.center)
-            Spacer(minLength: 48)
-            PrimaryButton(text: "Complete my account") {
-                viewModel.isCompleteAccountPresented = true
-            }
-            SecondaryButton(text: "Why do I need an account?") {
-                viewModel.isAccountExplainerPresented = true
+                Text("Complete your account to keep your data safe and follow friends").font(.title2).multilineTextAlignment(.center)
+                Spacer(minLength: 48)
+                PrimaryButton("Complete my account") {
+                    onboardingCtaPressed()
+                }
+                TertiaryButton("Why do I need an account?") {
+                    explanationCtaPressed()
+                }
+                .padding(.vertical, 10)
             }
             .padding(.horizontal, 16)
-            .padding(.vertical, 10)
         }
         .sheet(isPresented: $isSettingsPresented, content: {
             NavigationStack {
-                Settings(isPresented: $isSettingsPresented)
+                Settings(isPresented: $isSettingsPresented, isCompleteAccount: false)
             }
         })
     }

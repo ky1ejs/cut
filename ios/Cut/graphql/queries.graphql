@@ -43,8 +43,8 @@ query WatchListMutation	@apollo_client_ios_localCacheMutation {
   }
 }
 
-mutation SignUp($deviceName: String!) {
-  signUp(deviceName: $deviceName) {
+mutation AnnonymousSignUp($deviceName: String!) {
+  annonymousSignUp(deviceName: $deviceName) {
     session_id
   }
 }

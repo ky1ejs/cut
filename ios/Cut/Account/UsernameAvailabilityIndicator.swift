@@ -70,7 +70,7 @@ private struct StateTest: View {
 
     var body: some View {
         UsernameAvailabilityIndicator(state: isLoading ? .loading : .unavailable)
-        SecondaryButton(text: "Toggle") {
+        TertiaryButton("Toggle") {
             isLoading.toggle()
         }
     }

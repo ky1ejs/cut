@@ -9,7 +9,7 @@ import SwiftUI
 import MarkdownUI
 
 struct CompleteAccountBenefits: View {
-    @Binding var isPresented: Bool
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
@@ -28,14 +28,12 @@ struct CompleteAccountBenefits: View {
                 - Sign into your cut account on another device or when you get a new one
                 """)
                 NavigationLink(destination: {
-                    InitiateEmailConfirm()
+                    EmailForm()
                 }, label: {
-                    PrimaryButton(text: "Complete") {
-
-                    }
+                    PrimaryButton("Complete") {}
                 }).padding(.top, 16)
-                SecondaryButton(text: "Maybe Later"){
-                    isPresented = false
+                TertiaryButton("Maybe Later"){
+                    dismiss()
                 }
                 Spacer()
             }
@@ -45,20 +43,6 @@ struct CompleteAccountBenefits: View {
 
 }
 
-struct CompleteAccountBenefits_Previews: PreviewProvider {
-    struct Container: View {
-        @State var on: Bool = false
-
-        var body: some View {
-            CompleteAccountBenefits(isPresented: $on)
-        }
-    }
-
-    static var previews: some View {
-        Container()
-    }
-}
-
 #Preview {
-    CompleteAccountBenefits_Previews.Container()
+    CompleteAccountBenefits()
 }

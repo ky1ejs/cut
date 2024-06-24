@@ -1,7 +1,7 @@
-import { Device, MutationSignUpArgs } from "../../__generated__/graphql";
+import { Device, MutationResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
 
-const signUp = async (args: MutationSignUpArgs): Promise<Device> => {
+const annonymousSignUp: MutationResolvers["annonymousSignUp"] = async (_, args): Promise<Device> => {
   const device = await prisma.annonymousDevice.create({
     data: {
       name: args.deviceName,
@@ -16,4 +16,4 @@ const signUp = async (args: MutationSignUpArgs): Promise<Device> => {
   }
 }
 
-export default signUp;
+export default annonymousSignUp;

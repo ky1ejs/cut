@@ -39,19 +39,29 @@ fragment CompleteAccountFragment on CompleteAccount {
   }
 }
 
-mutation CompleteAccount($params: CompleteAccountInput!) {
-  completeAccount(params: $params) {
-    completeAccount {
-      ...CompleteAccountFragment
-    }
-    updatedDevice {
-      session_id
-    }
+fragment CompleteAccountResultFragment on CompleteAccountResult {
+  completeAccount {
+    ...CompleteAccountFragment
+  }
+  updatedDevice {
+    session_id
   }
 }
 
-query InitiateEmailVerification($email: String!) {
-  initiateEmailVerification(email: $email)
+mutation CompleteAccount($params: CompleteAccountInput!) {
+  completeAccount(params: $params) {
+    ...CompleteAccountResultFragment
+  }
+}
+
+mutation InitiateAuthentication($email: String!) {
+  initiateAuthentication(email: $email)
+}
+
+mutation ValidateAuthentication($id: String!, $deviceName: String!, $code: String!) {
+  validateAuthentication(id: $id, deviceName: $deviceName, code: $code) {
+    ...CompleteAccountResultFragment
+  }
 }
 
 query CheckUsernameAvailability($username: String!) {
@@ -104,4 +114,16 @@ query GetFollowers($profileId: String!, $followDirection: FollowDirection!) {
   profileFollow(id: $profileId, direction: $followDirection) {
     ...ProfileFragment
   }
+}
+
+mutation LogOut {
+  logOut
+}
+
+mutation InitiatiteDeleteAccount {
+  generateDeleteAccountCode
+}
+
+mutation DeleteAccount($code: String!) {
+  deleteAccount(code: $code)
 }

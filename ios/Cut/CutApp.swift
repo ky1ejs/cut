@@ -14,14 +14,25 @@ struct CutApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if let _ = session.sessionId {
-                Root()
+            ZStack {
+                if session.isOnboarding {
+                    NavigationStack {
+                        WelcomeView()
+                    }
                     .onOpenURL(perform: { url in
                         DeepLinkManager.shared.open(url)
                     })
-            } else {
-                DeviceRegister()
+                    .environment(\.onboardingCompletion) {
+                        SessionManager.shared.isOnboarding = false
+                    }
+                } else {
+                    Root()
+                        .onOpenURL(perform: { url in
+                            DeepLinkManager.shared.open(url)
+                        })
+                }
             }
+            .animation(.easeInOut, value: session.isOnboarding)
         }
     }
 }

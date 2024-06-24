@@ -26,10 +26,6 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
     update.name = params.name
   }
 
-  if (params.password) {
-    update.password = await hash(params.password)
-  }
-
   if (params.bio !== undefined) {
     update.bio = params.bio
   }
@@ -69,7 +65,10 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
 
   context.userDevice.user = updatedUser
 
-  return dbUserToGqlUser(updatedUser)
+  return {
+    ...dbUserToGqlUser(updatedUser),
+    isCurrentUser: true
+  }
 }
 
 async function importFavoriteMovie(contentId: ContentID, tmdb: TMDB): Promise<string> {

@@ -9,29 +9,28 @@ import SwiftUI
 
 struct PrimaryButton: View {
     let text: String
-    let state: ButtonState
+    let isLoading: Bool
     let action: () -> ()
-    @Environment(\.colorScheme) private var colorScheme
 
     enum ButtonState {
         case loading, notLoading
     }
 
-    init(text: String, state: ButtonState = .notLoading, action: @escaping () -> Void) {
+    init(_ text: String, isLoading: Bool = false, action: @escaping () -> Void) {
         self.text = text
-        self.state = state
+        self.isLoading = isLoading
         self.action = action
     }
 
     var body: some View {
         Button(action: action, label: {
-            if state == .loading {
+            if isLoading {
                 ProgressView().colorInvert()
             } else {
                 Text(text)
             }
         })
-        .disabled(state == .loading)
+        .disabled(isLoading)
         .buttonStyle(PrimaryButtonStyle())
     }
 }
@@ -42,7 +41,10 @@ struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         FilledButtonStyle(
             backgroundColor: theme.primaryButtonBackground.color,
-            textColor: theme.primaryButtonText.color
+            depressedColor: theme.lightgray.color,
+            textColor: theme.primaryButtonText.color,
+            disabledBackgroundColor: theme.primaryDisabledBackground.color,
+            disabledTextColor: theme.primaryDisabledText.color
         ).makeBody(configuration: configuration)
     }
 }
@@ -53,7 +55,10 @@ struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         FilledButtonStyle(
             backgroundColor: theme.secondaryButtonBackground.color,
-            textColor: theme.secondaryButtonText.color
+            depressedColor: theme.darkGray.color,
+            textColor: theme.secondaryButtonText.color,
+            disabledBackgroundColor: theme.secondaryDisabledBackground.color,
+            disabledTextColor: theme.secondaryDisabledText.color
         )
         .makeBody(configuration: configuration)
     }
@@ -61,27 +66,74 @@ struct SecondaryButtonStyle: ButtonStyle {
 
 struct FilledButtonStyle: ButtonStyle {
     let backgroundColor: Color
+    let depressedColor: Color
     let textColor: Color
+    let disabledBackgroundColor: Color
+    let disabledTextColor: Color
+
+    struct Container: View {
+        let backgroundColor: Color
+        let depressedColor: Color
+        let textColor: Color
+        let disabledBackgroundColor: Color
+        let disabledTextColor: Color
+
+        let configuration: ButtonStyle.Configuration
+        @Environment(\.isEnabled) private var isEnabled: Bool
+
+        var body: some View {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(getBackgroundColor(configuration))
+                    configuration
+                        .label
+                        .bold()
+                        .foregroundStyle(getTextColor())
+            }.frame(height: 44)
+        }
+
+        func getBackgroundColor(_ config: ButtonStyle.Configuration) -> Color {
+            if !isEnabled {
+                return disabledBackgroundColor
+            }
+            if config.isPressed {
+                return depressedColor
+            }
+            return backgroundColor
+        }
+
+        func getTextColor() -> Color {
+            return isEnabled ? textColor : disabledTextColor
+        }
+    }
 
     func makeBody(configuration: Configuration) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(backgroundColor)
-                configuration
-                    .label
-                    .bold()
-                    .foregroundStyle(textColor)
-        }.frame(height: 44)
+//        ZStack {
+//            RoundedRectangle(cornerRadius: 10)
+//                .foregroundStyle(getBackgroundColor(configuration))
+//                configuration
+//                    .label
+//                    .bold()
+//                    .foregroundStyle(getTextColor())
+//        }.frame(height: 44)
+        Container(
+            backgroundColor: backgroundColor,
+            depressedColor: depressedColor,
+            textColor: textColor,
+            disabledBackgroundColor: disabledBackgroundColor,
+            disabledTextColor: disabledTextColor,
+            configuration: configuration
+        )
     }
 }
 
 struct StatedPrimaryButton: View {
     let text: String
     let action: (StatedPrimaryButton) -> Void
-    @State var state = PrimaryButton.ButtonState.notLoading
+    @State var state = false
 
     var body: some View {
-        PrimaryButton(text: text, state: state) {
+        PrimaryButton(text, isLoading: state) {
             action(self)
         }
     }
@@ -89,12 +141,19 @@ struct StatedPrimaryButton: View {
 
 #Preview {
     HStack {
-        PrimaryButton(text: "Test", state: .loading) {}
+        PrimaryButton("Test", isLoading: true) {}
     }.padding(.horizontal, 30)
 }
 
 #Preview {
     HStack {
-        PrimaryButton(text: "Test", state: .notLoading) {}
+        PrimaryButton("Test", isLoading: false) {}
+    }.padding(.horizontal, 30)
+}
+
+#Preview {
+    HStack {
+        PrimaryButton("Test", isLoading: false) {}
+            .disabled(true)
     }.padding(.horizontal, 30)
 }

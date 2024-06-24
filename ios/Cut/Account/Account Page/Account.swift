@@ -9,37 +9,29 @@ import SwiftUI
 import Combine
 import Apollo
 
-class AccountViewModel: ObservableObject {
-    @Published var isCompleteAccountPresented = false
-    @Published var isAccountExplainerPresented = false
-    let accountCompletionController = AccountCompletionController()
-    var cancelable: AnyCancellable?
-    var watch: Apollo.Cancellable?
-
-    init() {
-        cancelable = accountCompletionController.$isFinished.sink { [weak self] isFinished in
-            guard isFinished else { return }
-            self?.isCompleteAccountPresented = false
-            self?.isAccountExplainerPresented = false
-        }
-    }
-
-    deinit {
-        cancelable?.cancel()
-        watch?.cancel()
-    }
-}
-
 struct Account: View {
-    @ObservedObject var viewModel = AccountViewModel()
     @State private var state = ViewState.loading
     @State private var presentSettings = false
+    @State private var watch: Apollo.Cancellable?
+
+    // needs to be at this level so that when the watch refreshes
+    // the onboarding can continue past account creation
+    @State private var presentOnboarding = false
+    @State private var isAccountExplainerPresented = false
+
 
     enum ViewState: Equatable {
         case loading
         case complete(CutGraphQL.CompleteAccountFragment)
         case incomplete(CutGraphQL.GetAccountQuery.Data.Account.AsIncompleteAccount)
         case error(String)
+
+        var isCompleteAccount: Bool {
+            if case .complete = self {
+                return true
+            }
+            return false
+        }
     }
 
     var body: some View {
@@ -71,27 +63,24 @@ struct Account: View {
                 .padding(.bottom, 12)
                 Profile(profile: .completeAccount(account))
             case .incomplete:
-                IncompleteAccount(viewModel: viewModel)
+                IncompleteAccount {
+                    presentOnboarding = true
+                } explanationCtaPressed: {
+                    isAccountExplainerPresented = true
+                }
+
             case .error(let message):
                 Text("Error: \(message)")
             }
         }
-        .sheet(isPresented: $viewModel.isCompleteAccountPresented, content: {
-            InitiateEmailConfirm()
-                .environmentObject(viewModel.accountCompletionController)
-        })
-        .sheet(isPresented: $viewModel.isAccountExplainerPresented, content: {
-            CompleteAccountBenefits(isPresented: $viewModel.isAccountExplainerPresented)
-                .environmentObject(viewModel.accountCompletionController)
-        })
         .sheet(isPresented: $presentSettings, content: {
             NavigationStack {
-                Settings(isPresented: $presentSettings)
+                Settings(isPresented: $presentSettings, isCompleteAccount: state.isCompleteAccount)
             }
         })
         .task {
-            viewModel.watch?.cancel()
-            viewModel.watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery()) { result in
+            watch?.cancel()
+            watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery()) { result in
                 switch result.parseGraphQL() {
                 case .success(let data):
                     if let completeAccount = data.account.asCompleteAccount {
@@ -107,6 +96,20 @@ struct Account: View {
             }
         }
         .animation(.linear(duration: 0.1), value: state)
+        .sheet(isPresented: $isAccountExplainerPresented, content: {
+            CompleteAccountBenefits()
+                .environment(\.onboardingCompletion) {
+                    presentOnboarding = false
+                }
+        })
+        .sheet(isPresented: $presentOnboarding, content: {
+            NavigationStack {
+                EmailForm()
+            }
+            .environment(\.onboardingCompletion) {
+                presentOnboarding = false
+            }
+        })
     }
 }
 

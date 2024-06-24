@@ -71,7 +71,7 @@ struct FollowButton: View {
     }
 
     var body: some View {
-        PrimaryButton(text: isFollowing ? "Unfollow" : "Follow") {
+        PrimaryButton(isFollowing ? "Unfollow" : "Follow") {
             toggleFollow()
         }
         .animation(.linear, value: isFollowing)
