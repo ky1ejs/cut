@@ -9,7 +9,7 @@ export default function Home() {
         <Logo />
       </CenterScreen>
       <div className="fixed bottom-8 w-full">
-        <div className=" flex justify-center gap-4">
+        <div className="flex justify-center gap-4">
           <a href="https://www.threads.net/@fbnsz">@fbnsz</a>
           <a href="https://www.threads.net/@_kylejs_">@kylejs</a>
         </div>
