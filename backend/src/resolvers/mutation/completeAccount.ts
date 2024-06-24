@@ -14,7 +14,6 @@ export const completeAccountResolver: MutationResolvers["completeAccount"] = asy
   }
 
   const account = await validateAuth(params.authenticationId, params.code)
-
   if (account) {
     throw new GraphQLError("User is already complete")
   }
@@ -49,6 +48,7 @@ export const completeAccountResolver: MutationResolvers["completeAccount"] = asy
         email: params.email,
         hashedEmail: sha256(params.email),
         name: params.name,
+        bio: params.bio,
         createdAt: context.annonymousUserDevice?.user.createdAt ?? new Date(),
         watchList: {
           createMany: {

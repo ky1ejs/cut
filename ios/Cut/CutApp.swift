@@ -22,6 +22,9 @@ struct CutApp: App {
                     .onOpenURL(perform: { url in
                         DeepLinkManager.shared.open(url)
                     })
+                    .environment(\.onboardingCompletion) {
+                        SessionManager.shared.isOnboarding = false
+                    }
                 } else {
                     Root()
                         .onOpenURL(perform: { url in

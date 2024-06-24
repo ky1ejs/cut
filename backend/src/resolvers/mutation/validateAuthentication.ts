@@ -42,6 +42,7 @@ const validateAuthentication: MutationResolvers["validateAuthentication"] = asyn
         }
       }
     })
+    context.userDevice = { ...device, user: account }
     return {
       __typename: "CompleteAccountResult",
       completeAccount: {

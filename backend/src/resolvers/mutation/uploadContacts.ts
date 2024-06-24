@@ -3,7 +3,6 @@ import prisma from "../../prisma";
 import { GraphQLError } from "graphql";
 import processPhoneNumber from "../../services/phoneNumberProcessing";
 import sha256 from "../../services/sha-256";
-import { Prisma } from "@prisma/client";
 
 export const uploadContactNumbers: MutationResolvers["uploadContactNumbers"] = async (_, { contacts }, context) => {
   if (!context.userDevice) {

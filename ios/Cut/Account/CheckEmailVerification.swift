@@ -18,6 +18,7 @@ struct CheckEmailVerification: View {
     @State var code = ""
     @State var attemptId: String
     @State var pushNextStep = false
+    @Environment(\.onboardingCompletion) var onboardingCompletion
 
     var body: some View {
         VStack(spacing: 32) {
@@ -63,7 +64,8 @@ struct CheckEmailVerification: View {
                 authId: attemptId,
                 code: code
             )
-        }.onOpenURL(perform: { url in
+        }
+        .onOpenURL(perform: { url in
             _ = deepLinkObserver.open(url)
         })
         .onReceive(timer, perform: { _ in
@@ -88,9 +90,8 @@ struct CheckEmailVerification: View {
                 if let completeAccount = r.asCompleteAccountResult {
                     let account = completeAccount.completeAccount.fragments.completeAccountFragment
                     let sessionId = completeAccount.updatedDevice.session_id
-                    let manager = SessionManager.shared
-                    try! manager.userLoggedIn(account: account, sessionId: sessionId)
-                    manager.isOnboarding = false
+                    try! SessionManager.shared.userLoggedIn(account: account, sessionId: sessionId)
+                    onboardingCompletion()
                 } else {
                     pushNextStep = true
                 }

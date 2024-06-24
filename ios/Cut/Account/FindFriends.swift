@@ -9,9 +9,10 @@ import SwiftUI
 import ContactsUI
 
 struct FindFriends: View {
-    @State var state = ViewState.notDetermined
+    @State var state: ViewState
     @State var presentExplanation = false
     @State var pushNextStep = false
+    @Environment(\.onboardingCompletion) var onboardingCompletion
 
     enum ViewState: Equatable {
         static func == (lhs: FindFriends.ViewState, rhs: FindFriends.ViewState) -> Bool {
@@ -93,7 +94,7 @@ struct FindFriends: View {
                     }
                 }
                 TertiaryButton("Not now") {
-                    SessionManager.shared.isOnboarding = false
+                    onboardingCompletion()
                 }
             }
         }
@@ -107,7 +108,7 @@ struct FindFriends: View {
                             .font(.cut_title1)
                             .bold()
                         Text("""
-                Your contacts are encypted; Cut are unable to see your contacts or use them for their own purposes.
+                Your contacts will encypted on your device before they are sent to Cut's servers; Cut are unable to see your contacts or use them for their own purposes.
                 """)
                         .bold()
                         .multilineTextAlignment(.center)
@@ -148,9 +149,10 @@ struct FindFriends: View {
             .presentationDetents([.fraction(0.4)])
         }
         .navigationDestination(isPresented: $pushNextStep) {
-            FindFriendsViaContacts() {
-                SessionManager.shared.isOnboarding = false
-            }
+            FindFriendsViaContacts()
+                .environment(\.findFriendsCompletionHandler) {
+                    SessionManager.shared.isOnboarding = false
+                }
         }
     }
 }

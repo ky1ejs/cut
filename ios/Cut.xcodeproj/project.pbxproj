@@ -45,6 +45,7 @@
 		9354D3CE2BF0047F00D28B0C /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3CD2BF0047F00D28B0C /* TableView.swift */; };
 		9354D3D02BF0053100D28B0C /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3CF2BF0053100D28B0C /* Entity.swift */; };
 		9354D3D22BF0253300D28B0C /* TruncatedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354D3D12BF0253300D28B0C /* TruncatedText.swift */; };
+		935890E72C28E3BF0017FC63 /* UpdatePhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935890E62C28E3BF0017FC63 /* UpdatePhoneNumber.swift */; };
 		936D62022BF0320800079E71 /* SeasonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936D62012BF0320800079E71 /* SeasonDetailView.swift */; };
 		936D63622BF052CC00079E71 /* PosterImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936D63612BF052CC00079E71 /* PosterImage.swift */; };
 		936D63642BF054CD00079E71 /* StillCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936D63632BF054CD00079E71 /* StillCard.swift */; };
@@ -56,8 +57,6 @@
 		93796AFB2BAF5C9E00091578 /* CompleteAccountBenefits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AD62BAF5C9E00091578 /* CompleteAccountBenefits.swift */; };
 		93796AFE2BAF5C9E00091578 /* CheckEmailVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AD92BAF5C9E00091578 /* CheckEmailVerification.swift */; };
 		93796AFF2BAF5C9E00091578 /* CompleteAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796ADA2BAF5C9E00091578 /* CompleteAccountForm.swift */; };
-		93796B012BAF5C9E00091578 /* AccountCompletionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796ADC2BAF5C9E00091578 /* AccountCompletionController.swift */; };
-		93796B022BAF5C9E00091578 /* InitiateEmailConfirm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796ADD2BAF5C9E00091578 /* InitiateEmailConfirm.swift */; };
 		93796B042BAF5C9E00091578 /* ContactSyncer .swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796ADF2BAF5C9E00091578 /* ContactSyncer .swift */; };
 		93796B082BAF5C9E00091578 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AE42BAF5C9E00091578 /* Profile.swift */; };
 		93796B092BAF5C9E00091578 /* EditAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93796AE52BAF5C9E00091578 /* EditAccount.swift */; };
@@ -264,6 +263,7 @@
 		9354D3CD2BF0047F00D28B0C /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
 		9354D3CF2BF0053100D28B0C /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		9354D3D12BF0253300D28B0C /* TruncatedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruncatedText.swift; sourceTree = "<group>"; };
+		935890E62C28E3BF0017FC63 /* UpdatePhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePhoneNumber.swift; sourceTree = "<group>"; };
 		936D62012BF0320800079E71 /* SeasonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonDetailView.swift; sourceTree = "<group>"; };
 		936D63612BF052CC00079E71 /* PosterImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterImage.swift; sourceTree = "<group>"; };
 		936D63632BF054CD00079E71 /* StillCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillCard.swift; sourceTree = "<group>"; };
@@ -276,8 +276,6 @@
 		93796AD62BAF5C9E00091578 /* CompleteAccountBenefits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountBenefits.swift; sourceTree = "<group>"; };
 		93796AD92BAF5C9E00091578 /* CheckEmailVerification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckEmailVerification.swift; sourceTree = "<group>"; };
 		93796ADA2BAF5C9E00091578 /* CompleteAccountForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountForm.swift; sourceTree = "<group>"; };
-		93796ADC2BAF5C9E00091578 /* AccountCompletionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCompletionController.swift; sourceTree = "<group>"; };
-		93796ADD2BAF5C9E00091578 /* InitiateEmailConfirm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitiateEmailConfirm.swift; sourceTree = "<group>"; };
 		93796ADF2BAF5C9E00091578 /* ContactSyncer .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactSyncer .swift"; sourceTree = "<group>"; };
 		93796AE42BAF5C9E00091578 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		93796AE52BAF5C9E00091578 /* EditAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAccount.swift; sourceTree = "<group>"; };
@@ -520,6 +518,7 @@
 				93796ADF2BAF5C9E00091578 /* ContactSyncer .swift */,
 				932632762BFD7C2900A79CA7 /* FindFriends.swift */,
 				93796AEA2BAF5C9E00091578 /* FindFriendsViaContacts.swift */,
+				935890E62C28E3BF0017FC63 /* UpdatePhoneNumber.swift */,
 				93796AD42BAF5C9E00091578 /* UsernameAvailabilityIndicator.swift */,
 				93796AE32BAF5C9E00091578 /* Account Page */,
 				93796AD52BAF5C9E00091578 /* Complete Account */,
@@ -541,8 +540,6 @@
 			isa = PBXGroup;
 			children = (
 				93796AD62BAF5C9E00091578 /* CompleteAccountBenefits.swift */,
-				93796ADC2BAF5C9E00091578 /* AccountCompletionController.swift */,
-				93796ADD2BAF5C9E00091578 /* InitiateEmailConfirm.swift */,
 			);
 			path = "Complete Account";
 			sourceTree = "<group>";
@@ -1087,7 +1084,6 @@
 				93C05EF82C05390900C7DBD8 /* GetContentQuery.graphql.swift in Sources */,
 				93C05EFF2C05390900C7DBD8 /* AuthenticationResult.graphql.swift in Sources */,
 				93D64BAB2BE83E7F009F5C01 /* Shimmer.swift in Sources */,
-				93796B022BAF5C9E00091578 /* InitiateEmailConfirm.swift in Sources */,
 				93796B302BAF5D6000091578 /* PrimaryButton.swift in Sources */,
 				93DE36582BEEF17F0072DF53 /* StringExtensions.swift in Sources */,
 				9354D3D02BF0053100D28B0C /* Entity.swift in Sources */,
@@ -1162,7 +1158,6 @@
 				93C05ED32C05390900C7DBD8 /* EpisodeFragment.graphql.swift in Sources */,
 				93796B122BAF5C9E00091578 /* SessionManager.swift in Sources */,
 				93C05F272C05390900C7DBD8 /* ContactInput.graphql.swift in Sources */,
-				93796B012BAF5C9E00091578 /* AccountCompletionController.swift in Sources */,
 				935420962BFAD9BA003F535B /* WelcomeView.swift in Sources */,
 				93C05ED52C05390900C7DBD8 /* ProductionCountryFragment.graphql.swift in Sources */,
 				93796B112BAF5C9E00091578 /* DeepLinkManager.swift in Sources */,
@@ -1191,6 +1186,7 @@
 				93C05EFD2C05390900C7DBD8 /* AccountUnion.graphql.swift in Sources */,
 				93796B332BAF5D6000091578 /* TertiaryButton.swift in Sources */,
 				93C05EF42C05390900C7DBD8 /* GetContactMatchesQuery.graphql.swift in Sources */,
+				935890E72C28E3BF0017FC63 /* UpdatePhoneNumber.swift in Sources */,
 				93D64C522BE85727009F5C01 /* Formatters.swift in Sources */,
 				930F67902BDD2EE9008C6CF2 /* MovieSelectionViewController.swift in Sources */,
 				93C05EF12C05390900C7DBD8 /* GetEpisodeQuery.graphql.swift in Sources */,

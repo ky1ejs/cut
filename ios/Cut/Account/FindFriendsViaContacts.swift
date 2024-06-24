@@ -8,10 +8,22 @@
 import SwiftUI
 import Contacts
 
+private struct FindFriendsViaContactsHandler: EnvironmentKey {
+    static var defaultValue: () -> Void = {}
+}
+
+extension EnvironmentValues {
+  var findFriendsCompletionHandler: () -> Void {
+    get { self[FindFriendsViaContactsHandler.self] }
+    set { self[FindFriendsViaContactsHandler.self] = newValue }
+  }
+}
+
 struct FindFriendsViaContacts: View {
     @State private var state: ViewState
     @State private var showShareSheet = false
-    let completion: () -> Void
+    @Environment(\.findFriendsCompletionHandler) var completionHandler
+    @State private var pushNextStep = false
 
     enum ViewState {
         case loading
@@ -19,15 +31,14 @@ struct FindFriendsViaContacts: View {
         case error(Error)
     }
 
-    init(completion: @escaping () -> Void) {
+    init() {
         switch CNContactStore.authorizationStatus(for: .contacts) {
         case .authorized, .restricted:
             state = .loading
         default:
             state = .result([])
-            completion()
+            completionHandler()
         }
-        self.completion = completion
     }
 
     var body: some View {
@@ -56,7 +67,7 @@ struct FindFriendsViaContacts: View {
                         }
                         .buttonStyle(PrimaryButtonStyle())
                         TertiaryButton("Done") {
-                            completion()
+                            pushNextStep = true
                         }
                     }.padding(.horizontal, 12)
                 } else {
@@ -68,7 +79,7 @@ struct FindFriendsViaContacts: View {
                     .listStyle(.plain)
                     .toolbar {
                         Button("Done") {
-                            completion()
+                            pushNextStep = true
                         }
                     }
                 }
@@ -76,11 +87,12 @@ struct FindFriendsViaContacts: View {
                 Text(error.localizedDescription)
             }
         }
+        .navigationDestination(isPresented: $pushNextStep) {
+            UpdatePhoneNumber()
+        }
     }
 }
 
 #Preview {
-    FindFriendsViaContacts() {
-
-    }
+    FindFriendsViaContacts()
 }

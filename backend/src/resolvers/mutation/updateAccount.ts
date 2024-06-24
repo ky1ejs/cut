@@ -65,7 +65,10 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
 
   context.userDevice.user = updatedUser
 
-  return dbUserToGqlUser(updatedUser)
+  return {
+    ...dbUserToGqlUser(updatedUser),
+    isCurrentUser: true
+  }
 }
 
 async function importFavoriteMovie(contentId: ContentID, tmdb: TMDB): Promise<string> {

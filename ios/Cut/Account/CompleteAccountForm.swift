@@ -10,8 +10,8 @@ import Apollo
 import Combine
 import Contacts
 
-@Observable
-class CompleteAccountFormViewModel {
+
+class CompleteAccountFormViewModel: ObservableObject {
     var username = "" {
         didSet {
             usernameState = .loading
@@ -21,7 +21,7 @@ class CompleteAccountFormViewModel {
         }
     }
     var name = ""
-    var usernameState = UsernameAvailabilityIndicator.ViewState.empty
+    @Published var usernameState = UsernameAvailabilityIndicator.ViewState.empty
     var bio = ""
     var profileImageId = ""
     private var usernameCheck: Apollo.Cancellable?
@@ -54,7 +54,7 @@ struct CompleteAccountForm: View {
     let authId: String
     let code: String
     @State var pushNextStep = false
-    @State private var viewModel = CompleteAccountFormViewModel()
+    @StateObject private var viewModel = CompleteAccountFormViewModel()
     @State private var inFlightRequest: Apollo.Cancellable?
     @State private var error: Error?
 
@@ -156,7 +156,7 @@ struct CompleteAccountForm: View {
             }
         }
         .navigationDestination(isPresented: $pushNextStep) {
-            FindFriends()
+            EnablePushNotifications()
         }
     }
 

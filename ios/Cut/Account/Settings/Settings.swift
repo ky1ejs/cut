@@ -14,6 +14,7 @@ struct Settings: View {
     @Binding var isPresented: Bool
     let isCompleteAccount: Bool
 
+
     var body: some View {
         List {
             NavigationLink("Changelog", destination: {
@@ -33,9 +34,7 @@ struct Settings: View {
                 }
             }
             NavigationLink("Find friends", destination: {
-                FindFriendsViaContacts() {
-                    SessionManager.shared.isOnboarding = false
-                }
+                FindFriendsViaContacts()
             })
             if isCompleteAccount {
                 Button("Log out") {
