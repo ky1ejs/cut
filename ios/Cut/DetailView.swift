@@ -47,6 +47,7 @@ struct DetailViewContainer<C: View>: View {
     @Environment(\.theme) var theme
     let content: Movie
     @ViewBuilder let child: (CGFloat) -> C
+    @State var ratingViewPresented = false
 
     var body: some View {
         GeometryReader { proxy in
@@ -66,7 +67,7 @@ struct DetailViewContainer<C: View>: View {
                         Spacer()
                         CircleWatchListButton(movie: content)
                         CircleButton(kind: .watched) {
-
+                            ratingViewPresented = true
                         }
                         ShareLink(item: content.url) {
                             Image("paper_airplane")
@@ -92,6 +93,9 @@ struct DetailViewContainer<C: View>: View {
                     .brightness(-0.3)
                     .aspectRatio(contentMode: .fill)
                     .ignoresSafeArea()
+            }
+            .sheet(isPresented: $ratingViewPresented) {
+                RateContentSheet(contentId: content.id)
             }
         }
     }

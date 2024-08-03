@@ -54,6 +54,8 @@ type Mutation {
 
   addToWatchList(movieId: String!): WatchListMutationResult!
   removeFromWatchList(movieId: String!): WatchListMutationResult!
+  rate(contentId: String!, rating: Int!): Movie!
+  removeRating(movieId: String!): Boolean!
 }
 
 union AccountUnion = IncompleteAccount | CompleteAccount
@@ -208,6 +210,7 @@ interface MovieInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
+  rating: Int
 }
 
 type Movie implements MovieInterface {
@@ -221,6 +224,7 @@ type Movie implements MovieInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
+  rating: Int
 }
 
 interface ExtendedContent {
@@ -244,6 +248,7 @@ type ExtendedMovie implements MovieInterface & ExtendedContent {
   allIds: [String!]!
   url: URL!
   type: ContentType!
+  rating: Int
 
   # ExtendedContent fields
   overview: String!
@@ -307,6 +312,7 @@ type Work implements MovieInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
+  rating: Int
 
   role: String!
 }
@@ -346,6 +352,7 @@ type ExtendedTVShow implements MovieInterface & ExtendedContent {
   allIds: [String!]!
   url: URL!
   type: ContentType!
+  rating: Int
 
   # ExtendedContent fields
   overview: String!

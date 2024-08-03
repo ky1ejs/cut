@@ -49,7 +49,8 @@ struct Mocks {
                     "id": 5
                   }
                 ],
-                "isOnWatchList": false
+                "isOnWatchList": false,
+                "rating": 4
               }
         """
         return parse(json)

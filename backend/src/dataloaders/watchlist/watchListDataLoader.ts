@@ -2,11 +2,7 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
 import ContentID from '../../types/ContentID';
 import Provider from '../../types/providers';
-
-export type WatchListCacheKey = {
-  movieId: string;
-  userId: string;
-};
+import { WatchListCacheKey } from './watchListCacheKey';
 
 export default class WatchListDataLoader {
   private prisma: PrismaClient;

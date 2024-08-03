@@ -17,6 +17,7 @@ fragment MovieFragment on MovieInterface {
     id
   }
   isOnWatchList
+  rating
 }
 
 fragment MutableMovieFragment on Movie @apollo_client_ios_localCacheMutation {
@@ -285,5 +286,11 @@ mutation ProfileImageUploadResponse($response: String!) {
 query SearchAccounts($term: String!) {
   searchUsers(term: $term) {
     ...ProfileFragment
+  }
+}
+
+mutation Rate($contentId: String!, $rating: Int!) {
+  rate(contentId: $contentId, rating: $rating) {
+    ...MovieFragment
   }
 }

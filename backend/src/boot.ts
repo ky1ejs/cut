@@ -52,6 +52,10 @@ import initiateAuthentication from './resolvers/mutation/initiateAuthentication'
 import validateAuthentication from './resolvers/mutation/validateAuthentication';
 import annonymousSignUp from './resolvers/mutation/annonymousSignUp';
 import { deleteAccount, generateDeleteAccountCode } from './resolvers/mutation/deleteAccount';
+import RatingDataLoader from './dataloaders/rating/ratingDataLoader';
+import AnnonymousRatingDataLoader from './dataloaders/rating/annonymousRatingDataLoader';
+import ratingResolver from './resolvers/query/ratingResolver';
+import rate from './resolvers/mutation/rateMovie';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -95,7 +99,8 @@ const boot = async () => {
       logOut,
       annonymousSignUp,
       deleteAccount,
-      generateDeleteAccountCode
+      generateDeleteAccountCode,
+      rate
     },
     MovieInterface: {
       __resolveType: (movie) => {
@@ -104,19 +109,24 @@ const boot = async () => {
         }
         return 'Movie';
       },
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     ExtendedMovie: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     ExtendedTVShow: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     Movie: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     Work: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     AccountUnion: {
       __resolveType: (parent) => parent.__typename!
@@ -166,6 +176,8 @@ const boot = async () => {
           dataSources: {
             watchList: new WatchListDataLoader(prisma),
             annonymousWatchList: new AnnonymousWatchListDataLoader(prisma),
+            ratingDataLoader: new RatingDataLoader(prisma),
+            annonymousRatingDataLoader: new AnnonymousRatingDataLoader(prisma),
             isFollowing: new IsFollowingDataLoader(),
             movies: new MovieDataLoader(),
             users: new UserDataLoader(),
