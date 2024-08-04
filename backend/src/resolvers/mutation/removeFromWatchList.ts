@@ -9,10 +9,10 @@ const removeFromWatchList: MutationResolvers["addToWatchList"] = async (_, args,
     throw new Error('Unauthorized');
   }
 
-  const contentId = ContentID.fromString(args.movieId);
-  let movieId: string;
+  const contentId = ContentID.fromString(args.contentId);
+  let id: string;
   if (contentId.provider === Provider.TMDB) {
-    const movie = await prisma.movie.findUnique({
+    const movie = await prisma.content.findUnique({
       where: {
         tmdbId: parseInt(contentId.id)
       }
@@ -20,16 +20,16 @@ const removeFromWatchList: MutationResolvers["addToWatchList"] = async (_, args,
     if (!movie) {
       throw new Error('Movie not found');
     }
-    movieId = movie.id;
+    id = movie.id;
   } else {
-    movieId = contentId.id;
+    id = contentId.id;
   }
 
   if (context.userDevice) {
     await prisma.watchList.delete({
       where: {
-        movieId_userId: {
-          movieId,
+        contentId_userId: {
+          contentId: id,
           userId: context.userDevice.user.id
         }
       }
@@ -37,8 +37,8 @@ const removeFromWatchList: MutationResolvers["addToWatchList"] = async (_, args,
   } else if (context.annonymousUserDevice) {
     await prisma.annonymousWatchList.delete({
       where: {
-        movieId_userId: {
-          movieId,
+        contentId_userId: {
+          contentId: id,
           userId: context.annonymousUserDevice.user.id
         }
       }

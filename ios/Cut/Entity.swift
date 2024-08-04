@@ -13,18 +13,18 @@ struct Entity {
     let subtitle: String
     let imageUrl: URL?
 
-    static func from(_ movie: Movie) -> Self {
+    static func from(_ content: Content) -> Self {
         let subtitle = [
-            movie.mainGenre?.name ?? movie.genres.first?.name,
-            movie.releaseDate != nil ? Formatters.yearDF.string(from: movie.releaseDate!) : nil
+            content.mainGenre?.name ?? content.genres.first?.name,
+            content.releaseDate != nil ? Formatters.yearDF.string(from: content.releaseDate!) : nil
         ]
             .compactMap { $0 }
             .joined(separator: " • ")
         return Self(
-            id: movie.id,
-            title: movie.title,
+            id: content.id,
+            title: content.title,
             subtitle: subtitle,
-            imageUrl: movie.poster_url
+            imageUrl: content.poster_url
         )
     }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
-import importTmbdMovie from "../db/tmdbImporter";
-import { CollectionType, ContentType, Movie } from "@prisma/client";
+import importTmbdContent from "../db/tmdbImporter";
+import { CollectionType, ContentType, Content } from "@prisma/client";
 import prisma from "../prisma";
 
 const CollectionEndpoints: CollectionConfig[] = [
@@ -64,38 +64,38 @@ async function updateCollection(config: CollectionConfig) {
     let collectionIds: string[] = []
     if (config.movieEndpoint) {
       const result = await callEndpoint(config.movieEndpoint);
-      const storeMovies: Promise<Movie>[] = result.data.results.map((movie: any) => importTmbdMovie(movie, "en", "US", ContentType.MOVIE));
+      const storeMovies: Promise<Content>[] = result.data.results.map((movie: any) => importTmbdContent(movie, "en", "US", ContentType.MOVIE));
       collectionIds.push(...(await Promise.all(storeMovies)).map((movie) => movie.id));
     }
     if (config.tvEndpoint) {
       const result = await callEndpoint(config.tvEndpoint);
-      const storeMovies: Promise<Movie>[] = result.data.results.map((movie: any) => importTmbdMovie(movie, "en", "US", ContentType.TV_SHOW));
-      collectionIds.push(...(await Promise.all(storeMovies)).map((movie) => movie.id));
+      const storeMovies: Promise<Content>[] = result.data.results.map((movie: any) => importTmbdContent(movie, "en", "US", ContentType.TV_SHOW));
+      collectionIds.push(...(await Promise.all(storeMovies)).map((tvShow) => tvShow.id));
     }
 
-    const currentCollectionIds = await prisma.movieCollection.findMany({
+    const currentCollectionIds = await prisma.contentCollection.findMany({
       where: {
         type: config.type,
       },
       select: {
-        movieId: true
+        contentId: true
       }
-    }).then((movies) => movies.map((movie) => movie.movieId));
+    }).then((movies) => movies.map((content) => content.contentId));
 
     const idsNotInCollection = currentCollectionIds.filter((movieId) => !collectionIds.includes(movieId));
-    await prisma.movieCollection.deleteMany({
+    await prisma.contentCollection.deleteMany({
       where: {
         type: config.type,
-        movieId: {
+        contentId: {
           in: idsNotInCollection
         }
       }
     });
 
     const newIdsInCollection = collectionIds.filter((movieId) => !currentCollectionIds.includes(movieId));
-    await prisma.movieCollection.createMany({
-      data: newIdsInCollection.map((movieId) => ({
-        movieId,
+    await prisma.contentCollection.createMany({
+      data: newIdsInCollection.map((contentId) => ({
+        contentId,
         type: config.type
       }))
     });

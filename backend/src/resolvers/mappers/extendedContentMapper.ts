@@ -1,8 +1,8 @@
-import { ExtendedContent, Person, Trailer } from "../../__generated__/graphql";
+import { ExtendedContentInterface, Person, Trailer } from "../../__generated__/graphql";
 import mapPerson from "./mapPerson";
 import watchProviderMapper from "./watchProviderMapper";
 
-export default function extendedContentMapper(content: any): ExtendedContent {
+export default function extendedContentMapper(content: any): ExtendedContentInterface {
   const youTubeTrailer = content.videos.results.find((v: any) => v.type === "Trailer" && v.site === "YouTube");
   let trailer: Trailer | null = null;
   if (youTubeTrailer) {

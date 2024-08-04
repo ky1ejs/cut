@@ -16,7 +16,7 @@ export default class WatchListDataLoader {
       {
         where: {
           OR: ids.map((id) => {
-            const contentId = ContentID.fromString(id.movieId);
+            const contentId = ContentID.fromString(id.contentId);
             let movieWhere: Prisma.WatchListWhereInput = {
               userId: id.userId,
             };
@@ -24,7 +24,7 @@ export default class WatchListDataLoader {
               case Provider.TMDB:
                 movieWhere = {
                   ...movieWhere,
-                  movie: {
+                  content: {
                     tmdbId: parseInt(contentId.id)
                   }
                 };
@@ -32,7 +32,7 @@ export default class WatchListDataLoader {
               default:
                 movieWhere = {
                   ...movieWhere,
-                  movieId: contentId.id
+                  contentId: contentId.id
                 }
                 break;
             }
@@ -40,14 +40,14 @@ export default class WatchListDataLoader {
           }),
         },
         include: {
-          movie: true
+          content: true
         }
       }
     )
-    let movieIds = result.map((r) => r.movieId);
-    let tmdbIds = result.map((r) => r.movie.tmdbId);
+    let movieIds = result.map((r) => r.contentId);
+    let tmdbIds = result.map((r) => r.content.tmdbId);
     return ids.map((id) => {
-      const contentId = ContentID.fromString(id.movieId);
+      const contentId = ContentID.fromString(id.contentId);
       return contentId.provider === Provider.TMDB ? tmdbIds.includes(parseInt(contentId.id)) : movieIds.includes(contentId.id);
     });
   })

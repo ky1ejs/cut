@@ -10,11 +10,11 @@ import SwiftUI
 import Combine
 import Apollo
 
-class FavoriteMovieEditorViewController: UIViewController {
-    private var _movies: [Movie]
-    private var movies: [Movie] {
-        set { updateMovies(newValue) }
-        get { _movies }
+class FavoriteContentEditorViewController: UIViewController {
+    private var _content: [Content]
+    private var content: [Content] {
+        set { updateContent(newValue) }
+        get { _content }
     }
     let moviesLayout = OneLineCollectionViewLayout()
     let placeholderLayout = PlaceholderLayout()
@@ -44,7 +44,7 @@ class FavoriteMovieEditorViewController: UIViewController {
         c.register(PlaceholderCollectionViewCell.self, forCellWithReuseIdentifier: "TEST")
         return c
     }()
-    let movieTapped: (Movie) -> Void
+    let contentTapped: (Content) -> Void
     let isEditable: Bool
     var isWobbling = false {
         didSet {
@@ -65,20 +65,20 @@ class FavoriteMovieEditorViewController: UIViewController {
     }
     private var inFlightRequest: Apollo.Cancellable?
 
-    init(movies: [Movie], movieTapped: @escaping (Movie) -> Void, isEditable: Bool) {
-        _movies = []
-        self.movieTapped = movieTapped
+    init(content: [Content], contentTapped: @escaping (Content) -> Void, isEditable: Bool) {
+        _content = []
+        self.contentTapped = contentTapped
         self.isEditable = isEditable
         super.init(nibName: nil, bundle: nil)
-        updateMovies(movies)
+        updateContent(content)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func updateMovies(_ newValue: [Movie]) {
-        _movies = Array(newValue[0..<min(OneLineCollectionViewLayout.maxItems, newValue.count)])
+    private func updateContent(_ newValue: [Content]) {
+        _content = Array(newValue[0..<min(OneLineCollectionViewLayout.maxItems, newValue.count)])
     }
 
     class CollectionViewContainer: UIView {
@@ -163,8 +163,8 @@ class FavoriteMovieEditorViewController: UIViewController {
 
     private func save() {
         inFlightRequest?.cancel()
-        let movieIds = movies.map { $0.id }
-        inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UpdateAccountMutation(params: CutGraphQL.UpdateAccountInput(favoriteMovies: .some(movieIds)))) { _ in
+        let contentIds = content.map { $0.id }
+        inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UpdateAccountMutation(params: CutGraphQL.UpdateAccountInput(favoriteContent: .some(contentIds)))) { _ in
             self.inFlightRequest = nil
         }
     }
@@ -175,20 +175,20 @@ class FavoriteMovieEditorViewController: UIViewController {
     }
 }
 
-extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
+extension FavoriteContentEditorViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == moviesCollectionView {
-            return movies.count
+            return content.count
         } else {
-            return max(OneLineCollectionViewLayout.maxItems - movies.count, 0)
+            return max(OneLineCollectionViewLayout.maxItems - content.count, 0)
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView === moviesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TEST", for: indexPath) as! PosterCollectionViewCell
-            let movie = movies[indexPath.item]
-            cell.movie = movie
+            let content = content[indexPath.item]
+            cell.content = content
             if isWobbling {
                 addWiggleToCell(cell)
             }
@@ -199,14 +199,14 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
                 guard let `self` = self, let removedIndex = collectionView?.indexPath(for: cell) else {
                     return
                 }
-                self.movies.remove(at: removedIndex.item)
+                self.content.remove(at: removedIndex.item)
                 collectionView?.performBatchUpdates {
                     collectionView?.deleteItems(at: [removedIndex])
                 }
                 self.placeholderCollectionView.performBatchUpdates { [weak self] in
                     guard let `self` = self else { return }
                     // 5 to 4 -> insert 0, 4 -> 3 -> insert 1
-                    let insertIndex = max(4 - self.movies.count, 0)
+                    let insertIndex = max(4 - self.content.count, 0)
                     self.placeholderCollectionView.insertItems(at: [IndexPath(item: insertIndex, section: 0)])
                 }
             }
@@ -219,22 +219,22 @@ extension FavoriteMovieEditorViewController: UICollectionViewDataSource {
     }
 }
 
-extension FavoriteMovieEditorViewController: UICollectionViewDelegate {
+extension FavoriteContentEditorViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView === moviesCollectionView {
-            let movie = movies[indexPath.item]
-            movieTapped(movie)
+            let content = content[indexPath.item]
+            contentTapped(content)
         } else if isEditable && collectionView === placeholderCollectionView {
-            let vc = MovieSelectionViewController { [weak self] m in
+            let vc = ContentSelectionViewController { [weak self] c in
                 defer { self?.dismiss(animated: true) }
                 guard let `self` = self else { return }
-                guard self.movies.contains(where: { $0.allIds.contains(m.id) }) == false else { return }
-                self.movies.append(m)
+                guard self.content.contains(where: { $0.allIds.contains(c.id) }) == false else { return }
+                self.content.append(c)
                 self.moviesCollectionView.performBatchUpdates {
-                    self.moviesCollectionView.insertItems(at: [IndexPath(item: self.movies.count - 1, section: 0)])
+                    self.moviesCollectionView.insertItems(at: [IndexPath(item: self.content.count - 1, section: 0)])
                 }
                 self.placeholderCollectionView.performBatchUpdates {
-                    self.placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.movies.count, section: 0)])
+                    self.placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.content.count, section: 0)])
                 }
                 self.save()
             }
@@ -248,9 +248,9 @@ extension FavoriteMovieEditorViewController: UICollectionViewDelegate {
     }
 }
 
-extension FavoriteMovieEditorViewController: UICollectionViewDragDelegate {
+extension FavoriteContentEditorViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        let item = movies[indexPath.item]
+        let item = content[indexPath.item]
         let cell = collectionView.cellForItem(at: indexPath) as! PosterCollectionViewCell
         cell.updateRemoveButton(isHidden: true, animated: false)
         let provider = NSItemProvider(object: item.title as NSString)
@@ -266,8 +266,8 @@ extension FavoriteMovieEditorViewController: UICollectionViewDragDelegate {
 
     func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
         guard isWobbling else { return }
-        guard let item = session.items.first?.localObject as? Movie else { return }
-        guard let index = movies.firstIndex(where: { $0.id == item.id }) else { return }
+        guard let item = session.items.first?.localObject as? Content else { return }
+        guard let index = content.firstIndex(where: { $0.id == item.id }) else { return }
         let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as! PosterCollectionViewCell
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             cell.updateRemoveButton(isHidden: false)
@@ -275,13 +275,13 @@ extension FavoriteMovieEditorViewController: UICollectionViewDragDelegate {
     }
 }
 
-extension FavoriteMovieEditorViewController: UICollectionViewDropDelegate {
+extension FavoriteContentEditorViewController: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         if collectionView.hasActiveDrag {
             return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
         }
-        if let _ = session.items.first?.localObject as? Movie {
-            if movies.count >= 5 {
+        if let _ = session.items.first?.localObject as? Content {
+            if content.count >= 5 {
                 return  UICollectionViewDropProposal(operation: .forbidden)
             }
             return UICollectionViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
@@ -290,26 +290,26 @@ extension FavoriteMovieEditorViewController: UICollectionViewDropDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: movies.count, section: 0)
+        let destinationIndexPath = coordinator.destinationIndexPath ?? IndexPath(item: content.count, section: 0)
         guard let item = coordinator.items.first else {
             return
         }
         if let sourceIndex = item.sourceIndexPath {
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             collectionView.performBatchUpdates {
-                let movie = movies.remove(at: sourceIndex.item)
+                let movie = content.remove(at: sourceIndex.item)
                 collectionView.deleteItems(at: [sourceIndex])
-                movies.insert(movie, at: destinationIndexPath.item)
+                content.insert(movie, at: destinationIndexPath.item)
                 collectionView.insertItems(at: [destinationIndexPath])
             }
-        } else if let movie = item.dragItem.localObject as? Movie {
+        } else if let c = item.dragItem.localObject as? Content {
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
-            movies.insert(movie, at: destinationIndexPath.item)
+            content.insert(c, at: destinationIndexPath.item)
             collectionView.performBatchUpdates {
                 collectionView.insertItems(at: [destinationIndexPath])
             }
             placeholderCollectionView.performBatchUpdates {
-                placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.movies.count, section: 0)])
+                placeholderCollectionView.deleteItems(at: [IndexPath(item: 5 - self.content.count, section: 0)])
             }
         }
         if !isWobbling {
@@ -326,7 +326,7 @@ extension UIView {
 }
 
 #Preview {
-    CoverShelf(movies: [Mocks.movie, Mocks.movie, Mocks.movie], movieTapped: { _ in
+    CoverShelf(content: [Mocks.content, Mocks.content, Mocks.content], contentTapped: { _ in
 
     }, isEditable: false, isEditing: .constant(false))
 }

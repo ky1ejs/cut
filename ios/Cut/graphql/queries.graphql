@@ -1,6 +1,6 @@
 
 
-fragment MovieFragment on MovieInterface {
+fragment ContentFragment on ContentInterface {
   title
   id
   allIds
@@ -20,27 +20,36 @@ fragment MovieFragment on MovieInterface {
   rating
 }
 
-fragment MutableMovieFragment on Movie @apollo_client_ios_localCacheMutation {
+fragment ExtendedContentUnionFragment on ExtendedContentUnion {
+  ... on ExtendedMovie {
+    ...ExtendedMovieFragment
+  }
+  ... on ExtendedTVShow {
+    ...ExtendedTVShowFragment
+  }
+}
+
+fragment MutableContentFragment on Content @apollo_client_ios_localCacheMutation {
   isOnWatchList
 }
 
-query Movies($collection: Collection!) {
-  movies(collection: $collection) { ...MovieFragment }
+query GetContentCollection($collection: Collection!) {
+  contentCollection(collection: $collection) { ...ContentFragment }
 }
 
 query Search($term: String!) {
-  search(term: $term) { ...MovieFragment }
+  search(term: $term) { ...ContentFragment }
 }
 
 query WatchList {
   watchList {
-    ...MovieFragment
+    ...ContentFragment
   }
 }
 
 query WatchListMutation	@apollo_client_ios_localCacheMutation {
   watchList {
-    ...MovieFragment
+    ...ContentFragment
   }
 }
 
@@ -50,14 +59,14 @@ mutation AnnonymousSignUp($deviceName: String!) {
   }
 }
 
-mutation AddToWatchList($movieId: String!) {
-  addToWatchList(movieId: $movieId) {
+mutation AddToWatchList($contentId: String!) {
+  addToWatchList(contentId: $contentId) {
     id
   }
 }
 
-mutation RemoveFromWatchList($movieId: String!) {
-  removeFromWatchList(movieId: $movieId) {
+mutation RemoveFromWatchList($contentId: String!) {
+  removeFromWatchList(contentId: $contentId) {
     id
   }
 }
@@ -89,8 +98,8 @@ fragment ProductionCountryFragment on ProductionCountry {
 }
 
 fragment ExtendedMovieFragment on ExtendedMovie {
-  ...MovieFragment
-  ...ExtendedContentFragment
+  ...ContentFragment
+  ...ExtendedContentInterfaceFragment
   runtime
   productionCountries {
     ...ProductionCountryFragment
@@ -158,8 +167,8 @@ fragment ExtendedSeasonFragment on ExtendedSeason {
 }
 
 fragment ExtendedTVShowFragment on ExtendedTVShow {
-  ...MovieFragment
-  ...ExtendedContentFragment
+  ...ContentFragment
+  ...ExtendedContentInterfaceFragment
   seasonCount
   episodeCount
   seasons {
@@ -177,7 +186,11 @@ fragment MutableExtendedMovieFragment on ExtendedMovie @apollo_client_ios_localC
   isOnWatchList
 }
 
-fragment ExtendedContentFragment on ExtendedContent {
+fragment MutableExtendedTVShowFragment on ExtendedTVShow @apollo_client_ios_localCacheMutation {
+  isOnWatchList
+}
+
+fragment ExtendedContentInterfaceFragment on ExtendedContentInterface {
   overview
   cast {
     ...PersonFragment
@@ -199,12 +212,7 @@ query GetContent($id: String!) {
   content(id: $id) {
     type
     result {
-      ... on ExtendedMovie {
-        ...ExtendedMovieFragment
-      }
-      ... on ExtendedTVShow {
-        ...ExtendedTVShowFragment
-      }
+      ...ExtendedContentUnionFragment
     }
   }
 }
@@ -248,7 +256,7 @@ fragment ExtendedPersonFragment on ExtendedPerson {
   placeOfBirth
   knownFor
   works {
-    ...MovieFragment
+    ...ContentFragment
     role
   }
 }
@@ -291,6 +299,11 @@ query SearchAccounts($term: String!) {
 
 mutation Rate($contentId: String!, $rating: Int!) {
   rate(contentId: $contentId, rating: $rating) {
-    ...MovieFragment
+    content {
+      ...ContentFragment
+    }
+    extendedContent {
+      ...ExtendedContentUnionFragment
+    }
   }
 }

@@ -11,12 +11,12 @@ import Kingfisher
 extension UIView: Placeholder {}
 
 class PosterCollectionViewCell: UICollectionViewCell {
-    var movie: Movie? {
+    var content: Content? {
         didSet {
-            guard let movie = movie else { return }
+            guard let content = content else { return }
             let placeholder = UIView()
             placeholder.backgroundColor = .cut_gray08
-            imageView.kf.setImage(with: movie.poster_url, placeholder: placeholder, options: [.transition(.fade(2))])
+            imageView.kf.setImage(with: content.poster_url, placeholder: placeholder, options: [.transition(.fade(2))])
         }
     }
     var isWiggling = false
@@ -88,7 +88,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        movie = nil
+        content = nil
         imageView.image = nil
         removeAction = nil
     }

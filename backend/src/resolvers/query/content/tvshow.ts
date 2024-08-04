@@ -1,8 +1,8 @@
 import { ContentType } from "@prisma/client";
 import { ExtendedTvShow, ContentType as GqlContentType } from "../../../__generated__/graphql";
 import prisma from "../../../prisma";
-import importTmbdMovie from "../../../db/tmdbImporter";
-import dbMovieToGqlMovie, { ResolvedMovie, movieInclude } from "../../mappers/dbMovieToGqlMovie";
+import importTmbdContent from "../../../db/tmdbImporter";
+import contentDbToGqlMapper, { ResolvedContent, contentInclude } from "../../mappers/contentDbToGqlMapper";
 import { DeepPartial } from "utility-types";
 import TMDB from "../../../datasources/TMDB";
 import extendedContentMapper from "../../mappers/extendedContentMapper";
@@ -11,16 +11,16 @@ import ContentID from "../../../types/ContentID";
 
 export default async function tvShowResolver(contentId: ContentID, tmdb: TMDB): Promise<DeepPartial<ExtendedTvShow>> {
   let tmdbShow: any;
-  let importedShow: ResolvedMovie;
+  let importedShow: ResolvedContent;
   switch (contentId.provider) {
     case Provider.TMDB:
       tmdbShow = await tmdb.fetchTvShow(contentId.id);
-      importedShow = await importTmbdMovie(tmdbShow, "en", "US", ContentType.TV_SHOW);
+      importedShow = await importTmbdContent(tmdbShow, "en", "US", ContentType.TV_SHOW);
       break;
     default:
-      const cutShow = await prisma.movie.findUnique({
+      const cutShow = await prisma.content.findUnique({
         where: { id: contentId.id },
-        include: movieInclude
+        include: contentInclude
       });
       if (!cutShow) {
         throw new Error(`Show with id ${contentId.toString()} not found`);
@@ -32,7 +32,7 @@ export default async function tvShowResolver(contentId: ContentID, tmdb: TMDB): 
       importedShow = cutShow;
   }
 
-  const gqlMovie = dbMovieToGqlMovie(importedShow);
+  const gqlContent = contentDbToGqlMapper(importedShow);
 
   const seasons = tmdbShow.seasons.map((s: any) => {
     let seasonAirDate: Date | undefined
@@ -59,7 +59,7 @@ export default async function tvShowResolver(contentId: ContentID, tmdb: TMDB): 
   const extendedContent = extendedContentMapper(tmdbShow)
 
   return {
-    ...gqlMovie,
+    ...gqlContent,
     ...extendedContent,
     __typename: "ExtendedTVShow",
     seasons,

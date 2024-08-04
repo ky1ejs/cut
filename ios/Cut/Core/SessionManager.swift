@@ -51,7 +51,7 @@ public class SessionManager: ObservableObject {
             try txn.update(CutGraphQL.GetAccountMutationLocalCacheMutation()) { set in
                 set.account.asIncompleteAccount = nil
                 set.account.asCompleteAccount =  CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount(
-                    favoriteMovies: [],
+                    favoriteContent: [],
                     watchList: account.watchList.map({ m in
                         CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount.WatchList(
                             title: m.title,

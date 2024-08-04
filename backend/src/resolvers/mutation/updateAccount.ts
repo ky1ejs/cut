@@ -1,11 +1,10 @@
 import { GraphQLError } from "graphql";
 import { MutationResolvers, ContentType as GqlContentType } from "../../__generated__/graphql";
 import prisma from "../../prisma";
-import { ContentType, Prisma } from "@prisma/client";
-import { hash } from "../../services/bcrypt";
+import { Prisma } from "@prisma/client";
 import processPhoneNumber from "../../services/phoneNumberProcessing";
 import Provider from "../../types/providers";
-import importTmbdMovie from "../../db/tmdbImporter";
+import importTmbdContent from "../../db/tmdbImporter";
 import TMDB from "../../datasources/TMDB";
 import ContentID from "../../types/ContentID";
 import dbUserToGqlUser from "../mappers/dbUserToGqlUser";
@@ -47,14 +46,14 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
     update.url = params.url
   }
 
-  if (params.favoriteMovies !== undefined) {
-    if (params.favoriteMovies === null) {
-      update.favoriteMovies = []
+  if (params.favoriteContent !== undefined) {
+    if (params.favoriteContent === null) {
+      update.favoriteContentIds = []
     } else {
-      const ids = params.favoriteMovies
+      const ids = params.favoriteContent
         .map(m => ContentID.fromString(m))
-        .map(m => importFavoriteMovie(m, context.dataSources.tmdb))
-      update.favoriteMovies = await Promise.all(ids)
+        .map(m => importFavoriteContent(m, context.dataSources.tmdb))
+      update.favoriteContentIds = await Promise.all(ids)
     }
   }
 
@@ -71,15 +70,15 @@ const updateAccount: MutationResolvers["updateAccount"] = async (_, args, contex
   }
 }
 
-async function importFavoriteMovie(contentId: ContentID, tmdb: TMDB): Promise<string> {
+async function importFavoriteContent(contentId: ContentID, tmdb: TMDB): Promise<string> {
   if (contentId.provider === Provider.TMDB) {
-    const existingMovie = await prisma.movie.findUnique({
+    const existingContent = await prisma.content.findUnique({
       where: {
         tmdbId: parseInt(contentId.id)
       }
     })
-    if (existingMovie) {
-      return existingMovie.id
+    if (existingContent) {
+      return existingContent.id
     } else {
       let content: any
       if (contentId.type === GqlContentType.Movie) {
@@ -87,7 +86,7 @@ async function importFavoriteMovie(contentId: ContentID, tmdb: TMDB): Promise<st
       } else {
         content = await tmdb.fetchTvShow(contentId.id)
       }
-      return (await importTmbdMovie(content, "en", "US", contentId.dbContentType())).id
+      return (await importTmbdContent(content, "en", "US", contentId.dbContentType())).id
     }
   } else {
     return contentId.id

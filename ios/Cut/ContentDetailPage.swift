@@ -8,13 +8,13 @@
 import SwiftUI
 import Apollo
 
-struct MovieDetailView: View {
-    let movie: Movie
+struct ContentDetailPage: View {
+    let content: Content
     let extendedMovie: CutGraphQL.ExtendedMovieFragment?
 
     var body: some View {
-        DetailViewContainer(content: movie) { width in
-            ContentHeader(content: movie, tvShow: nil, movie: extendedMovie, width: width)
+        ContentDetailViewContainer(content: content) { width in
+            ContentHeader(content: content, tvShow: nil, movie: extendedMovie, width: width)
             WhereToWatchCarousel(watchProviders: extendedMovie?.watchProviders.map { $0.fragments.watchProviderFragment })
             CastCarousel(
                 cast: extendedMovie?.cast.map { $0.fragments.personFragment },
@@ -27,5 +27,5 @@ struct MovieDetailView: View {
 }
 
 #Preview {
-    MovieDetailView(movie: Mocks.movie, extendedMovie: nil)
+    ContentDetailPage(content: Mocks.content, extendedMovie: nil)
 }

@@ -1,5 +1,5 @@
 
 export type RatingCacheKey = {
-  movieId: string;
+  contentId: string;
   userId: string;
 };

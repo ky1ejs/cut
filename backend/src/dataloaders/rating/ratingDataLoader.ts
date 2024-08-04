@@ -16,38 +16,38 @@ export default class RatingDataLoader {
       {
         where: {
           OR: ids.map((id) => {
-            const contentId = ContentID.fromString(id.movieId);
-            let movieWhere: Prisma.RatingWhereInput = {
+            const contentId = ContentID.fromString(id.contentId);
+            let contentWhere: Prisma.RatingWhereInput = {
               userId: id.userId,
             };
             switch (contentId.provider) {
               case Provider.TMDB:
-                movieWhere = {
-                  ...movieWhere,
-                  movie: {
+                contentWhere = {
+                  ...contentWhere,
+                  content: {
                     tmdbId: parseInt(contentId.id)
                   }
                 };
                 break;
               default:
-                movieWhere = {
-                  ...movieWhere,
-                  movieId: contentId.id
+                contentWhere = {
+                  ...contentWhere,
+                  contentId: contentId.id
                 }
                 break;
             }
-            return movieWhere;
+            return contentWhere;
           }),
         },
         include: {
-          movie: true
+          content: true
         }
       }
     )
-    let moviesById = new Map(result.map((r) => [r.movieId, r.rating]));
-    let moviesByTmdbId = new Map(result.map((r) => [r.movie.tmdbId, r.rating]));
+    let moviesById = new Map(result.map((r) => [r.contentId, r.rating]));
+    let moviesByTmdbId = new Map(result.map((r) => [r.content.tmdbId, r.rating]));
     return ids.map((id) => {
-      const contentId = ContentID.fromString(id.movieId);
+      const contentId = ContentID.fromString(id.contentId);
       return (contentId.provider === Provider.TMDB ? moviesByTmdbId.get(parseInt(contentId.id)) : moviesById.get(contentId.id)) || null;
     });
   })

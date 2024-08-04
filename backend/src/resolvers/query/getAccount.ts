@@ -1,5 +1,4 @@
-import { User } from "@prisma/client";
-import { CompleteAccount, IncompleteAccount, Profile, ProfileInterface, QueryResolvers } from "../../__generated__/graphql";
+import { CompleteAccount, IncompleteAccount, QueryResolvers } from "../../__generated__/graphql";
 import prisma from "../../prisma";
 import { GraphQLError } from "graphql";
 import { profileImageUrl } from "../mappers/cdnUrls";

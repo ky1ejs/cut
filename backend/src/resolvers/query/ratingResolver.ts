@@ -1,21 +1,21 @@
 import { GraphQLError } from "graphql";
-import { MovieInterfaceResolvers, MovieResolvers } from "../../__generated__/graphql";
+import { ContentInterfaceResolvers } from "../../__generated__/graphql";
 
-const ratingResolver: MovieInterfaceResolvers["rating"] = async (movie, _, context) => {
-  if (movie.rating !== undefined) {
-    return movie.rating
+const ratingResolver: ContentInterfaceResolvers["rating"] = async (content, _, context) => {
+  if (content.rating !== undefined) {
+    return content.rating
   }
   if (context.userDevice) {
-    if (!movie.id) {
+    if (!content.id) {
       return null
     }
-    return await context.dataSources.ratingDataLoader.getRating({ movieId: movie.id, userId: context.userDevice.user.id });
+    return await context.dataSources.ratingDataLoader.getRating({ contentId: content.id, userId: context.userDevice.user.id });
   }
   if (context.annonymousUserDevice) {
-    if (!movie.id) {
+    if (!content.id) {
       return null
     }
-    return await context.dataSources.annonymousRatingDataLoader.getRating({ movieId: movie.id, userId: context.annonymousUserDevice.user.id });
+    return await context.dataSources.annonymousRatingDataLoader.getRating({ contentId: content.id, userId: context.annonymousUserDevice.user.id });
   }
   throw new GraphQLError("Unauthorized")
 }

@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import SwiftUI
 
-class MovieSelectionViewController: KeyboardAnimationVC {
+class ContentSelectionViewController: KeyboardAnimationVC {
     private var keyboardConstraint: NSLayoutConstraint?
     private let searchViewModel = SearchViewModel()
     private var searchSubscription: AnyCancellable?
@@ -62,10 +62,10 @@ class MovieSelectionViewController: KeyboardAnimationVC {
     }()
     lazy var searchBarContainer = UIView()
     lazy var bottomView = UIView()
-    let movieSelected: (Movie) -> Void
+    let contentSelected: (Content) -> Void
 
-    init(movieSelected: @escaping (Movie) -> Void) {
-        self.movieSelected = movieSelected
+    init(contentSelected: @escaping (Content) -> Void) {
+        self.contentSelected = contentSelected
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -160,7 +160,7 @@ class MovieSelectionViewController: KeyboardAnimationVC {
         }
     }
 
-    private func updateView(_ state: SearchViewModel.State<Movie>) {
+    private func updateView(_ state: SearchViewModel.State<Content>) {
         loadingIndicator.stopAnimating()
         tableView.reloadData()
         switch state {
@@ -223,19 +223,19 @@ class MovieSelectionViewController: KeyboardAnimationVC {
     }
 }
 
-extension MovieSelectionViewController: UITextFieldDelegate {
+extension ContentSelectionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
 }
 
-extension MovieSelectionViewController: UINavigationBarDelegate {
+extension ContentSelectionViewController: UINavigationBarDelegate {
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
 }
 
-extension MovieSelectionViewController: UITableViewDataSource {
+extension ContentSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchViewModel.contentState.results.count
     }
@@ -249,10 +249,10 @@ extension MovieSelectionViewController: UITableViewDataSource {
     }
 }
 
-extension MovieSelectionViewController: UITableViewDelegate {
+extension ContentSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         keyboardConstraint?.isActive = false
-        movieSelected(searchViewModel.contentState.results[indexPath.row])
+        contentSelected(searchViewModel.contentState.results[indexPath.row])
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -261,14 +261,14 @@ extension MovieSelectionViewController: UITableViewDelegate {
 }
 
 struct MovieSelectionView: UIViewControllerRepresentable {
-    let movieSelected: (Movie) -> Void
-    typealias UIViewControllerType = MovieSelectionViewController
+    let contentSelected: (Content) -> Void
+    typealias UIViewControllerType = ContentSelectionViewController
 
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        return MovieSelectionViewController(movieSelected: movieSelected)
+        return ContentSelectionViewController(contentSelected: contentSelected)
     }
 
-    func updateUIViewController(_ uiViewController: MovieSelectionViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: ContentSelectionViewController, context: Context) {
 
     }
 }

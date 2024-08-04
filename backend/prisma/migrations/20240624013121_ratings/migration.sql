@@ -35,3 +35,9 @@ ALTER TABLE "AnnonymousRating" ADD CONSTRAINT "AnnonymousRating_movieId_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "AnnonymousRating" ADD CONSTRAINT "AnnonymousRating_userId_fkey" FOREIGN KEY ("userId") REFERENCES "AnonymousUser"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- CreateIndex
+CREATE UNIQUE INDEX "AnnonymousRating_movieId_userId_key" ON "AnnonymousRating"("movieId", "userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Rating_movieId_userId_key" ON "Rating"("movieId", "userId");

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SeasonDetailView: View {
-    let show: Movie
+    let show: Content
     let season: CutGraphQL.SeasonFragment
     @State var extendedSeason: CutGraphQL.ExtendedSeasonFragment?
 
@@ -104,7 +104,7 @@ struct SeasonPersonEntityMapper: EntityMapper {
 
 #Preview {
     SeasonDetailView(
-        show: Mocks.movie,
+        show: Mocks.content,
         season: Mocks.season,
         extendedSeason: Mocks.extendedSeason
     )
@@ -112,7 +112,7 @@ struct SeasonPersonEntityMapper: EntityMapper {
 
 #Preview {
     SeasonDetailView(
-        show: Mocks.movie,
+        show: Mocks.content,
         season: Mocks.season
     )
 }

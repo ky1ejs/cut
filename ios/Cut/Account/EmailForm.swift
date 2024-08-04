@@ -96,7 +96,7 @@ extension Publishers {
 struct KeyboardAdaptive: ViewModifier {
     @State private var keyboardHeight: CGFloat = 0
 
-    func body(content: Content) -> some View {
+    func body(content: Self.Content) -> some View {
         content
             .padding(.bottom, keyboardHeight)
             .onReceive(Publishers.keyboardHeight) { self.keyboardHeight = $0 }

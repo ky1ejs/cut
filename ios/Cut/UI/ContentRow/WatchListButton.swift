@@ -15,8 +15,8 @@ protocol WatchListButtonProtocol: View {
 struct WatchListButtonContainer<B: WatchListButtonProtocol>: View {
     @State var watchListViewModel: WatchListViewModel
 
-    init(movie: Movie, index: Int? = nil) {
-        watchListViewModel = WatchListViewModel(movie: movie, index: index)
+    init(content: Content, index: Int? = nil) {
+        watchListViewModel = WatchListViewModel(content: content, index: index)
     }
 
     var body: some View {

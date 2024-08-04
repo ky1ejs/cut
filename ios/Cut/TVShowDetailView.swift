@@ -11,7 +11,7 @@ import Kingfisher
 struct TVShowDetailView: View {
     @Environment(\.theme) var theme
     @State var isExpanded = false
-    let movie: Movie
+    let content: Content
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
     @State var previewSeason = 1
     @State var season: CutGraphQL.ExtendedSeasonFragment?
@@ -25,8 +25,8 @@ struct TVShowDetailView: View {
     }
 
     var body: some View {
-        DetailViewContainer(content: movie) { width in
-            ContentHeader(content: movie, tvShow: tvShow, movie: nil, width: width)
+        ContentDetailViewContainer(content: content) { width in
+            ContentHeader(content: content, tvShow: tvShow, movie: nil, width: width)
             HStack {
                 if let seasonCount = tvShow?.seasonCount {
                     Button {
@@ -65,7 +65,7 @@ struct TVShowDetailView: View {
                 Spacer()
             }
             EpisodeCarousel(
-                seriesId: movie.id,
+                seriesId: content.id,
                 episodes: season?.episodes.map { $0.fragments.episodeFragment }
             )
             seasons()
@@ -84,7 +84,7 @@ struct TVShowDetailView: View {
     }
 
     func reloadSeason() {
-        AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetSeasonQuery(seriesId: movie.id, seasonNumber: previewSeason)) { result in
+        AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetSeasonQuery(seriesId: content.id, seasonNumber: previewSeason)) { result in
             switch result.parseGraphQL() {
             case .success(let data):
                 season = data.season.fragments.extendedSeasonFragment
@@ -105,7 +105,7 @@ struct TVShowDetailView: View {
                         ForEach(tvShow.seasons, id: \.id) { season in
                             NavigationLink {
                                 SeasonDetailView(
-                                    show: movie,
+                                    show: content,
                                     season: season.fragments.seasonFragment
                                 )
                             } label: {
@@ -205,11 +205,11 @@ extension CutGraphQL.AccessModel {
 }
 
 #Preview {
-    TVShowDetailView(movie: Mocks.movie, tvShow: nil)
+    TVShowDetailView(content: Mocks.content, tvShow: nil)
 }
 
 #Preview {
     NavigationStack {
-        TVShowDetailView(movie: Mocks.movie, tvShow: Mocks.extendedTvShow)
+        TVShowDetailView(content: Mocks.content, tvShow: Mocks.extendedTvShow)
     }
 }

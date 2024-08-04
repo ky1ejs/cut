@@ -2,11 +2,11 @@ scalar Date
 scalar URL
 
 type Query {
-  movies(collection: Collection!): [Movie!]!
-  search(term: String!): [Movie!]!
+  contentCollection(collection: Collection!): [Content!]!
+  search(term: String!): [Content!]!
   searchUsers(term: String!): [Profile!]!
-  watchList: [Movie!]!
-  content(id: String!): ContentResponse!
+  watchList: [Content!]!
+  content(id: String!): ExtendedContentResponse!
 
   contactMatches: [Profile!]!
 
@@ -28,11 +28,11 @@ type Query {
 }
 
 union ProfileUnion = Profile | CompleteAccount
-union ContentUnion = ExtendedMovie | ExtendedTVShow
+union ExtendedContentUnion = ExtendedMovie | ExtendedTVShow
 
-type ContentResponse {
+type ExtendedContentResponse {
   type: ContentType!
-  result: ContentUnion!
+  result: ExtendedContentUnion!
 }
 
 type Mutation {
@@ -52,10 +52,10 @@ type Mutation {
   uploadContactNumbers(contacts: [ContactInput!]!): Boolean!
   uploadContactEmails(contacts: [ContactInput!]!): Boolean!
 
-  addToWatchList(movieId: String!): WatchListMutationResult!
-  removeFromWatchList(movieId: String!): WatchListMutationResult!
-  rate(contentId: String!, rating: Int!): Movie!
-  removeRating(movieId: String!): Boolean!
+  addToWatchList(contentId: String!): WatchListMutationResult!
+  removeFromWatchList(contentId: String!): WatchListMutationResult!
+  rate(contentId: String!, rating: Int!): RatingResponse!
+  removeRating(contentId: String!): Boolean!
 }
 
 union AccountUnion = IncompleteAccount | CompleteAccount
@@ -88,7 +88,7 @@ input UpdateAccountInput {
   name: String
   bio: String
   url: URL
-  favoriteMovies: [String!]
+  favoriteContent: [String!]
 }
 
 enum TokenEnv {
@@ -116,8 +116,8 @@ interface ProfileInterface {
   share_url: URL!
   bio: String
   imageUrl: URL
-  favoriteMovies: [Movie!]!
-  watchList: [Movie!]!
+  favoriteContent: [Content!]!
+  watchList: [Content!]!
   followerCount: Int!
   followingCount: Int!
   followers: [Profile!]!
@@ -134,8 +134,8 @@ type Profile implements ProfileInterface {
   share_url: URL!
   bio: String
   imageUrl: URL
-  favoriteMovies: [Movie!]!
-  watchList: [Movie!]!
+  favoriteContent: [Content!]!
+  watchList: [Content!]!
   followerCount: Int!
   followingCount: Int!
   followers: [Profile!]!
@@ -147,7 +147,7 @@ type Profile implements ProfileInterface {
 
 type IncompleteAccount {
   id: String!
-  watchList: [Movie!]!
+  watchList: [Content!]!
 }
 
 type CompleteAccount implements ProfileInterface {
@@ -159,8 +159,8 @@ type CompleteAccount implements ProfileInterface {
   share_url: URL!
   bio: String
   imageUrl: URL
-  favoriteMovies: [Movie!]!
-  watchList: [Movie!]!
+  favoriteContent: [Content!]!
+  watchList: [Content!]!
   followerCount: Int!
   followingCount: Int!
   followers: [Profile!]!
@@ -199,7 +199,7 @@ enum ContentType {
   MOVIE
 }
 
-interface MovieInterface {
+interface ContentInterface {
   id: String!
   title: String!
   poster_url: URL
@@ -213,7 +213,7 @@ interface MovieInterface {
   rating: Int
 }
 
-type Movie implements MovieInterface {
+type Content implements ContentInterface {
   id: String!
   title: String!
   poster_url: URL
@@ -227,7 +227,7 @@ type Movie implements MovieInterface {
   rating: Int
 }
 
-interface ExtendedContent {
+interface ExtendedContentInterface {
   overview: String!
   cast: [Person!]!
   crew: [Person!]!
@@ -236,8 +236,8 @@ interface ExtendedContent {
   trailer: Trailer
 }
 
-type ExtendedMovie implements MovieInterface & ExtendedContent {
-  # MovieInterface fields
+type ExtendedMovie implements ContentInterface & ExtendedContentInterface {
+  # ContentInterface fields
   id: String!
   title: String!
   poster_url: URL
@@ -250,7 +250,7 @@ type ExtendedMovie implements MovieInterface & ExtendedContent {
   type: ContentType!
   rating: Int
 
-  # ExtendedContent fields
+  # ExtendedContentInterface fields
   overview: String!
   cast: [Person!]!
   crew: [Person!]!
@@ -301,7 +301,7 @@ type Person implements PersonInterface {
   role: String!
 }
 
-type Work implements MovieInterface {
+type Work implements ContentInterface {
   id: String!
   title: String!
   poster_url: URL
@@ -340,8 +340,8 @@ type GenreMetadata {
   name: String!
 }
 
-type ExtendedTVShow implements MovieInterface & ExtendedContent {
-  # MovieInterface fields
+type ExtendedTVShow implements ContentInterface & ExtendedContentInterface {
+  # ContentInterface fields
   id: String!
   title: String!
   poster_url: URL
@@ -354,7 +354,7 @@ type ExtendedTVShow implements MovieInterface & ExtendedContent {
   type: ContentType!
   rating: Int
 
-  # ExtendedContent fields
+  # ExtendedContentInterface fields
   overview: String!
   cast: [Person!]!
   crew: [Person!]!
@@ -474,4 +474,9 @@ type ImageUploadUrl {
 enum FollowDirection {
   FOLLOWER
   FOLLOWING
+}
+
+type RatingResponse {
+  content: Content!
+  extendedContent: ExtendedContentUnion!
 }

@@ -18,39 +18,39 @@ export default class AnnonymousWatchListDataLoader {
       {
         where: {
           OR: ids.map((id) => {
-            const contentId = ContentID.fromString(id.movieId);
-            let movieWhere: Prisma.AnnonymousWatchListWhereInput = {
+            const contentId = ContentID.fromString(id.contentId);
+            let contentWhere: Prisma.AnnonymousWatchListWhereInput = {
               userId: id.userId,
             };
             switch (contentId.provider) {
               case Provider.TMDB:
-                movieWhere = {
-                  ...movieWhere,
-                  movie: {
+                contentWhere = {
+                  ...contentWhere,
+                  content: {
                     tmdbId: parseInt(contentId.id)
                   }
                 };
                 break;
               default:
-                movieWhere = {
-                  ...movieWhere,
-                  movieId: contentId.id
+                contentWhere = {
+                  ...contentWhere,
+                  contentId: contentId.id
                 }
                 break;
             }
-            return movieWhere;
+            return contentWhere;
           }),
         },
         include: {
-          movie: true
+          content: true
         }
       }
     )
-    let movieIds = result.map((r) => r.movieId);
-    let tmdbIds = result.map((r) => r.movie.tmdbId);
+    let contentIds = result.map((r) => r.contentId);
+    let tmdbIds = result.map((r) => r.content.tmdbId);
     return ids.map((id) => {
-      const contentId = ContentID.fromString(id.movieId);
-      return contentId.provider === Provider.TMDB ? tmdbIds.includes(parseInt(contentId.id)) : movieIds.includes(contentId.id);
+      const contentId = ContentID.fromString(id.contentId);
+      return contentId.provider === Provider.TMDB ? tmdbIds.includes(parseInt(contentId.id)) : contentIds.includes(contentId.id);
     });
   })
 

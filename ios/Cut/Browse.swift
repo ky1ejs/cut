@@ -9,45 +9,45 @@ import SwiftUI
 import Apollo
 
 struct Browse: View {
-    @State var trending: [Movie] = []
-    @State var new: [Movie] = []
-    @State var topRated: [Movie] = []
+    @State var trending: [Content] = []
+    @State var new: [Content] = []
+    @State var topRated: [Content] = []
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    PosterCarousel(title: "Trending", movies: trending, style: .ordered)
-                    PosterCarousel(title: "New", movies: new, style: .unordered)
-                    PosterCarousel(title: "Top Rated", movies: topRated, style: .unordered)
+                    PosterCarousel(title: "Trending", content: trending, style: .ordered)
+                    PosterCarousel(title: "New", content: new, style: .unordered)
+                    PosterCarousel(title: "Top Rated", content: topRated, style: .unordered)
                     Spacer()
                 }
                 .scrollClipDisabled()
                 .scrollBounceBehavior(.basedOnSize)
                 .onAppear {
-                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MoviesQuery(collection: .case(.trendingWeekly)), resultHandler: { result in
+                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContentCollectionQuery(collection: .case(.trendingWeekly)), resultHandler: { result in
                         switch result.parseGraphQL() {
                         case .success(let data):
-                            let movies = data.movies.map { $0.fragments.movieFragment }
+                            let movies = data.contentCollection.map { $0.fragments.contentFragment }
                             self.trending = movies
                         case .failure(let error):
                             print(error)
 
                         }
                     })
-                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MoviesQuery(collection: .case(.nowPlaying)), resultHandler: { result in
+                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContentCollectionQuery(collection: .case(.nowPlaying)), resultHandler: { result in
                         switch result.parseGraphQL() {
                         case .success(let data):
-                            self.new = data.movies.map { $0.fragments.movieFragment }
+                            self.new = data.contentCollection.map { $0.fragments.contentFragment }
                         case .failure(let error):
                             print(error)
 
                         }
                     })
-                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.MoviesQuery(collection: .case(.topRated)), resultHandler: { result in
+                    AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetContentCollectionQuery(collection: .case(.topRated)), resultHandler: { result in
                         switch result.parseGraphQL() {
                         case .success(let data):
-                            self.topRated = data.movies.map { $0.fragments.movieFragment }
+                            self.topRated = data.contentCollection.map { $0.fragments.contentFragment }
                         case .failure(let error):
                             print(error)
 
@@ -62,9 +62,9 @@ struct Browse: View {
 
 struct PosterCarousel: View {
     let title: String
-    let movies: [Movie]
+    let content: [Content]
     let style: Style
-    @State var presentedContent: Movie?
+    @State var presentedContent: Content?
 
     enum Style {
         case ordered, unordered
@@ -76,16 +76,16 @@ struct PosterCarousel: View {
         }
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(content: {
-                ForEach(Array(movies.enumerated()), id: \.element.id) { i, m in
+                ForEach(Array(content.enumerated()), id: \.element.id) { i, c in
                     Button {
-                        presentedContent = m
+                        presentedContent = c
                     } label: {
                         switch style {
                         case .ordered:
-                            OrderedPosterCard(movie: m, index: i + 1)
+                            OrderedPosterCard(content: c, index: i + 1)
                                 .padding(.trailing, 10)
                         case .unordered:
-                            PosterCard(movie: m)
+                            PosterCard(content: c)
                         }
                     }
                 }
@@ -93,29 +93,29 @@ struct PosterCarousel: View {
         }
         .sheet(item: $presentedContent, content: { m in
             NavigationStack {
-                DetailView(content: m)
+                ContentDetailView(content: m)
             }
         })
         .frame(height: 165)
-        .animation(.linear, value: movies)
+        .animation(.linear, value: content)
     }
 }
 
 struct PosterCard: View {
-    let movie: Movie
+    let content: Content
     var body: some View {
-        URLImage(url: movie.poster_url)
+        URLImage(url: content.poster_url)
             .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
             .frame(width: 110, height: 170)
     }
 }
 
 struct OrderedPosterCard: View {
-    let movie: Movie
+    let content: Content
     let index: Int
     var body: some View {
         HStack {
-            PosterCard(movie: movie)
+            PosterCard(content: content)
             Text("\(index)")
                 .font(.system(size: 230, weight: .bold, design: .rounded))
                 .offset(CGSize(width: -35, height: 0))

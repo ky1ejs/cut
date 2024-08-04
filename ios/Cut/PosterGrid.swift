@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct PosterGrid: View {
-    let movies: [Movie]
-    @State private var presentedMovie: Movie?
+    let content: [Content]
+    @State private var presentedContent: Content?
 
     var body: some View {
-        if movies.count > 0 {
+        if content.count > 0 {
             ScrollView {
                 LazyVGrid(
                     columns: Array(
@@ -21,17 +21,17 @@ struct PosterGrid: View {
                     ),
                     spacing: 0
                 ) {
-                    ForEach(movies, id: \.id) { movie in
+                    ForEach(content, id: \.id) { content in
                         Button {
-                            presentedMovie = movie
+                            presentedContent = content
                         } label: {
-                            PosterCell(url: movie.poster_url)
+                            PosterCell(url: content.poster_url)
                         }
                     }
                 }
             }
-            .sheet(item: $presentedMovie) { m in
-                DetailView(content: m)
+            .sheet(item: $presentedContent) { c in
+                ContentDetailView(content: c)
             }
         } else {
             Text("nothing to see here")
@@ -43,6 +43,6 @@ struct PosterGrid: View {
 
 #Preview {
     PosterGrid(
-        movies: (0..<15).map { _ in  Mocks.movie }
+        content: (0..<15).map { _ in  Mocks.content }
     )
 }

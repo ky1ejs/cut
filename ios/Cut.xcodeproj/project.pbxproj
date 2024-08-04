@@ -16,7 +16,7 @@
 		930F67862BD88FE3008C6CF2 /* OneLineCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F67852BD88FE3008C6CF2 /* OneLineCollectionViewLayout.swift */; };
 		930F678A2BD89177008C6CF2 /* PlaceholderLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F67892BD89177008C6CF2 /* PlaceholderLayout.swift */; };
 		930F678E2BDD2D1C008C6CF2 /* KeyboardAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F678D2BDD2D1C008C6CF2 /* KeyboardAnimationViewController.swift */; };
-		930F67902BDD2EE9008C6CF2 /* MovieSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F678F2BDD2EE9008C6CF2 /* MovieSelectionViewController.swift */; };
+		930F67902BDD2EE9008C6CF2 /* ContentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F678F2BDD2EE9008C6CF2 /* ContentSelectionViewController.swift */; };
 		930F67922BDEAC9E008C6CF2 /* TVShowDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F67912BDEAC9E008C6CF2 /* TVShowDetailView.swift */; };
 		930F67942BE04B18008C6CF2 /* PersonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F67932BE04B18008C6CF2 /* PersonCard.swift */; };
 		930F68CA2BE48812008C6CF2 /* DateScalar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F68C92BE48812008C6CF2 /* DateScalar.swift */; };
@@ -28,7 +28,7 @@
 		933A6AC02B704715004DE491 /* AuthorizedApolloClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933A6ABF2B704715004DE491 /* AuthorizedApolloClient.swift */; };
 		933B77622B856F57009CBC27 /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B77612B856F57009CBC27 /* Browse.swift */; };
 		933B77642B857009009CBC27 /* WatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B77632B857009009CBC27 /* WatchList.swift */; };
-		933B78B32B89AE42009CBC27 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78B22B89AE42009CBC27 /* DetailView.swift */; };
+		933B78B32B89AE42009CBC27 /* ContentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B78B22B89AE42009CBC27 /* ContentDetailView.swift */; };
 		933B79212B8AC6E9009CBC27 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B79202B8AC6E9009CBC27 /* Mocks.swift */; };
 		933B79612B8AD5AD009CBC27 /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B79602B8AD5AD009CBC27 /* WrappingHStack.swift */; };
 		933E5DEE2B707E7500A83602 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 933E5DED2B707E7500A83602 /* Kingfisher */; };
@@ -90,8 +90,116 @@
 		93898E612B6E0A990001D68F /* CutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E602B6E0A990001D68F /* CutTests.swift */; };
 		93898E6B2B6E0A990001D68F /* CutUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E6A2B6E0A990001D68F /* CutUITests.swift */; };
 		93898E6D2B6E0A990001D68F /* CutUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93898E6C2B6E0A990001D68F /* CutUITestsLaunchTests.swift */; };
+		9396D3AF2C5EDF99007D6C2D /* ExtendedContentUnionFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3362C5EDF99007D6C2D /* ExtendedContentUnionFragment.graphql.swift */; };
+		9396D3B02C5EDF99007D6C2D /* CompleteAccountFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3372C5EDF99007D6C2D /* CompleteAccountFragment.graphql.swift */; };
+		9396D3B12C5EDF99007D6C2D /* ProfileInterfaceFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3382C5EDF99007D6C2D /* ProfileInterfaceFragment.graphql.swift */; };
+		9396D3B22C5EDF99007D6C2D /* ExtendedEpisodeFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3392C5EDF99007D6C2D /* ExtendedEpisodeFragment.graphql.swift */; };
+		9396D3B32C5EDF99007D6C2D /* CompleteAccountResultFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D33A2C5EDF99007D6C2D /* CompleteAccountResultFragment.graphql.swift */; };
+		9396D3B42C5EDF99007D6C2D /* WatchProviderFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D33B2C5EDF99007D6C2D /* WatchProviderFragment.graphql.swift */; };
+		9396D3B52C5EDF99007D6C2D /* PersonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D33C2C5EDF99007D6C2D /* PersonFragment.graphql.swift */; };
+		9396D3B62C5EDF99007D6C2D /* ProfileFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D33D2C5EDF99007D6C2D /* ProfileFragment.graphql.swift */; };
+		9396D3B72C5EDF99007D6C2D /* SeasonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D33E2C5EDF99007D6C2D /* SeasonFragment.graphql.swift */; };
+		9396D3B82C5EDF99007D6C2D /* SeasonPersonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D33F2C5EDF99007D6C2D /* SeasonPersonFragment.graphql.swift */; };
+		9396D3B92C5EDF99007D6C2D /* ExtendedContentInterfaceFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3402C5EDF99007D6C2D /* ExtendedContentInterfaceFragment.graphql.swift */; };
+		9396D3BA2C5EDF99007D6C2D /* ExtendedTVShowFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3412C5EDF99007D6C2D /* ExtendedTVShowFragment.graphql.swift */; };
+		9396D3BB2C5EDF99007D6C2D /* ContentFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3422C5EDF99007D6C2D /* ContentFragment.graphql.swift */; };
+		9396D3BC2C5EDF99007D6C2D /* PersonInterfaceFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3432C5EDF99007D6C2D /* PersonInterfaceFragment.graphql.swift */; };
+		9396D3BD2C5EDF99007D6C2D /* EpisodeFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3442C5EDF99007D6C2D /* EpisodeFragment.graphql.swift */; };
+		9396D3BE2C5EDF99007D6C2D /* ExtendedPersonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3452C5EDF99007D6C2D /* ExtendedPersonFragment.graphql.swift */; };
+		9396D3BF2C5EDF99007D6C2D /* ProductionCountryFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3462C5EDF99007D6C2D /* ProductionCountryFragment.graphql.swift */; };
+		9396D3C02C5EDF99007D6C2D /* FullProfileFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3472C5EDF99007D6C2D /* FullProfileFragment.graphql.swift */; };
+		9396D3C12C5EDF99007D6C2D /* ExtendedSeasonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3482C5EDF99007D6C2D /* ExtendedSeasonFragment.graphql.swift */; };
+		9396D3C22C5EDF99007D6C2D /* ExtendedMovieFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3492C5EDF99007D6C2D /* ExtendedMovieFragment.graphql.swift */; };
+		9396D3C32C5EDF99007D6C2D /* CutGraphQL.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D34A2C5EDF99007D6C2D /* CutGraphQL.graphql.swift */; };
+		9396D3C42C5EDF99007D6C2D /* MutableContentFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D34C2C5EDF99007D6C2D /* MutableContentFragment.graphql.swift */; };
+		9396D3C52C5EDF99007D6C2D /* GetAccountMutationLocalCacheMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D34D2C5EDF99007D6C2D /* GetAccountMutationLocalCacheMutation.graphql.swift */; };
+		9396D3C62C5EDF99007D6C2D /* WatchListMutationLocalCacheMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D34E2C5EDF99007D6C2D /* WatchListMutationLocalCacheMutation.graphql.swift */; };
+		9396D3C72C5EDF99007D6C2D /* MutableExtendedMovieFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D34F2C5EDF99007D6C2D /* MutableExtendedMovieFragment.graphql.swift */; };
+		9396D3C82C5EDF99007D6C2D /* UnfollowMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3522C5EDF99007D6C2D /* UnfollowMutation.graphql.swift */; };
+		9396D3C92C5EDF99007D6C2D /* UploadContactEmailsMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3532C5EDF99007D6C2D /* UploadContactEmailsMutation.graphql.swift */; };
+		9396D3CA2C5EDF99007D6C2D /* InitiatiteDeleteAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3542C5EDF99007D6C2D /* InitiatiteDeleteAccountMutation.graphql.swift */; };
+		9396D3CB2C5EDF99007D6C2D /* CompleteAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3552C5EDF99007D6C2D /* CompleteAccountMutation.graphql.swift */; };
+		9396D3CC2C5EDF99007D6C2D /* UpdateAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3562C5EDF99007D6C2D /* UpdateAccountMutation.graphql.swift */; };
+		9396D3CD2C5EDF99007D6C2D /* LogOutMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3572C5EDF99007D6C2D /* LogOutMutation.graphql.swift */; };
+		9396D3CE2C5EDF99007D6C2D /* DeleteAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3582C5EDF99007D6C2D /* DeleteAccountMutation.graphql.swift */; };
+		9396D3CF2C5EDF99007D6C2D /* AnnonymousSignUpMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3592C5EDF99007D6C2D /* AnnonymousSignUpMutation.graphql.swift */; };
+		9396D3D02C5EDF99007D6C2D /* AddToWatchListMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D35A2C5EDF99007D6C2D /* AddToWatchListMutation.graphql.swift */; };
+		9396D3D12C5EDF99007D6C2D /* InitiateAuthenticationMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D35B2C5EDF99007D6C2D /* InitiateAuthenticationMutation.graphql.swift */; };
+		9396D3D22C5EDF99007D6C2D /* FollowMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D35C2C5EDF99007D6C2D /* FollowMutation.graphql.swift */; };
+		9396D3D32C5EDF99007D6C2D /* RateMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D35D2C5EDF99007D6C2D /* RateMutation.graphql.swift */; };
+		9396D3D42C5EDF99007D6C2D /* ProfileImageUploadResponseMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D35E2C5EDF99007D6C2D /* ProfileImageUploadResponseMutation.graphql.swift */; };
+		9396D3D52C5EDF99007D6C2D /* RemoveFromWatchListMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D35F2C5EDF99007D6C2D /* RemoveFromWatchListMutation.graphql.swift */; };
+		9396D3D62C5EDF99007D6C2D /* ValidateAuthenticationMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3602C5EDF99007D6C2D /* ValidateAuthenticationMutation.graphql.swift */; };
+		9396D3D72C5EDF99007D6C2D /* SetPushTokenMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3612C5EDF99007D6C2D /* SetPushTokenMutation.graphql.swift */; };
+		9396D3D82C5EDF99007D6C2D /* UploadContactNumbersMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3622C5EDF99007D6C2D /* UploadContactNumbersMutation.graphql.swift */; };
+		9396D3D92C5EDF99007D6C2D /* CheckUsernameAvailabilityQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3642C5EDF99007D6C2D /* CheckUsernameAvailabilityQuery.graphql.swift */; };
+		9396D3DA2C5EDF99007D6C2D /* SearchAccountsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3652C5EDF99007D6C2D /* SearchAccountsQuery.graphql.swift */; };
+		9396D3DB2C5EDF99007D6C2D /* SearchQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3662C5EDF99007D6C2D /* SearchQuery.graphql.swift */; };
+		9396D3DC2C5EDF99007D6C2D /* GetEpisodeQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3672C5EDF99007D6C2D /* GetEpisodeQuery.graphql.swift */; };
+		9396D3DD2C5EDF99007D6C2D /* WatchListQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3682C5EDF99007D6C2D /* WatchListQuery.graphql.swift */; };
+		9396D3DE2C5EDF99007D6C2D /* GetImageUploadUrlQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3692C5EDF99007D6C2D /* GetImageUploadUrlQuery.graphql.swift */; };
+		9396D3DF2C5EDF99007D6C2D /* GetContactMatchesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D36A2C5EDF99007D6C2D /* GetContactMatchesQuery.graphql.swift */; };
+		9396D3E02C5EDF99007D6C2D /* SendTestPushQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D36B2C5EDF99007D6C2D /* SendTestPushQuery.graphql.swift */; };
+		9396D3E12C5EDF99007D6C2D /* GetAccountQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D36C2C5EDF99007D6C2D /* GetAccountQuery.graphql.swift */; };
+		9396D3E22C5EDF99007D6C2D /* GetFollowersQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D36D2C5EDF99007D6C2D /* GetFollowersQuery.graphql.swift */; };
+		9396D3E32C5EDF99007D6C2D /* GetContentQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D36E2C5EDF99007D6C2D /* GetContentQuery.graphql.swift */; };
+		9396D3E42C5EDF99007D6C2D /* GetPersonQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D36F2C5EDF99007D6C2D /* GetPersonQuery.graphql.swift */; };
+		9396D3E52C5EDF99007D6C2D /* GetSeasonQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3702C5EDF99007D6C2D /* GetSeasonQuery.graphql.swift */; };
+		9396D3E62C5EDF99007D6C2D /* GetProfileByIdQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3712C5EDF99007D6C2D /* GetProfileByIdQuery.graphql.swift */; };
+		9396D3E72C5EDF99007D6C2D /* GetContentCollectionQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3722C5EDF99007D6C2D /* GetContentCollectionQuery.graphql.swift */; };
+		9396D3E82C5EDF99007D6C2D /* AccountUnion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3752C5EDF99007D6C2D /* AccountUnion.graphql.swift */; };
+		9396D3E92C5EDF99007D6C2D /* ProfileUnion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3762C5EDF99007D6C2D /* ProfileUnion.graphql.swift */; };
+		9396D3EA2C5EDF99007D6C2D /* AuthenticationResult.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3772C5EDF99007D6C2D /* AuthenticationResult.graphql.swift */; };
+		9396D3EB2C5EDF99007D6C2D /* ExtendedContentUnion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3782C5EDF99007D6C2D /* ExtendedContentUnion.graphql.swift */; };
+		9396D3EE2C5EDF99007D6C2D /* FollowDirection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D37D2C5EDF99007D6C2D /* FollowDirection.graphql.swift */; };
+		9396D3EF2C5EDF99007D6C2D /* Collection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D37E2C5EDF99007D6C2D /* Collection.graphql.swift */; };
+		9396D3F02C5EDF99007D6C2D /* TokenEnv.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D37F2C5EDF99007D6C2D /* TokenEnv.graphql.swift */; };
+		9396D3F12C5EDF99007D6C2D /* ContentType.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3802C5EDF99007D6C2D /* ContentType.graphql.swift */; };
+		9396D3F22C5EDF99007D6C2D /* PushPlatform.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3812C5EDF99007D6C2D /* PushPlatform.graphql.swift */; };
+		9396D3F32C5EDF99007D6C2D /* AccessModel.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3822C5EDF99007D6C2D /* AccessModel.graphql.swift */; };
+		9396D3F42C5EDF99007D6C2D /* IncompleteAccount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3842C5EDF99007D6C2D /* IncompleteAccount.graphql.swift */; };
+		9396D3F52C5EDF99007D6C2D /* SeasonPerson.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3852C5EDF99007D6C2D /* SeasonPerson.graphql.swift */; };
+		9396D3F62C5EDF99007D6C2D /* ImageUploadUrl.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3862C5EDF99007D6C2D /* ImageUploadUrl.graphql.swift */; };
+		9396D3F72C5EDF99007D6C2D /* ProductionCountry.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3872C5EDF99007D6C2D /* ProductionCountry.graphql.swift */; };
+		9396D3F82C5EDF99007D6C2D /* Profile.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3882C5EDF99007D6C2D /* Profile.graphql.swift */; };
+		9396D3F92C5EDF99007D6C2D /* Person.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3892C5EDF99007D6C2D /* Person.graphql.swift */; };
+		9396D3FA2C5EDF99007D6C2D /* EmptyResponse.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D38A2C5EDF99007D6C2D /* EmptyResponse.graphql.swift */; };
+		9396D3FB2C5EDF99007D6C2D /* ExtendedMovie.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D38B2C5EDF99007D6C2D /* ExtendedMovie.graphql.swift */; };
+		9396D3FC2C5EDF99007D6C2D /* SeasonRole.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D38C2C5EDF99007D6C2D /* SeasonRole.graphql.swift */; };
+		9396D3FD2C5EDF99007D6C2D /* ExtendedEpisode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D38D2C5EDF99007D6C2D /* ExtendedEpisode.graphql.swift */; };
+		9396D3FE2C5EDF99007D6C2D /* ExtendedTVShow.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D38E2C5EDF99007D6C2D /* ExtendedTVShow.graphql.swift */; };
+		9396D3FF2C5EDF99007D6C2D /* CompleteAccountResult.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D38F2C5EDF99007D6C2D /* CompleteAccountResult.graphql.swift */; };
+		9396D4002C5EDF99007D6C2D /* ExtendedSeason.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3902C5EDF99007D6C2D /* ExtendedSeason.graphql.swift */; };
+		9396D4012C5EDF99007D6C2D /* Mutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3912C5EDF99007D6C2D /* Mutation.graphql.swift */; };
+		9396D4022C5EDF99007D6C2D /* ExtendedContentResponse.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3922C5EDF99007D6C2D /* ExtendedContentResponse.graphql.swift */; };
+		9396D4032C5EDF99007D6C2D /* WatchProvider.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3932C5EDF99007D6C2D /* WatchProvider.graphql.swift */; };
+		9396D4042C5EDF99007D6C2D /* Query.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3942C5EDF99007D6C2D /* Query.graphql.swift */; };
+		9396D4052C5EDF99007D6C2D /* Trailer.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3952C5EDF99007D6C2D /* Trailer.graphql.swift */; };
+		9396D4062C5EDF99007D6C2D /* Header.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3962C5EDF99007D6C2D /* Header.graphql.swift */; };
+		9396D4072C5EDF99007D6C2D /* Device.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3972C5EDF99007D6C2D /* Device.graphql.swift */; };
+		9396D4082C5EDF99007D6C2D /* Season.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3982C5EDF99007D6C2D /* Season.graphql.swift */; };
+		9396D4092C5EDF99007D6C2D /* Work.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3992C5EDF99007D6C2D /* Work.graphql.swift */; };
+		9396D40A2C5EDF99007D6C2D /* RatingResponse.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D39A2C5EDF99007D6C2D /* RatingResponse.graphql.swift */; };
+		9396D40B2C5EDF99007D6C2D /* WatchListMutationResult.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D39B2C5EDF99007D6C2D /* WatchListMutationResult.graphql.swift */; };
+		9396D40C2C5EDF99007D6C2D /* Episode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D39C2C5EDF99007D6C2D /* Episode.graphql.swift */; };
+		9396D40D2C5EDF99007D6C2D /* Genre.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D39D2C5EDF99007D6C2D /* Genre.graphql.swift */; };
+		9396D40E2C5EDF99007D6C2D /* ExtendedPerson.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D39E2C5EDF99007D6C2D /* ExtendedPerson.graphql.swift */; };
+		9396D40F2C5EDF99007D6C2D /* Content.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D39F2C5EDF99007D6C2D /* Content.graphql.swift */; };
+		9396D4102C5EDF99007D6C2D /* CompleteAccount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A02C5EDF99007D6C2D /* CompleteAccount.graphql.swift */; };
+		9396D4112C5EDF99007D6C2D /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A12C5EDF99007D6C2D /* SchemaConfiguration.swift */; };
+		9396D4122C5EDF99007D6C2D /* CompleteAccountInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A32C5EDF99007D6C2D /* CompleteAccountInput.graphql.swift */; };
+		9396D4132C5EDF99007D6C2D /* ContactInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A42C5EDF99007D6C2D /* ContactInput.graphql.swift */; };
+		9396D4142C5EDF99007D6C2D /* PushTokenInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A52C5EDF99007D6C2D /* PushTokenInput.graphql.swift */; };
+		9396D4152C5EDF99007D6C2D /* UpdateAccountInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A62C5EDF99007D6C2D /* UpdateAccountInput.graphql.swift */; };
+		9396D4162C5EDF99007D6C2D /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A72C5EDF99007D6C2D /* SchemaMetadata.graphql.swift */; };
+		9396D4172C5EDF99007D6C2D /* ExtendedContentInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3A92C5EDF99007D6C2D /* ExtendedContentInterface.graphql.swift */; };
+		9396D4182C5EDF99007D6C2D /* SeasonInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3AA2C5EDF99007D6C2D /* SeasonInterface.graphql.swift */; };
+		9396D4192C5EDF99007D6C2D /* EpisodeInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3AB2C5EDF99007D6C2D /* EpisodeInterface.graphql.swift */; };
+		9396D41A2C5EDF99007D6C2D /* PersonInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3AC2C5EDF99007D6C2D /* PersonInterface.graphql.swift */; };
+		9396D41B2C5EDF99007D6C2D /* ProfileInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3AD2C5EDF99007D6C2D /* ProfileInterface.graphql.swift */; };
+		9396D41C2C5EDF99007D6C2D /* ContentInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9396D3AE2C5EDF99007D6C2D /* ContentInterface.graphql.swift */; };
 		93BF90342BBCF32800AC0634 /* CoverShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90332BBCF32800AC0634 /* CoverShelf.swift */; };
-		93BF90362BBCFABC00AC0634 /* FavoriteMovieEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90352BBCFABC00AC0634 /* FavoriteMovieEditorViewController.swift */; };
+		93BF90362BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */; };
 		93C05BBA2C03A56E00C7DBD8 /* OtpCodeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C05BB92C03A56E00C7DBD8 /* OtpCodeTextField.swift */; };
 		93D64BAB2BE83E7F009F5C01 /* Shimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D64BAA2BE83E7F009F5C01 /* Shimmer.swift */; };
 		93D64C502BE856B5009F5C01 /* ContentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D64C4F2BE856B5009F5C01 /* ContentHeader.swift */; };
@@ -101,113 +209,7 @@
 		93DE35A92BEE433F0072DF53 /* PersonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE35A82BEE433F0072DF53 /* PersonDetailView.swift */; };
 		93DE36582BEEF17F0072DF53 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE36572BEEF17F0072DF53 /* StringExtensions.swift */; };
 		93DE365A2BEEF19E0072DF53 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE36592BEEF19E0072DF53 /* ViewExtensions.swift */; };
-		93E45C2A2C2BA3AD00AC9BFA /* ExtendedContentFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB32C2BA3AD00AC9BFA /* ExtendedContentFragment.graphql.swift */; };
-		93E45C2B2C2BA3AD00AC9BFA /* MovieFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB42C2BA3AD00AC9BFA /* MovieFragment.graphql.swift */; };
-		93E45C2C2C2BA3AD00AC9BFA /* CompleteAccountFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB52C2BA3AD00AC9BFA /* CompleteAccountFragment.graphql.swift */; };
-		93E45C2D2C2BA3AD00AC9BFA /* ProfileInterfaceFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB62C2BA3AD00AC9BFA /* ProfileInterfaceFragment.graphql.swift */; };
-		93E45C2E2C2BA3AD00AC9BFA /* ExtendedEpisodeFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB72C2BA3AD00AC9BFA /* ExtendedEpisodeFragment.graphql.swift */; };
-		93E45C2F2C2BA3AD00AC9BFA /* CompleteAccountResultFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB82C2BA3AD00AC9BFA /* CompleteAccountResultFragment.graphql.swift */; };
-		93E45C302C2BA3AD00AC9BFA /* WatchProviderFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BB92C2BA3AD00AC9BFA /* WatchProviderFragment.graphql.swift */; };
-		93E45C312C2BA3AD00AC9BFA /* PersonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BBA2C2BA3AD00AC9BFA /* PersonFragment.graphql.swift */; };
-		93E45C322C2BA3AD00AC9BFA /* ProfileFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BBB2C2BA3AD00AC9BFA /* ProfileFragment.graphql.swift */; };
-		93E45C332C2BA3AD00AC9BFA /* SeasonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BBC2C2BA3AD00AC9BFA /* SeasonFragment.graphql.swift */; };
-		93E45C342C2BA3AD00AC9BFA /* SeasonPersonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BBD2C2BA3AD00AC9BFA /* SeasonPersonFragment.graphql.swift */; };
-		93E45C352C2BA3AD00AC9BFA /* ExtendedTVShowFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BBE2C2BA3AD00AC9BFA /* ExtendedTVShowFragment.graphql.swift */; };
-		93E45C362C2BA3AD00AC9BFA /* PersonInterfaceFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BBF2C2BA3AD00AC9BFA /* PersonInterfaceFragment.graphql.swift */; };
-		93E45C372C2BA3AD00AC9BFA /* EpisodeFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC02C2BA3AD00AC9BFA /* EpisodeFragment.graphql.swift */; };
-		93E45C382C2BA3AD00AC9BFA /* ExtendedPersonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC12C2BA3AD00AC9BFA /* ExtendedPersonFragment.graphql.swift */; };
-		93E45C392C2BA3AD00AC9BFA /* ProductionCountryFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC22C2BA3AD00AC9BFA /* ProductionCountryFragment.graphql.swift */; };
-		93E45C3A2C2BA3AD00AC9BFA /* FullProfileFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC32C2BA3AD00AC9BFA /* FullProfileFragment.graphql.swift */; };
-		93E45C3B2C2BA3AD00AC9BFA /* ExtendedSeasonFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC42C2BA3AD00AC9BFA /* ExtendedSeasonFragment.graphql.swift */; };
-		93E45C3C2C2BA3AD00AC9BFA /* ExtendedMovieFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC52C2BA3AD00AC9BFA /* ExtendedMovieFragment.graphql.swift */; };
-		93E45C3D2C2BA3AD00AC9BFA /* CutGraphQL.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC62C2BA3AD00AC9BFA /* CutGraphQL.graphql.swift */; };
-		93E45C3E2C2BA3AD00AC9BFA /* GetAccountMutationLocalCacheMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC82C2BA3AD00AC9BFA /* GetAccountMutationLocalCacheMutation.graphql.swift */; };
-		93E45C3F2C2BA3AD00AC9BFA /* MutableMovieFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BC92C2BA3AD00AC9BFA /* MutableMovieFragment.graphql.swift */; };
-		93E45C402C2BA3AD00AC9BFA /* WatchListMutationLocalCacheMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BCA2C2BA3AD00AC9BFA /* WatchListMutationLocalCacheMutation.graphql.swift */; };
-		93E45C412C2BA3AD00AC9BFA /* MutableExtendedMovieFragment.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BCB2C2BA3AD00AC9BFA /* MutableExtendedMovieFragment.graphql.swift */; };
-		93E45C422C2BA3AD00AC9BFA /* UnfollowMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BCE2C2BA3AD00AC9BFA /* UnfollowMutation.graphql.swift */; };
-		93E45C432C2BA3AD00AC9BFA /* UploadContactEmailsMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BCF2C2BA3AD00AC9BFA /* UploadContactEmailsMutation.graphql.swift */; };
-		93E45C442C2BA3AD00AC9BFA /* InitiatiteDeleteAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD02C2BA3AD00AC9BFA /* InitiatiteDeleteAccountMutation.graphql.swift */; };
-		93E45C452C2BA3AD00AC9BFA /* CompleteAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD12C2BA3AD00AC9BFA /* CompleteAccountMutation.graphql.swift */; };
-		93E45C462C2BA3AD00AC9BFA /* UpdateAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD22C2BA3AD00AC9BFA /* UpdateAccountMutation.graphql.swift */; };
-		93E45C472C2BA3AD00AC9BFA /* LogOutMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD32C2BA3AD00AC9BFA /* LogOutMutation.graphql.swift */; };
-		93E45C482C2BA3AD00AC9BFA /* DeleteAccountMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD42C2BA3AD00AC9BFA /* DeleteAccountMutation.graphql.swift */; };
-		93E45C492C2BA3AD00AC9BFA /* AnnonymousSignUpMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD52C2BA3AD00AC9BFA /* AnnonymousSignUpMutation.graphql.swift */; };
-		93E45C4A2C2BA3AD00AC9BFA /* AddToWatchListMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD62C2BA3AD00AC9BFA /* AddToWatchListMutation.graphql.swift */; };
-		93E45C4B2C2BA3AD00AC9BFA /* InitiateAuthenticationMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD72C2BA3AD00AC9BFA /* InitiateAuthenticationMutation.graphql.swift */; };
-		93E45C4C2C2BA3AD00AC9BFA /* FollowMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD82C2BA3AD00AC9BFA /* FollowMutation.graphql.swift */; };
-		93E45C4D2C2BA3AD00AC9BFA /* RateMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BD92C2BA3AD00AC9BFA /* RateMutation.graphql.swift */; };
-		93E45C4E2C2BA3AD00AC9BFA /* ProfileImageUploadResponseMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BDA2C2BA3AD00AC9BFA /* ProfileImageUploadResponseMutation.graphql.swift */; };
-		93E45C4F2C2BA3AD00AC9BFA /* RemoveFromWatchListMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BDB2C2BA3AD00AC9BFA /* RemoveFromWatchListMutation.graphql.swift */; };
-		93E45C502C2BA3AD00AC9BFA /* ValidateAuthenticationMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BDC2C2BA3AD00AC9BFA /* ValidateAuthenticationMutation.graphql.swift */; };
-		93E45C512C2BA3AD00AC9BFA /* SetPushTokenMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BDD2C2BA3AD00AC9BFA /* SetPushTokenMutation.graphql.swift */; };
-		93E45C522C2BA3AD00AC9BFA /* UploadContactNumbersMutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BDE2C2BA3AD00AC9BFA /* UploadContactNumbersMutation.graphql.swift */; };
-		93E45C532C2BA3AD00AC9BFA /* CheckUsernameAvailabilityQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE02C2BA3AD00AC9BFA /* CheckUsernameAvailabilityQuery.graphql.swift */; };
-		93E45C542C2BA3AD00AC9BFA /* SearchAccountsQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE12C2BA3AD00AC9BFA /* SearchAccountsQuery.graphql.swift */; };
-		93E45C552C2BA3AD00AC9BFA /* SearchQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE22C2BA3AD00AC9BFA /* SearchQuery.graphql.swift */; };
-		93E45C562C2BA3AD00AC9BFA /* GetEpisodeQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE32C2BA3AD00AC9BFA /* GetEpisodeQuery.graphql.swift */; };
-		93E45C572C2BA3AD00AC9BFA /* WatchListQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE42C2BA3AD00AC9BFA /* WatchListQuery.graphql.swift */; };
-		93E45C582C2BA3AD00AC9BFA /* GetImageUploadUrlQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE52C2BA3AD00AC9BFA /* GetImageUploadUrlQuery.graphql.swift */; };
-		93E45C592C2BA3AD00AC9BFA /* GetContactMatchesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE62C2BA3AD00AC9BFA /* GetContactMatchesQuery.graphql.swift */; };
-		93E45C5A2C2BA3AD00AC9BFA /* SendTestPushQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE72C2BA3AD00AC9BFA /* SendTestPushQuery.graphql.swift */; };
-		93E45C5B2C2BA3AD00AC9BFA /* GetAccountQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE82C2BA3AD00AC9BFA /* GetAccountQuery.graphql.swift */; };
-		93E45C5C2C2BA3AD00AC9BFA /* GetFollowersQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BE92C2BA3AD00AC9BFA /* GetFollowersQuery.graphql.swift */; };
-		93E45C5D2C2BA3AD00AC9BFA /* GetContentQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BEA2C2BA3AD00AC9BFA /* GetContentQuery.graphql.swift */; };
-		93E45C5E2C2BA3AD00AC9BFA /* MoviesQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BEB2C2BA3AD00AC9BFA /* MoviesQuery.graphql.swift */; };
-		93E45C5F2C2BA3AD00AC9BFA /* GetPersonQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BEC2C2BA3AD00AC9BFA /* GetPersonQuery.graphql.swift */; };
-		93E45C602C2BA3AD00AC9BFA /* GetSeasonQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BED2C2BA3AD00AC9BFA /* GetSeasonQuery.graphql.swift */; };
-		93E45C612C2BA3AD00AC9BFA /* GetProfileByIdQuery.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BEE2C2BA3AD00AC9BFA /* GetProfileByIdQuery.graphql.swift */; };
-		93E45C622C2BA3AD00AC9BFA /* AccountUnion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BF12C2BA3AD00AC9BFA /* AccountUnion.graphql.swift */; };
-		93E45C632C2BA3AD00AC9BFA /* ProfileUnion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BF22C2BA3AD00AC9BFA /* ProfileUnion.graphql.swift */; };
-		93E45C642C2BA3AD00AC9BFA /* AuthenticationResult.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BF32C2BA3AD00AC9BFA /* AuthenticationResult.graphql.swift */; };
-		93E45C652C2BA3AD00AC9BFA /* ContentUnion.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BF42C2BA3AD00AC9BFA /* ContentUnion.graphql.swift */; };
-		93E45C682C2BA3AD00AC9BFA /* FollowDirection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BF92C2BA3AD00AC9BFA /* FollowDirection.graphql.swift */; };
-		93E45C692C2BA3AD00AC9BFA /* Collection.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BFA2C2BA3AD00AC9BFA /* Collection.graphql.swift */; };
-		93E45C6A2C2BA3AD00AC9BFA /* TokenEnv.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BFB2C2BA3AD00AC9BFA /* TokenEnv.graphql.swift */; };
-		93E45C6B2C2BA3AD00AC9BFA /* ContentType.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BFC2C2BA3AD00AC9BFA /* ContentType.graphql.swift */; };
-		93E45C6C2C2BA3AD00AC9BFA /* PushPlatform.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BFD2C2BA3AD00AC9BFA /* PushPlatform.graphql.swift */; };
-		93E45C6D2C2BA3AD00AC9BFA /* AccessModel.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45BFE2C2BA3AD00AC9BFA /* AccessModel.graphql.swift */; };
-		93E45C6E2C2BA3AD00AC9BFA /* IncompleteAccount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C002C2BA3AD00AC9BFA /* IncompleteAccount.graphql.swift */; };
-		93E45C6F2C2BA3AD00AC9BFA /* SeasonPerson.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C012C2BA3AD00AC9BFA /* SeasonPerson.graphql.swift */; };
-		93E45C702C2BA3AD00AC9BFA /* ImageUploadUrl.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C022C2BA3AD00AC9BFA /* ImageUploadUrl.graphql.swift */; };
-		93E45C712C2BA3AD00AC9BFA /* ProductionCountry.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C032C2BA3AD00AC9BFA /* ProductionCountry.graphql.swift */; };
-		93E45C722C2BA3AD00AC9BFA /* Profile.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C042C2BA3AD00AC9BFA /* Profile.graphql.swift */; };
-		93E45C732C2BA3AD00AC9BFA /* Person.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C052C2BA3AD00AC9BFA /* Person.graphql.swift */; };
-		93E45C742C2BA3AD00AC9BFA /* Movie.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C062C2BA3AD00AC9BFA /* Movie.graphql.swift */; };
-		93E45C752C2BA3AD00AC9BFA /* EmptyResponse.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C072C2BA3AD00AC9BFA /* EmptyResponse.graphql.swift */; };
-		93E45C762C2BA3AD00AC9BFA /* ExtendedMovie.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C082C2BA3AD00AC9BFA /* ExtendedMovie.graphql.swift */; };
-		93E45C772C2BA3AD00AC9BFA /* SeasonRole.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C092C2BA3AD00AC9BFA /* SeasonRole.graphql.swift */; };
-		93E45C782C2BA3AD00AC9BFA /* ExtendedEpisode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C0A2C2BA3AD00AC9BFA /* ExtendedEpisode.graphql.swift */; };
-		93E45C792C2BA3AD00AC9BFA /* ExtendedTVShow.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C0B2C2BA3AD00AC9BFA /* ExtendedTVShow.graphql.swift */; };
-		93E45C7A2C2BA3AD00AC9BFA /* CompleteAccountResult.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C0C2C2BA3AD00AC9BFA /* CompleteAccountResult.graphql.swift */; };
-		93E45C7B2C2BA3AD00AC9BFA /* ExtendedSeason.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C0D2C2BA3AD00AC9BFA /* ExtendedSeason.graphql.swift */; };
-		93E45C7C2C2BA3AD00AC9BFA /* Mutation.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C0E2C2BA3AD00AC9BFA /* Mutation.graphql.swift */; };
-		93E45C7D2C2BA3AD00AC9BFA /* WatchProvider.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C0F2C2BA3AD00AC9BFA /* WatchProvider.graphql.swift */; };
-		93E45C7E2C2BA3AD00AC9BFA /* Query.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C102C2BA3AD00AC9BFA /* Query.graphql.swift */; };
-		93E45C7F2C2BA3AD00AC9BFA /* Trailer.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C112C2BA3AD00AC9BFA /* Trailer.graphql.swift */; };
-		93E45C802C2BA3AD00AC9BFA /* Header.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C122C2BA3AD00AC9BFA /* Header.graphql.swift */; };
-		93E45C812C2BA3AD00AC9BFA /* Device.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C132C2BA3AD00AC9BFA /* Device.graphql.swift */; };
-		93E45C822C2BA3AD00AC9BFA /* Season.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C142C2BA3AD00AC9BFA /* Season.graphql.swift */; };
-		93E45C832C2BA3AD00AC9BFA /* Work.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C152C2BA3AD00AC9BFA /* Work.graphql.swift */; };
-		93E45C842C2BA3AD00AC9BFA /* WatchListMutationResult.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C162C2BA3AD00AC9BFA /* WatchListMutationResult.graphql.swift */; };
-		93E45C852C2BA3AD00AC9BFA /* Episode.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C172C2BA3AD00AC9BFA /* Episode.graphql.swift */; };
-		93E45C862C2BA3AD00AC9BFA /* Genre.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C182C2BA3AD00AC9BFA /* Genre.graphql.swift */; };
-		93E45C872C2BA3AD00AC9BFA /* ExtendedPerson.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C192C2BA3AD00AC9BFA /* ExtendedPerson.graphql.swift */; };
-		93E45C882C2BA3AD00AC9BFA /* ContentResponse.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C1A2C2BA3AD00AC9BFA /* ContentResponse.graphql.swift */; };
-		93E45C892C2BA3AD00AC9BFA /* CompleteAccount.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C1B2C2BA3AD00AC9BFA /* CompleteAccount.graphql.swift */; };
-		93E45C8A2C2BA3AD00AC9BFA /* SchemaConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C1C2C2BA3AD00AC9BFA /* SchemaConfiguration.swift */; };
-		93E45C8B2C2BA3AD00AC9BFA /* CompleteAccountInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C1E2C2BA3AD00AC9BFA /* CompleteAccountInput.graphql.swift */; };
-		93E45C8C2C2BA3AD00AC9BFA /* ContactInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C1F2C2BA3AD00AC9BFA /* ContactInput.graphql.swift */; };
-		93E45C8D2C2BA3AD00AC9BFA /* PushTokenInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C202C2BA3AD00AC9BFA /* PushTokenInput.graphql.swift */; };
-		93E45C8E2C2BA3AD00AC9BFA /* UpdateAccountInput.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C212C2BA3AD00AC9BFA /* UpdateAccountInput.graphql.swift */; };
-		93E45C8F2C2BA3AD00AC9BFA /* SchemaMetadata.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C222C2BA3AD00AC9BFA /* SchemaMetadata.graphql.swift */; };
-		93E45C902C2BA3AD00AC9BFA /* ExtendedContent.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C242C2BA3AD00AC9BFA /* ExtendedContent.graphql.swift */; };
-		93E45C912C2BA3AD00AC9BFA /* MovieInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C252C2BA3AD00AC9BFA /* MovieInterface.graphql.swift */; };
-		93E45C922C2BA3AD00AC9BFA /* SeasonInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C262C2BA3AD00AC9BFA /* SeasonInterface.graphql.swift */; };
-		93E45C932C2BA3AD00AC9BFA /* EpisodeInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C272C2BA3AD00AC9BFA /* EpisodeInterface.graphql.swift */; };
-		93E45C942C2BA3AD00AC9BFA /* PersonInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C282C2BA3AD00AC9BFA /* PersonInterface.graphql.swift */; };
-		93E45C952C2BA3AD00AC9BFA /* ProfileInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E45C292C2BA3AD00AC9BFA /* ProfileInterface.graphql.swift */; };
-		93FBC8322BE7E4A600308C0E /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FBC8312BE7E4A600308C0E /* MovieDetailView.swift */; };
+		93FBC8322BE7E4A600308C0E /* ContentDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FBC8312BE7E4A600308C0E /* ContentDetailPage.swift */; };
 		93FBC9742BE7EA9200308C0E /* URLScalar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FBC9732BE7EA9200308C0E /* URLScalar.swift */; };
 /* End PBXBuildFile section */
 
@@ -238,7 +240,7 @@
 		930F67852BD88FE3008C6CF2 /* OneLineCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneLineCollectionViewLayout.swift; sourceTree = "<group>"; };
 		930F67892BD89177008C6CF2 /* PlaceholderLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderLayout.swift; sourceTree = "<group>"; };
 		930F678D2BDD2D1C008C6CF2 /* KeyboardAnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAnimationViewController.swift; sourceTree = "<group>"; };
-		930F678F2BDD2EE9008C6CF2 /* MovieSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSelectionViewController.swift; sourceTree = "<group>"; };
+		930F678F2BDD2EE9008C6CF2 /* ContentSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSelectionViewController.swift; sourceTree = "<group>"; };
 		930F67912BDEAC9E008C6CF2 /* TVShowDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowDetailView.swift; sourceTree = "<group>"; };
 		930F67932BE04B18008C6CF2 /* PersonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCard.swift; sourceTree = "<group>"; };
 		930F68C92BE48812008C6CF2 /* DateScalar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateScalar.swift; sourceTree = "<group>"; };
@@ -251,7 +253,7 @@
 		933A6ABF2B704715004DE491 /* AuthorizedApolloClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizedApolloClient.swift; sourceTree = "<group>"; };
 		933B77612B856F57009CBC27 /* Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browse.swift; sourceTree = "<group>"; };
 		933B77632B857009009CBC27 /* WatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchList.swift; sourceTree = "<group>"; };
-		933B78B22B89AE42009CBC27 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		933B78B22B89AE42009CBC27 /* ContentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDetailView.swift; sourceTree = "<group>"; };
 		933B79202B8AC6E9009CBC27 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		933B79602B8AD5AD009CBC27 /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappingHStack.swift; sourceTree = "<group>"; };
 		933E5DFE2B77137500A83602 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
@@ -317,8 +319,116 @@
 		93898E662B6E0A990001D68F /* CutUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CutUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93898E6A2B6E0A990001D68F /* CutUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutUITests.swift; sourceTree = "<group>"; };
 		93898E6C2B6E0A990001D68F /* CutUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9396D3362C5EDF99007D6C2D /* ExtendedContentUnionFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContentUnionFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3372C5EDF99007D6C2D /* CompleteAccountFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3382C5EDF99007D6C2D /* ProfileInterfaceFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInterfaceFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3392C5EDF99007D6C2D /* ExtendedEpisodeFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedEpisodeFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D33A2C5EDF99007D6C2D /* CompleteAccountResultFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountResultFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D33B2C5EDF99007D6C2D /* WatchProviderFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProviderFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D33C2C5EDF99007D6C2D /* PersonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D33D2C5EDF99007D6C2D /* ProfileFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D33E2C5EDF99007D6C2D /* SeasonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D33F2C5EDF99007D6C2D /* SeasonPersonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonPersonFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3402C5EDF99007D6C2D /* ExtendedContentInterfaceFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContentInterfaceFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3412C5EDF99007D6C2D /* ExtendedTVShowFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTVShowFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3422C5EDF99007D6C2D /* ContentFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3432C5EDF99007D6C2D /* PersonInterfaceFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInterfaceFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3442C5EDF99007D6C2D /* EpisodeFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3452C5EDF99007D6C2D /* ExtendedPersonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedPersonFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3462C5EDF99007D6C2D /* ProductionCountryFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductionCountryFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3472C5EDF99007D6C2D /* FullProfileFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullProfileFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3482C5EDF99007D6C2D /* ExtendedSeasonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedSeasonFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3492C5EDF99007D6C2D /* ExtendedMovieFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedMovieFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D34A2C5EDF99007D6C2D /* CutGraphQL.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutGraphQL.graphql.swift; sourceTree = "<group>"; };
+		9396D34C2C5EDF99007D6C2D /* MutableContentFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableContentFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D34D2C5EDF99007D6C2D /* GetAccountMutationLocalCacheMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccountMutationLocalCacheMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D34E2C5EDF99007D6C2D /* WatchListMutationLocalCacheMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListMutationLocalCacheMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D34F2C5EDF99007D6C2D /* MutableExtendedMovieFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableExtendedMovieFragment.graphql.swift; sourceTree = "<group>"; };
+		9396D3522C5EDF99007D6C2D /* UnfollowMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3532C5EDF99007D6C2D /* UploadContactEmailsMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadContactEmailsMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3542C5EDF99007D6C2D /* InitiatiteDeleteAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitiatiteDeleteAccountMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3552C5EDF99007D6C2D /* CompleteAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3562C5EDF99007D6C2D /* UpdateAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAccountMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3572C5EDF99007D6C2D /* LogOutMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOutMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3582C5EDF99007D6C2D /* DeleteAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAccountMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3592C5EDF99007D6C2D /* AnnonymousSignUpMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnonymousSignUpMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D35A2C5EDF99007D6C2D /* AddToWatchListMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToWatchListMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D35B2C5EDF99007D6C2D /* InitiateAuthenticationMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitiateAuthenticationMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D35C2C5EDF99007D6C2D /* FollowMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D35D2C5EDF99007D6C2D /* RateMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D35E2C5EDF99007D6C2D /* ProfileImageUploadResponseMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageUploadResponseMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D35F2C5EDF99007D6C2D /* RemoveFromWatchListMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveFromWatchListMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3602C5EDF99007D6C2D /* ValidateAuthenticationMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateAuthenticationMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3612C5EDF99007D6C2D /* SetPushTokenMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPushTokenMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3622C5EDF99007D6C2D /* UploadContactNumbersMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadContactNumbersMutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3642C5EDF99007D6C2D /* CheckUsernameAvailabilityQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckUsernameAvailabilityQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3652C5EDF99007D6C2D /* SearchAccountsQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAccountsQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3662C5EDF99007D6C2D /* SearchQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3672C5EDF99007D6C2D /* GetEpisodeQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetEpisodeQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3682C5EDF99007D6C2D /* WatchListQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3692C5EDF99007D6C2D /* GetImageUploadUrlQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetImageUploadUrlQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D36A2C5EDF99007D6C2D /* GetContactMatchesQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetContactMatchesQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D36B2C5EDF99007D6C2D /* SendTestPushQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendTestPushQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D36C2C5EDF99007D6C2D /* GetAccountQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccountQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D36D2C5EDF99007D6C2D /* GetFollowersQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFollowersQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D36E2C5EDF99007D6C2D /* GetContentQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetContentQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D36F2C5EDF99007D6C2D /* GetPersonQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3702C5EDF99007D6C2D /* GetSeasonQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSeasonQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3712C5EDF99007D6C2D /* GetProfileByIdQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetProfileByIdQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3722C5EDF99007D6C2D /* GetContentCollectionQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetContentCollectionQuery.graphql.swift; sourceTree = "<group>"; };
+		9396D3752C5EDF99007D6C2D /* AccountUnion.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUnion.graphql.swift; sourceTree = "<group>"; };
+		9396D3762C5EDF99007D6C2D /* ProfileUnion.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUnion.graphql.swift; sourceTree = "<group>"; };
+		9396D3772C5EDF99007D6C2D /* AuthenticationResult.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationResult.graphql.swift; sourceTree = "<group>"; };
+		9396D3782C5EDF99007D6C2D /* ExtendedContentUnion.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContentUnion.graphql.swift; sourceTree = "<group>"; };
+		9396D37D2C5EDF99007D6C2D /* FollowDirection.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowDirection.graphql.swift; sourceTree = "<group>"; };
+		9396D37E2C5EDF99007D6C2D /* Collection.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.graphql.swift; sourceTree = "<group>"; };
+		9396D37F2C5EDF99007D6C2D /* TokenEnv.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEnv.graphql.swift; sourceTree = "<group>"; };
+		9396D3802C5EDF99007D6C2D /* ContentType.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentType.graphql.swift; sourceTree = "<group>"; };
+		9396D3812C5EDF99007D6C2D /* PushPlatform.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushPlatform.graphql.swift; sourceTree = "<group>"; };
+		9396D3822C5EDF99007D6C2D /* AccessModel.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessModel.graphql.swift; sourceTree = "<group>"; };
+		9396D3842C5EDF99007D6C2D /* IncompleteAccount.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncompleteAccount.graphql.swift; sourceTree = "<group>"; };
+		9396D3852C5EDF99007D6C2D /* SeasonPerson.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonPerson.graphql.swift; sourceTree = "<group>"; };
+		9396D3862C5EDF99007D6C2D /* ImageUploadUrl.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUploadUrl.graphql.swift; sourceTree = "<group>"; };
+		9396D3872C5EDF99007D6C2D /* ProductionCountry.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductionCountry.graphql.swift; sourceTree = "<group>"; };
+		9396D3882C5EDF99007D6C2D /* Profile.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.graphql.swift; sourceTree = "<group>"; };
+		9396D3892C5EDF99007D6C2D /* Person.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.graphql.swift; sourceTree = "<group>"; };
+		9396D38A2C5EDF99007D6C2D /* EmptyResponse.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyResponse.graphql.swift; sourceTree = "<group>"; };
+		9396D38B2C5EDF99007D6C2D /* ExtendedMovie.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedMovie.graphql.swift; sourceTree = "<group>"; };
+		9396D38C2C5EDF99007D6C2D /* SeasonRole.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonRole.graphql.swift; sourceTree = "<group>"; };
+		9396D38D2C5EDF99007D6C2D /* ExtendedEpisode.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedEpisode.graphql.swift; sourceTree = "<group>"; };
+		9396D38E2C5EDF99007D6C2D /* ExtendedTVShow.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTVShow.graphql.swift; sourceTree = "<group>"; };
+		9396D38F2C5EDF99007D6C2D /* CompleteAccountResult.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountResult.graphql.swift; sourceTree = "<group>"; };
+		9396D3902C5EDF99007D6C2D /* ExtendedSeason.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedSeason.graphql.swift; sourceTree = "<group>"; };
+		9396D3912C5EDF99007D6C2D /* Mutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutation.graphql.swift; sourceTree = "<group>"; };
+		9396D3922C5EDF99007D6C2D /* ExtendedContentResponse.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContentResponse.graphql.swift; sourceTree = "<group>"; };
+		9396D3932C5EDF99007D6C2D /* WatchProvider.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProvider.graphql.swift; sourceTree = "<group>"; };
+		9396D3942C5EDF99007D6C2D /* Query.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.graphql.swift; sourceTree = "<group>"; };
+		9396D3952C5EDF99007D6C2D /* Trailer.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trailer.graphql.swift; sourceTree = "<group>"; };
+		9396D3962C5EDF99007D6C2D /* Header.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Header.graphql.swift; sourceTree = "<group>"; };
+		9396D3972C5EDF99007D6C2D /* Device.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.graphql.swift; sourceTree = "<group>"; };
+		9396D3982C5EDF99007D6C2D /* Season.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Season.graphql.swift; sourceTree = "<group>"; };
+		9396D3992C5EDF99007D6C2D /* Work.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Work.graphql.swift; sourceTree = "<group>"; };
+		9396D39A2C5EDF99007D6C2D /* RatingResponse.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingResponse.graphql.swift; sourceTree = "<group>"; };
+		9396D39B2C5EDF99007D6C2D /* WatchListMutationResult.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListMutationResult.graphql.swift; sourceTree = "<group>"; };
+		9396D39C2C5EDF99007D6C2D /* Episode.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.graphql.swift; sourceTree = "<group>"; };
+		9396D39D2C5EDF99007D6C2D /* Genre.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Genre.graphql.swift; sourceTree = "<group>"; };
+		9396D39E2C5EDF99007D6C2D /* ExtendedPerson.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedPerson.graphql.swift; sourceTree = "<group>"; };
+		9396D39F2C5EDF99007D6C2D /* Content.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Content.graphql.swift; sourceTree = "<group>"; };
+		9396D3A02C5EDF99007D6C2D /* CompleteAccount.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccount.graphql.swift; sourceTree = "<group>"; };
+		9396D3A12C5EDF99007D6C2D /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
+		9396D3A32C5EDF99007D6C2D /* CompleteAccountInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountInput.graphql.swift; sourceTree = "<group>"; };
+		9396D3A42C5EDF99007D6C2D /* ContactInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInput.graphql.swift; sourceTree = "<group>"; };
+		9396D3A52C5EDF99007D6C2D /* PushTokenInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTokenInput.graphql.swift; sourceTree = "<group>"; };
+		9396D3A62C5EDF99007D6C2D /* UpdateAccountInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAccountInput.graphql.swift; sourceTree = "<group>"; };
+		9396D3A72C5EDF99007D6C2D /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
+		9396D3A92C5EDF99007D6C2D /* ExtendedContentInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContentInterface.graphql.swift; sourceTree = "<group>"; };
+		9396D3AA2C5EDF99007D6C2D /* SeasonInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonInterface.graphql.swift; sourceTree = "<group>"; };
+		9396D3AB2C5EDF99007D6C2D /* EpisodeInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeInterface.graphql.swift; sourceTree = "<group>"; };
+		9396D3AC2C5EDF99007D6C2D /* PersonInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInterface.graphql.swift; sourceTree = "<group>"; };
+		9396D3AD2C5EDF99007D6C2D /* ProfileInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInterface.graphql.swift; sourceTree = "<group>"; };
+		9396D3AE2C5EDF99007D6C2D /* ContentInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentInterface.graphql.swift; sourceTree = "<group>"; };
 		93BF90332BBCF32800AC0634 /* CoverShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverShelf.swift; sourceTree = "<group>"; };
-		93BF90352BBCFABC00AC0634 /* FavoriteMovieEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMovieEditorViewController.swift; sourceTree = "<group>"; };
+		93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteContentEditorViewController.swift; sourceTree = "<group>"; };
 		93C05BB92C03A56E00C7DBD8 /* OtpCodeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpCodeTextField.swift; sourceTree = "<group>"; };
 		93D64BAA2BE83E7F009F5C01 /* Shimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shimmer.swift; sourceTree = "<group>"; };
 		93D64C4F2BE856B5009F5C01 /* ContentHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentHeader.swift; sourceTree = "<group>"; };
@@ -328,113 +438,7 @@
 		93DE35A82BEE433F0072DF53 /* PersonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		93DE36572BEEF17F0072DF53 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		93DE36592BEEF19E0072DF53 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		93E45BB32C2BA3AD00AC9BFA /* ExtendedContentFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContentFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BB42C2BA3AD00AC9BFA /* MovieFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BB52C2BA3AD00AC9BFA /* CompleteAccountFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BB62C2BA3AD00AC9BFA /* ProfileInterfaceFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInterfaceFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BB72C2BA3AD00AC9BFA /* ExtendedEpisodeFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedEpisodeFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BB82C2BA3AD00AC9BFA /* CompleteAccountResultFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountResultFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BB92C2BA3AD00AC9BFA /* WatchProviderFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProviderFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BBA2C2BA3AD00AC9BFA /* PersonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BBB2C2BA3AD00AC9BFA /* ProfileFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BBC2C2BA3AD00AC9BFA /* SeasonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BBD2C2BA3AD00AC9BFA /* SeasonPersonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonPersonFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BBE2C2BA3AD00AC9BFA /* ExtendedTVShowFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTVShowFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BBF2C2BA3AD00AC9BFA /* PersonInterfaceFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInterfaceFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC02C2BA3AD00AC9BFA /* EpisodeFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC12C2BA3AD00AC9BFA /* ExtendedPersonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedPersonFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC22C2BA3AD00AC9BFA /* ProductionCountryFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductionCountryFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC32C2BA3AD00AC9BFA /* FullProfileFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullProfileFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC42C2BA3AD00AC9BFA /* ExtendedSeasonFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedSeasonFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC52C2BA3AD00AC9BFA /* ExtendedMovieFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedMovieFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BC62C2BA3AD00AC9BFA /* CutGraphQL.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutGraphQL.graphql.swift; sourceTree = "<group>"; };
-		93E45BC82C2BA3AD00AC9BFA /* GetAccountMutationLocalCacheMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccountMutationLocalCacheMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BC92C2BA3AD00AC9BFA /* MutableMovieFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableMovieFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BCA2C2BA3AD00AC9BFA /* WatchListMutationLocalCacheMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListMutationLocalCacheMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BCB2C2BA3AD00AC9BFA /* MutableExtendedMovieFragment.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableExtendedMovieFragment.graphql.swift; sourceTree = "<group>"; };
-		93E45BCE2C2BA3AD00AC9BFA /* UnfollowMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnfollowMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BCF2C2BA3AD00AC9BFA /* UploadContactEmailsMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadContactEmailsMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD02C2BA3AD00AC9BFA /* InitiatiteDeleteAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitiatiteDeleteAccountMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD12C2BA3AD00AC9BFA /* CompleteAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD22C2BA3AD00AC9BFA /* UpdateAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAccountMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD32C2BA3AD00AC9BFA /* LogOutMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogOutMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD42C2BA3AD00AC9BFA /* DeleteAccountMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAccountMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD52C2BA3AD00AC9BFA /* AnnonymousSignUpMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnonymousSignUpMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD62C2BA3AD00AC9BFA /* AddToWatchListMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToWatchListMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD72C2BA3AD00AC9BFA /* InitiateAuthenticationMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitiateAuthenticationMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD82C2BA3AD00AC9BFA /* FollowMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BD92C2BA3AD00AC9BFA /* RateMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BDA2C2BA3AD00AC9BFA /* ProfileImageUploadResponseMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageUploadResponseMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BDB2C2BA3AD00AC9BFA /* RemoveFromWatchListMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveFromWatchListMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BDC2C2BA3AD00AC9BFA /* ValidateAuthenticationMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateAuthenticationMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BDD2C2BA3AD00AC9BFA /* SetPushTokenMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPushTokenMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BDE2C2BA3AD00AC9BFA /* UploadContactNumbersMutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadContactNumbersMutation.graphql.swift; sourceTree = "<group>"; };
-		93E45BE02C2BA3AD00AC9BFA /* CheckUsernameAvailabilityQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckUsernameAvailabilityQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE12C2BA3AD00AC9BFA /* SearchAccountsQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAccountsQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE22C2BA3AD00AC9BFA /* SearchQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE32C2BA3AD00AC9BFA /* GetEpisodeQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetEpisodeQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE42C2BA3AD00AC9BFA /* WatchListQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE52C2BA3AD00AC9BFA /* GetImageUploadUrlQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetImageUploadUrlQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE62C2BA3AD00AC9BFA /* GetContactMatchesQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetContactMatchesQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE72C2BA3AD00AC9BFA /* SendTestPushQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendTestPushQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE82C2BA3AD00AC9BFA /* GetAccountQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccountQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BE92C2BA3AD00AC9BFA /* GetFollowersQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFollowersQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BEA2C2BA3AD00AC9BFA /* GetContentQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetContentQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BEB2C2BA3AD00AC9BFA /* MoviesQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BEC2C2BA3AD00AC9BFA /* GetPersonQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetPersonQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BED2C2BA3AD00AC9BFA /* GetSeasonQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetSeasonQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BEE2C2BA3AD00AC9BFA /* GetProfileByIdQuery.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetProfileByIdQuery.graphql.swift; sourceTree = "<group>"; };
-		93E45BF12C2BA3AD00AC9BFA /* AccountUnion.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUnion.graphql.swift; sourceTree = "<group>"; };
-		93E45BF22C2BA3AD00AC9BFA /* ProfileUnion.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUnion.graphql.swift; sourceTree = "<group>"; };
-		93E45BF32C2BA3AD00AC9BFA /* AuthenticationResult.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationResult.graphql.swift; sourceTree = "<group>"; };
-		93E45BF42C2BA3AD00AC9BFA /* ContentUnion.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnion.graphql.swift; sourceTree = "<group>"; };
-		93E45BF92C2BA3AD00AC9BFA /* FollowDirection.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowDirection.graphql.swift; sourceTree = "<group>"; };
-		93E45BFA2C2BA3AD00AC9BFA /* Collection.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.graphql.swift; sourceTree = "<group>"; };
-		93E45BFB2C2BA3AD00AC9BFA /* TokenEnv.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEnv.graphql.swift; sourceTree = "<group>"; };
-		93E45BFC2C2BA3AD00AC9BFA /* ContentType.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentType.graphql.swift; sourceTree = "<group>"; };
-		93E45BFD2C2BA3AD00AC9BFA /* PushPlatform.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushPlatform.graphql.swift; sourceTree = "<group>"; };
-		93E45BFE2C2BA3AD00AC9BFA /* AccessModel.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessModel.graphql.swift; sourceTree = "<group>"; };
-		93E45C002C2BA3AD00AC9BFA /* IncompleteAccount.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncompleteAccount.graphql.swift; sourceTree = "<group>"; };
-		93E45C012C2BA3AD00AC9BFA /* SeasonPerson.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonPerson.graphql.swift; sourceTree = "<group>"; };
-		93E45C022C2BA3AD00AC9BFA /* ImageUploadUrl.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUploadUrl.graphql.swift; sourceTree = "<group>"; };
-		93E45C032C2BA3AD00AC9BFA /* ProductionCountry.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductionCountry.graphql.swift; sourceTree = "<group>"; };
-		93E45C042C2BA3AD00AC9BFA /* Profile.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.graphql.swift; sourceTree = "<group>"; };
-		93E45C052C2BA3AD00AC9BFA /* Person.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.graphql.swift; sourceTree = "<group>"; };
-		93E45C062C2BA3AD00AC9BFA /* Movie.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.graphql.swift; sourceTree = "<group>"; };
-		93E45C072C2BA3AD00AC9BFA /* EmptyResponse.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyResponse.graphql.swift; sourceTree = "<group>"; };
-		93E45C082C2BA3AD00AC9BFA /* ExtendedMovie.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedMovie.graphql.swift; sourceTree = "<group>"; };
-		93E45C092C2BA3AD00AC9BFA /* SeasonRole.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonRole.graphql.swift; sourceTree = "<group>"; };
-		93E45C0A2C2BA3AD00AC9BFA /* ExtendedEpisode.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedEpisode.graphql.swift; sourceTree = "<group>"; };
-		93E45C0B2C2BA3AD00AC9BFA /* ExtendedTVShow.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTVShow.graphql.swift; sourceTree = "<group>"; };
-		93E45C0C2C2BA3AD00AC9BFA /* CompleteAccountResult.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountResult.graphql.swift; sourceTree = "<group>"; };
-		93E45C0D2C2BA3AD00AC9BFA /* ExtendedSeason.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedSeason.graphql.swift; sourceTree = "<group>"; };
-		93E45C0E2C2BA3AD00AC9BFA /* Mutation.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutation.graphql.swift; sourceTree = "<group>"; };
-		93E45C0F2C2BA3AD00AC9BFA /* WatchProvider.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchProvider.graphql.swift; sourceTree = "<group>"; };
-		93E45C102C2BA3AD00AC9BFA /* Query.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.graphql.swift; sourceTree = "<group>"; };
-		93E45C112C2BA3AD00AC9BFA /* Trailer.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trailer.graphql.swift; sourceTree = "<group>"; };
-		93E45C122C2BA3AD00AC9BFA /* Header.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Header.graphql.swift; sourceTree = "<group>"; };
-		93E45C132C2BA3AD00AC9BFA /* Device.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.graphql.swift; sourceTree = "<group>"; };
-		93E45C142C2BA3AD00AC9BFA /* Season.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Season.graphql.swift; sourceTree = "<group>"; };
-		93E45C152C2BA3AD00AC9BFA /* Work.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Work.graphql.swift; sourceTree = "<group>"; };
-		93E45C162C2BA3AD00AC9BFA /* WatchListMutationResult.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchListMutationResult.graphql.swift; sourceTree = "<group>"; };
-		93E45C172C2BA3AD00AC9BFA /* Episode.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.graphql.swift; sourceTree = "<group>"; };
-		93E45C182C2BA3AD00AC9BFA /* Genre.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Genre.graphql.swift; sourceTree = "<group>"; };
-		93E45C192C2BA3AD00AC9BFA /* ExtendedPerson.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedPerson.graphql.swift; sourceTree = "<group>"; };
-		93E45C1A2C2BA3AD00AC9BFA /* ContentResponse.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentResponse.graphql.swift; sourceTree = "<group>"; };
-		93E45C1B2C2BA3AD00AC9BFA /* CompleteAccount.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccount.graphql.swift; sourceTree = "<group>"; };
-		93E45C1C2C2BA3AD00AC9BFA /* SchemaConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaConfiguration.swift; sourceTree = "<group>"; };
-		93E45C1E2C2BA3AD00AC9BFA /* CompleteAccountInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteAccountInput.graphql.swift; sourceTree = "<group>"; };
-		93E45C1F2C2BA3AD00AC9BFA /* ContactInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInput.graphql.swift; sourceTree = "<group>"; };
-		93E45C202C2BA3AD00AC9BFA /* PushTokenInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTokenInput.graphql.swift; sourceTree = "<group>"; };
-		93E45C212C2BA3AD00AC9BFA /* UpdateAccountInput.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAccountInput.graphql.swift; sourceTree = "<group>"; };
-		93E45C222C2BA3AD00AC9BFA /* SchemaMetadata.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaMetadata.graphql.swift; sourceTree = "<group>"; };
-		93E45C242C2BA3AD00AC9BFA /* ExtendedContent.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedContent.graphql.swift; sourceTree = "<group>"; };
-		93E45C252C2BA3AD00AC9BFA /* MovieInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieInterface.graphql.swift; sourceTree = "<group>"; };
-		93E45C262C2BA3AD00AC9BFA /* SeasonInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeasonInterface.graphql.swift; sourceTree = "<group>"; };
-		93E45C272C2BA3AD00AC9BFA /* EpisodeInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodeInterface.graphql.swift; sourceTree = "<group>"; };
-		93E45C282C2BA3AD00AC9BFA /* PersonInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInterface.graphql.swift; sourceTree = "<group>"; };
-		93E45C292C2BA3AD00AC9BFA /* ProfileInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInterface.graphql.swift; sourceTree = "<group>"; };
-		93FBC8312BE7E4A600308C0E /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
+		93FBC8312BE7E4A600308C0E /* ContentDetailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDetailPage.swift; sourceTree = "<group>"; };
 		93FBC9732BE7EA9200308C0E /* URLScalar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLScalar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -481,7 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				93BF90332BBCF32800AC0634 /* CoverShelf.swift */,
-				93BF90352BBCFABC00AC0634 /* FavoriteMovieEditorViewController.swift */,
+				93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */,
 				930F67812BD88F18008C6CF2 /* PosterCollectionViewCell.swift */,
 				930F67832BD88F59008C6CF2 /* PlaceholderCell.swift */,
 				930F67852BD88FE3008C6CF2 /* OneLineCollectionViewLayout.swift */,
@@ -493,7 +497,7 @@
 		933A6AA92B702DBB004DE491 /* graphql */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BB12C2BA3AD00AC9BFA /* __generated__ */,
+				9396D3342C5EDF99007D6C2D /* __generated__ */,
 				933A6AA82B702CFA004DE491 /* apollo-codegen-config.json */,
 				933A6AAA2B703690004DE491 /* queries.graphql */,
 				936E60922B8ED9F80092EA59 /* account.graphql */,
@@ -647,7 +651,7 @@
 				93796AEB2BAF5C9E00091578 /* Core */,
 				93796AF12BAF5C9E00091578 /* Resources */,
 				933B77612B856F57009CBC27 /* Browse.swift */,
-				933B78B22B89AE42009CBC27 /* DetailView.swift */,
+				933B78B22B89AE42009CBC27 /* ContentDetailView.swift */,
 				93D64C4F2BE856B5009F5C01 /* ContentHeader.swift */,
 				93D64C512BE85727009F5C01 /* Formatters.swift */,
 				930F67912BDEAC9E008C6CF2 /* TVShowDetailView.swift */,
@@ -659,7 +663,7 @@
 				936D63672BF1253300079E71 /* IntExtensions.swift */,
 				9354D3D12BF0253300D28B0C /* TruncatedText.swift */,
 				93D64D9F2BE86345009F5C01 /* WhereToWatchCarousel.swift */,
-				93FBC8312BE7E4A600308C0E /* MovieDetailView.swift */,
+				93FBC8312BE7E4A600308C0E /* ContentDetailPage.swift */,
 				933B79602B8AD5AD009CBC27 /* WrappingHStack.swift */,
 				93898E4F2B6E0A970001D68F /* CutApp.swift */,
 				93796BB12BAFC57400091578 /* Debouncer.swift */,
@@ -667,7 +671,7 @@
 				93541EEB2BF9A48F003F535B /* FollowTable.swift */,
 				930F678D2BDD2D1C008C6CF2 /* KeyboardAnimationViewController.swift */,
 				9354D3CF2BF0053100D28B0C /* Entity.swift */,
-				930F678F2BDD2EE9008C6CF2 /* MovieSelectionViewController.swift */,
+				930F678F2BDD2EE9008C6CF2 /* ContentSelectionViewController.swift */,
 				9354D3CD2BF0047F00D28B0C /* TableView.swift */,
 				933E5DFE2B77137500A83602 /* Search.swift */,
 				933B77632B857009009CBC27 /* WatchList.swift */,
@@ -711,203 +715,205 @@
 			path = CutUITests;
 			sourceTree = "<group>";
 		};
-		93E45BB12C2BA3AD00AC9BFA /* __generated__ */ = {
+		9396D3342C5EDF99007D6C2D /* __generated__ */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BB22C2BA3AD00AC9BFA /* Fragments */,
-				93E45BC62C2BA3AD00AC9BFA /* CutGraphQL.graphql.swift */,
-				93E45BC72C2BA3AD00AC9BFA /* LocalCacheMutations */,
-				93E45BCC2C2BA3AD00AC9BFA /* Operations */,
-				93E45BEF2C2BA3AD00AC9BFA /* Schema */,
+				9396D3352C5EDF99007D6C2D /* Fragments */,
+				9396D34A2C5EDF99007D6C2D /* CutGraphQL.graphql.swift */,
+				9396D34B2C5EDF99007D6C2D /* LocalCacheMutations */,
+				9396D3502C5EDF99007D6C2D /* Operations */,
+				9396D3732C5EDF99007D6C2D /* Schema */,
 			);
 			path = __generated__;
 			sourceTree = "<group>";
 		};
-		93E45BB22C2BA3AD00AC9BFA /* Fragments */ = {
+		9396D3352C5EDF99007D6C2D /* Fragments */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BB32C2BA3AD00AC9BFA /* ExtendedContentFragment.graphql.swift */,
-				93E45BB42C2BA3AD00AC9BFA /* MovieFragment.graphql.swift */,
-				93E45BB52C2BA3AD00AC9BFA /* CompleteAccountFragment.graphql.swift */,
-				93E45BB62C2BA3AD00AC9BFA /* ProfileInterfaceFragment.graphql.swift */,
-				93E45BB72C2BA3AD00AC9BFA /* ExtendedEpisodeFragment.graphql.swift */,
-				93E45BB82C2BA3AD00AC9BFA /* CompleteAccountResultFragment.graphql.swift */,
-				93E45BB92C2BA3AD00AC9BFA /* WatchProviderFragment.graphql.swift */,
-				93E45BBA2C2BA3AD00AC9BFA /* PersonFragment.graphql.swift */,
-				93E45BBB2C2BA3AD00AC9BFA /* ProfileFragment.graphql.swift */,
-				93E45BBC2C2BA3AD00AC9BFA /* SeasonFragment.graphql.swift */,
-				93E45BBD2C2BA3AD00AC9BFA /* SeasonPersonFragment.graphql.swift */,
-				93E45BBE2C2BA3AD00AC9BFA /* ExtendedTVShowFragment.graphql.swift */,
-				93E45BBF2C2BA3AD00AC9BFA /* PersonInterfaceFragment.graphql.swift */,
-				93E45BC02C2BA3AD00AC9BFA /* EpisodeFragment.graphql.swift */,
-				93E45BC12C2BA3AD00AC9BFA /* ExtendedPersonFragment.graphql.swift */,
-				93E45BC22C2BA3AD00AC9BFA /* ProductionCountryFragment.graphql.swift */,
-				93E45BC32C2BA3AD00AC9BFA /* FullProfileFragment.graphql.swift */,
-				93E45BC42C2BA3AD00AC9BFA /* ExtendedSeasonFragment.graphql.swift */,
-				93E45BC52C2BA3AD00AC9BFA /* ExtendedMovieFragment.graphql.swift */,
+				9396D3362C5EDF99007D6C2D /* ExtendedContentUnionFragment.graphql.swift */,
+				9396D3372C5EDF99007D6C2D /* CompleteAccountFragment.graphql.swift */,
+				9396D3382C5EDF99007D6C2D /* ProfileInterfaceFragment.graphql.swift */,
+				9396D3392C5EDF99007D6C2D /* ExtendedEpisodeFragment.graphql.swift */,
+				9396D33A2C5EDF99007D6C2D /* CompleteAccountResultFragment.graphql.swift */,
+				9396D33B2C5EDF99007D6C2D /* WatchProviderFragment.graphql.swift */,
+				9396D33C2C5EDF99007D6C2D /* PersonFragment.graphql.swift */,
+				9396D33D2C5EDF99007D6C2D /* ProfileFragment.graphql.swift */,
+				9396D33E2C5EDF99007D6C2D /* SeasonFragment.graphql.swift */,
+				9396D33F2C5EDF99007D6C2D /* SeasonPersonFragment.graphql.swift */,
+				9396D3402C5EDF99007D6C2D /* ExtendedContentInterfaceFragment.graphql.swift */,
+				9396D3412C5EDF99007D6C2D /* ExtendedTVShowFragment.graphql.swift */,
+				9396D3422C5EDF99007D6C2D /* ContentFragment.graphql.swift */,
+				9396D3432C5EDF99007D6C2D /* PersonInterfaceFragment.graphql.swift */,
+				9396D3442C5EDF99007D6C2D /* EpisodeFragment.graphql.swift */,
+				9396D3452C5EDF99007D6C2D /* ExtendedPersonFragment.graphql.swift */,
+				9396D3462C5EDF99007D6C2D /* ProductionCountryFragment.graphql.swift */,
+				9396D3472C5EDF99007D6C2D /* FullProfileFragment.graphql.swift */,
+				9396D3482C5EDF99007D6C2D /* ExtendedSeasonFragment.graphql.swift */,
+				9396D3492C5EDF99007D6C2D /* ExtendedMovieFragment.graphql.swift */,
 			);
 			path = Fragments;
 			sourceTree = "<group>";
 		};
-		93E45BC72C2BA3AD00AC9BFA /* LocalCacheMutations */ = {
+		9396D34B2C5EDF99007D6C2D /* LocalCacheMutations */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BC82C2BA3AD00AC9BFA /* GetAccountMutationLocalCacheMutation.graphql.swift */,
-				93E45BC92C2BA3AD00AC9BFA /* MutableMovieFragment.graphql.swift */,
-				93E45BCA2C2BA3AD00AC9BFA /* WatchListMutationLocalCacheMutation.graphql.swift */,
-				93E45BCB2C2BA3AD00AC9BFA /* MutableExtendedMovieFragment.graphql.swift */,
+				9396D34C2C5EDF99007D6C2D /* MutableContentFragment.graphql.swift */,
+				9396D34D2C5EDF99007D6C2D /* GetAccountMutationLocalCacheMutation.graphql.swift */,
+				9396D34E2C5EDF99007D6C2D /* WatchListMutationLocalCacheMutation.graphql.swift */,
+				9396D34F2C5EDF99007D6C2D /* MutableExtendedMovieFragment.graphql.swift */,
 			);
 			path = LocalCacheMutations;
 			sourceTree = "<group>";
 		};
-		93E45BCC2C2BA3AD00AC9BFA /* Operations */ = {
+		9396D3502C5EDF99007D6C2D /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BCD2C2BA3AD00AC9BFA /* Mutations */,
-				93E45BDF2C2BA3AD00AC9BFA /* Queries */,
+				9396D3512C5EDF99007D6C2D /* Mutations */,
+				9396D3632C5EDF99007D6C2D /* Queries */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
 		};
-		93E45BCD2C2BA3AD00AC9BFA /* Mutations */ = {
+		9396D3512C5EDF99007D6C2D /* Mutations */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BCE2C2BA3AD00AC9BFA /* UnfollowMutation.graphql.swift */,
-				93E45BCF2C2BA3AD00AC9BFA /* UploadContactEmailsMutation.graphql.swift */,
-				93E45BD02C2BA3AD00AC9BFA /* InitiatiteDeleteAccountMutation.graphql.swift */,
-				93E45BD12C2BA3AD00AC9BFA /* CompleteAccountMutation.graphql.swift */,
-				93E45BD22C2BA3AD00AC9BFA /* UpdateAccountMutation.graphql.swift */,
-				93E45BD32C2BA3AD00AC9BFA /* LogOutMutation.graphql.swift */,
-				93E45BD42C2BA3AD00AC9BFA /* DeleteAccountMutation.graphql.swift */,
-				93E45BD52C2BA3AD00AC9BFA /* AnnonymousSignUpMutation.graphql.swift */,
-				93E45BD62C2BA3AD00AC9BFA /* AddToWatchListMutation.graphql.swift */,
-				93E45BD72C2BA3AD00AC9BFA /* InitiateAuthenticationMutation.graphql.swift */,
-				93E45BD82C2BA3AD00AC9BFA /* FollowMutation.graphql.swift */,
-				93E45BD92C2BA3AD00AC9BFA /* RateMutation.graphql.swift */,
-				93E45BDA2C2BA3AD00AC9BFA /* ProfileImageUploadResponseMutation.graphql.swift */,
-				93E45BDB2C2BA3AD00AC9BFA /* RemoveFromWatchListMutation.graphql.swift */,
-				93E45BDC2C2BA3AD00AC9BFA /* ValidateAuthenticationMutation.graphql.swift */,
-				93E45BDD2C2BA3AD00AC9BFA /* SetPushTokenMutation.graphql.swift */,
-				93E45BDE2C2BA3AD00AC9BFA /* UploadContactNumbersMutation.graphql.swift */,
+				9396D3522C5EDF99007D6C2D /* UnfollowMutation.graphql.swift */,
+				9396D3532C5EDF99007D6C2D /* UploadContactEmailsMutation.graphql.swift */,
+				9396D3542C5EDF99007D6C2D /* InitiatiteDeleteAccountMutation.graphql.swift */,
+				9396D3552C5EDF99007D6C2D /* CompleteAccountMutation.graphql.swift */,
+				9396D3562C5EDF99007D6C2D /* UpdateAccountMutation.graphql.swift */,
+				9396D3572C5EDF99007D6C2D /* LogOutMutation.graphql.swift */,
+				9396D3582C5EDF99007D6C2D /* DeleteAccountMutation.graphql.swift */,
+				9396D3592C5EDF99007D6C2D /* AnnonymousSignUpMutation.graphql.swift */,
+				9396D35A2C5EDF99007D6C2D /* AddToWatchListMutation.graphql.swift */,
+				9396D35B2C5EDF99007D6C2D /* InitiateAuthenticationMutation.graphql.swift */,
+				9396D35C2C5EDF99007D6C2D /* FollowMutation.graphql.swift */,
+				9396D35D2C5EDF99007D6C2D /* RateMutation.graphql.swift */,
+				9396D35E2C5EDF99007D6C2D /* ProfileImageUploadResponseMutation.graphql.swift */,
+				9396D35F2C5EDF99007D6C2D /* RemoveFromWatchListMutation.graphql.swift */,
+				9396D3602C5EDF99007D6C2D /* ValidateAuthenticationMutation.graphql.swift */,
+				9396D3612C5EDF99007D6C2D /* SetPushTokenMutation.graphql.swift */,
+				9396D3622C5EDF99007D6C2D /* UploadContactNumbersMutation.graphql.swift */,
 			);
 			path = Mutations;
 			sourceTree = "<group>";
 		};
-		93E45BDF2C2BA3AD00AC9BFA /* Queries */ = {
+		9396D3632C5EDF99007D6C2D /* Queries */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BE02C2BA3AD00AC9BFA /* CheckUsernameAvailabilityQuery.graphql.swift */,
-				93E45BE12C2BA3AD00AC9BFA /* SearchAccountsQuery.graphql.swift */,
-				93E45BE22C2BA3AD00AC9BFA /* SearchQuery.graphql.swift */,
-				93E45BE32C2BA3AD00AC9BFA /* GetEpisodeQuery.graphql.swift */,
-				93E45BE42C2BA3AD00AC9BFA /* WatchListQuery.graphql.swift */,
-				93E45BE52C2BA3AD00AC9BFA /* GetImageUploadUrlQuery.graphql.swift */,
-				93E45BE62C2BA3AD00AC9BFA /* GetContactMatchesQuery.graphql.swift */,
-				93E45BE72C2BA3AD00AC9BFA /* SendTestPushQuery.graphql.swift */,
-				93E45BE82C2BA3AD00AC9BFA /* GetAccountQuery.graphql.swift */,
-				93E45BE92C2BA3AD00AC9BFA /* GetFollowersQuery.graphql.swift */,
-				93E45BEA2C2BA3AD00AC9BFA /* GetContentQuery.graphql.swift */,
-				93E45BEB2C2BA3AD00AC9BFA /* MoviesQuery.graphql.swift */,
-				93E45BEC2C2BA3AD00AC9BFA /* GetPersonQuery.graphql.swift */,
-				93E45BED2C2BA3AD00AC9BFA /* GetSeasonQuery.graphql.swift */,
-				93E45BEE2C2BA3AD00AC9BFA /* GetProfileByIdQuery.graphql.swift */,
+				9396D3642C5EDF99007D6C2D /* CheckUsernameAvailabilityQuery.graphql.swift */,
+				9396D3652C5EDF99007D6C2D /* SearchAccountsQuery.graphql.swift */,
+				9396D3662C5EDF99007D6C2D /* SearchQuery.graphql.swift */,
+				9396D3672C5EDF99007D6C2D /* GetEpisodeQuery.graphql.swift */,
+				9396D3682C5EDF99007D6C2D /* WatchListQuery.graphql.swift */,
+				9396D3692C5EDF99007D6C2D /* GetImageUploadUrlQuery.graphql.swift */,
+				9396D36A2C5EDF99007D6C2D /* GetContactMatchesQuery.graphql.swift */,
+				9396D36B2C5EDF99007D6C2D /* SendTestPushQuery.graphql.swift */,
+				9396D36C2C5EDF99007D6C2D /* GetAccountQuery.graphql.swift */,
+				9396D36D2C5EDF99007D6C2D /* GetFollowersQuery.graphql.swift */,
+				9396D36E2C5EDF99007D6C2D /* GetContentQuery.graphql.swift */,
+				9396D36F2C5EDF99007D6C2D /* GetPersonQuery.graphql.swift */,
+				9396D3702C5EDF99007D6C2D /* GetSeasonQuery.graphql.swift */,
+				9396D3712C5EDF99007D6C2D /* GetProfileByIdQuery.graphql.swift */,
+				9396D3722C5EDF99007D6C2D /* GetContentCollectionQuery.graphql.swift */,
 			);
 			path = Queries;
 			sourceTree = "<group>";
 		};
-		93E45BEF2C2BA3AD00AC9BFA /* Schema */ = {
+		9396D3732C5EDF99007D6C2D /* Schema */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BF02C2BA3AD00AC9BFA /* Unions */,
-				93E45BF82C2BA3AD00AC9BFA /* Enums */,
-				93E45BFF2C2BA3AD00AC9BFA /* Objects */,
-				93E45C1C2C2BA3AD00AC9BFA /* SchemaConfiguration.swift */,
-				93E45C1D2C2BA3AD00AC9BFA /* InputObjects */,
-				93E45C222C2BA3AD00AC9BFA /* SchemaMetadata.graphql.swift */,
-				93E45C232C2BA3AD00AC9BFA /* Interfaces */,
+				9396D3742C5EDF99007D6C2D /* Unions */,
+				9396D37C2C5EDF99007D6C2D /* Enums */,
+				9396D3832C5EDF99007D6C2D /* Objects */,
+				9396D3A12C5EDF99007D6C2D /* SchemaConfiguration.swift */,
+				9396D3A22C5EDF99007D6C2D /* InputObjects */,
+				9396D3A72C5EDF99007D6C2D /* SchemaMetadata.graphql.swift */,
+				9396D3A82C5EDF99007D6C2D /* Interfaces */,
 			);
 			path = Schema;
 			sourceTree = "<group>";
 		};
-		93E45BF02C2BA3AD00AC9BFA /* Unions */ = {
+		9396D3742C5EDF99007D6C2D /* Unions */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BF12C2BA3AD00AC9BFA /* AccountUnion.graphql.swift */,
-				93E45BF22C2BA3AD00AC9BFA /* ProfileUnion.graphql.swift */,
-				93E45BF32C2BA3AD00AC9BFA /* AuthenticationResult.graphql.swift */,
-				93E45BF42C2BA3AD00AC9BFA /* ContentUnion.graphql.swift */,
+				9396D3752C5EDF99007D6C2D /* AccountUnion.graphql.swift */,
+				9396D3762C5EDF99007D6C2D /* ProfileUnion.graphql.swift */,
+				9396D3772C5EDF99007D6C2D /* AuthenticationResult.graphql.swift */,
+				9396D3782C5EDF99007D6C2D /* ExtendedContentUnion.graphql.swift */,
 			);
 			path = Unions;
 			sourceTree = "<group>";
 		};
-		93E45BF82C2BA3AD00AC9BFA /* Enums */ = {
+		9396D37C2C5EDF99007D6C2D /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				93E45BF92C2BA3AD00AC9BFA /* FollowDirection.graphql.swift */,
-				93E45BFA2C2BA3AD00AC9BFA /* Collection.graphql.swift */,
-				93E45BFB2C2BA3AD00AC9BFA /* TokenEnv.graphql.swift */,
-				93E45BFC2C2BA3AD00AC9BFA /* ContentType.graphql.swift */,
-				93E45BFD2C2BA3AD00AC9BFA /* PushPlatform.graphql.swift */,
-				93E45BFE2C2BA3AD00AC9BFA /* AccessModel.graphql.swift */,
+				9396D37D2C5EDF99007D6C2D /* FollowDirection.graphql.swift */,
+				9396D37E2C5EDF99007D6C2D /* Collection.graphql.swift */,
+				9396D37F2C5EDF99007D6C2D /* TokenEnv.graphql.swift */,
+				9396D3802C5EDF99007D6C2D /* ContentType.graphql.swift */,
+				9396D3812C5EDF99007D6C2D /* PushPlatform.graphql.swift */,
+				9396D3822C5EDF99007D6C2D /* AccessModel.graphql.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
 		};
-		93E45BFF2C2BA3AD00AC9BFA /* Objects */ = {
+		9396D3832C5EDF99007D6C2D /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				93E45C002C2BA3AD00AC9BFA /* IncompleteAccount.graphql.swift */,
-				93E45C012C2BA3AD00AC9BFA /* SeasonPerson.graphql.swift */,
-				93E45C022C2BA3AD00AC9BFA /* ImageUploadUrl.graphql.swift */,
-				93E45C032C2BA3AD00AC9BFA /* ProductionCountry.graphql.swift */,
-				93E45C042C2BA3AD00AC9BFA /* Profile.graphql.swift */,
-				93E45C052C2BA3AD00AC9BFA /* Person.graphql.swift */,
-				93E45C062C2BA3AD00AC9BFA /* Movie.graphql.swift */,
-				93E45C072C2BA3AD00AC9BFA /* EmptyResponse.graphql.swift */,
-				93E45C082C2BA3AD00AC9BFA /* ExtendedMovie.graphql.swift */,
-				93E45C092C2BA3AD00AC9BFA /* SeasonRole.graphql.swift */,
-				93E45C0A2C2BA3AD00AC9BFA /* ExtendedEpisode.graphql.swift */,
-				93E45C0B2C2BA3AD00AC9BFA /* ExtendedTVShow.graphql.swift */,
-				93E45C0C2C2BA3AD00AC9BFA /* CompleteAccountResult.graphql.swift */,
-				93E45C0D2C2BA3AD00AC9BFA /* ExtendedSeason.graphql.swift */,
-				93E45C0E2C2BA3AD00AC9BFA /* Mutation.graphql.swift */,
-				93E45C0F2C2BA3AD00AC9BFA /* WatchProvider.graphql.swift */,
-				93E45C102C2BA3AD00AC9BFA /* Query.graphql.swift */,
-				93E45C112C2BA3AD00AC9BFA /* Trailer.graphql.swift */,
-				93E45C122C2BA3AD00AC9BFA /* Header.graphql.swift */,
-				93E45C132C2BA3AD00AC9BFA /* Device.graphql.swift */,
-				93E45C142C2BA3AD00AC9BFA /* Season.graphql.swift */,
-				93E45C152C2BA3AD00AC9BFA /* Work.graphql.swift */,
-				93E45C162C2BA3AD00AC9BFA /* WatchListMutationResult.graphql.swift */,
-				93E45C172C2BA3AD00AC9BFA /* Episode.graphql.swift */,
-				93E45C182C2BA3AD00AC9BFA /* Genre.graphql.swift */,
-				93E45C192C2BA3AD00AC9BFA /* ExtendedPerson.graphql.swift */,
-				93E45C1A2C2BA3AD00AC9BFA /* ContentResponse.graphql.swift */,
-				93E45C1B2C2BA3AD00AC9BFA /* CompleteAccount.graphql.swift */,
+				9396D3842C5EDF99007D6C2D /* IncompleteAccount.graphql.swift */,
+				9396D3852C5EDF99007D6C2D /* SeasonPerson.graphql.swift */,
+				9396D3862C5EDF99007D6C2D /* ImageUploadUrl.graphql.swift */,
+				9396D3872C5EDF99007D6C2D /* ProductionCountry.graphql.swift */,
+				9396D3882C5EDF99007D6C2D /* Profile.graphql.swift */,
+				9396D3892C5EDF99007D6C2D /* Person.graphql.swift */,
+				9396D38A2C5EDF99007D6C2D /* EmptyResponse.graphql.swift */,
+				9396D38B2C5EDF99007D6C2D /* ExtendedMovie.graphql.swift */,
+				9396D38C2C5EDF99007D6C2D /* SeasonRole.graphql.swift */,
+				9396D38D2C5EDF99007D6C2D /* ExtendedEpisode.graphql.swift */,
+				9396D38E2C5EDF99007D6C2D /* ExtendedTVShow.graphql.swift */,
+				9396D38F2C5EDF99007D6C2D /* CompleteAccountResult.graphql.swift */,
+				9396D3902C5EDF99007D6C2D /* ExtendedSeason.graphql.swift */,
+				9396D3912C5EDF99007D6C2D /* Mutation.graphql.swift */,
+				9396D3922C5EDF99007D6C2D /* ExtendedContentResponse.graphql.swift */,
+				9396D3932C5EDF99007D6C2D /* WatchProvider.graphql.swift */,
+				9396D3942C5EDF99007D6C2D /* Query.graphql.swift */,
+				9396D3952C5EDF99007D6C2D /* Trailer.graphql.swift */,
+				9396D3962C5EDF99007D6C2D /* Header.graphql.swift */,
+				9396D3972C5EDF99007D6C2D /* Device.graphql.swift */,
+				9396D3982C5EDF99007D6C2D /* Season.graphql.swift */,
+				9396D3992C5EDF99007D6C2D /* Work.graphql.swift */,
+				9396D39A2C5EDF99007D6C2D /* RatingResponse.graphql.swift */,
+				9396D39B2C5EDF99007D6C2D /* WatchListMutationResult.graphql.swift */,
+				9396D39C2C5EDF99007D6C2D /* Episode.graphql.swift */,
+				9396D39D2C5EDF99007D6C2D /* Genre.graphql.swift */,
+				9396D39E2C5EDF99007D6C2D /* ExtendedPerson.graphql.swift */,
+				9396D39F2C5EDF99007D6C2D /* Content.graphql.swift */,
+				9396D3A02C5EDF99007D6C2D /* CompleteAccount.graphql.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
 		};
-		93E45C1D2C2BA3AD00AC9BFA /* InputObjects */ = {
+		9396D3A22C5EDF99007D6C2D /* InputObjects */ = {
 			isa = PBXGroup;
 			children = (
-				93E45C1E2C2BA3AD00AC9BFA /* CompleteAccountInput.graphql.swift */,
-				93E45C1F2C2BA3AD00AC9BFA /* ContactInput.graphql.swift */,
-				93E45C202C2BA3AD00AC9BFA /* PushTokenInput.graphql.swift */,
-				93E45C212C2BA3AD00AC9BFA /* UpdateAccountInput.graphql.swift */,
+				9396D3A32C5EDF99007D6C2D /* CompleteAccountInput.graphql.swift */,
+				9396D3A42C5EDF99007D6C2D /* ContactInput.graphql.swift */,
+				9396D3A52C5EDF99007D6C2D /* PushTokenInput.graphql.swift */,
+				9396D3A62C5EDF99007D6C2D /* UpdateAccountInput.graphql.swift */,
 			);
 			path = InputObjects;
 			sourceTree = "<group>";
 		};
-		93E45C232C2BA3AD00AC9BFA /* Interfaces */ = {
+		9396D3A82C5EDF99007D6C2D /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				93E45C242C2BA3AD00AC9BFA /* ExtendedContent.graphql.swift */,
-				93E45C252C2BA3AD00AC9BFA /* MovieInterface.graphql.swift */,
-				93E45C262C2BA3AD00AC9BFA /* SeasonInterface.graphql.swift */,
-				93E45C272C2BA3AD00AC9BFA /* EpisodeInterface.graphql.swift */,
-				93E45C282C2BA3AD00AC9BFA /* PersonInterface.graphql.swift */,
-				93E45C292C2BA3AD00AC9BFA /* ProfileInterface.graphql.swift */,
+				9396D3A92C5EDF99007D6C2D /* ExtendedContentInterface.graphql.swift */,
+				9396D3AA2C5EDF99007D6C2D /* SeasonInterface.graphql.swift */,
+				9396D3AB2C5EDF99007D6C2D /* EpisodeInterface.graphql.swift */,
+				9396D3AC2C5EDF99007D6C2D /* PersonInterface.graphql.swift */,
+				9396D3AD2C5EDF99007D6C2D /* ProfileInterface.graphql.swift */,
+				9396D3AE2C5EDF99007D6C2D /* ContentInterface.graphql.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -1054,199 +1060,201 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93E45C522C2BA3AD00AC9BFA /* UploadContactNumbersMutation.graphql.swift in Sources */,
 				936D63662BF1251E00079E71 /* CalculateAge.swift in Sources */,
-				93E45C6D2C2BA3AD00AC9BFA /* AccessModel.graphql.swift in Sources */,
+				9396D3C62C5EDF99007D6C2D /* WatchListMutationLocalCacheMutation.graphql.swift in Sources */,
 				93898E522B6E0A970001D68F /* Root.swift in Sources */,
-				93E45C372C2BA3AD00AC9BFA /* EpisodeFragment.graphql.swift in Sources */,
-				93E45C8A2C2BA3AD00AC9BFA /* SchemaConfiguration.swift in Sources */,
+				9396D3F92C5EDF99007D6C2D /* Person.graphql.swift in Sources */,
+				9396D3DF2C5EDF99007D6C2D /* GetContactMatchesQuery.graphql.swift in Sources */,
+				9396D3F32C5EDF99007D6C2D /* AccessModel.graphql.swift in Sources */,
+				9396D3CD2C5EDF99007D6C2D /* LogOutMutation.graphql.swift in Sources */,
 				933B79212B8AC6E9009CBC27 /* Mocks.swift in Sources */,
-				93E45C3E2C2BA3AD00AC9BFA /* GetAccountMutationLocalCacheMutation.graphql.swift in Sources */,
-				93E45C502C2BA3AD00AC9BFA /* ValidateAuthenticationMutation.graphql.swift in Sources */,
+				9396D3E02C5EDF99007D6C2D /* SendTestPushQuery.graphql.swift in Sources */,
 				935420982BFAF4CA003F535B /* EmailForm.swift in Sources */,
 				93796B292BAF5D6000091578 /* WatchListViewModel.swift in Sources */,
+				9396D4122C5EDF99007D6C2D /* CompleteAccountInput.graphql.swift in Sources */,
 				93796AF62BAF5C9E00091578 /* Changelog.swift in Sources */,
-				93E45C8B2C2BA3AD00AC9BFA /* CompleteAccountInput.graphql.swift in Sources */,
-				93E45C4F2C2BA3AD00AC9BFA /* RemoveFromWatchListMutation.graphql.swift in Sources */,
 				93D64C502BE856B5009F5C01 /* ContentHeader.swift in Sources */,
-				93E45C922C2BA3AD00AC9BFA /* SeasonInterface.graphql.swift in Sources */,
+				9396D3D82C5EDF99007D6C2D /* UploadContactNumbersMutation.graphql.swift in Sources */,
+				9396D40C2C5EDF99007D6C2D /* Episode.graphql.swift in Sources */,
 				93BF90342BBCF32800AC0634 /* CoverShelf.swift in Sources */,
 				9354D3CE2BF0047F00D28B0C /* TableView.swift in Sources */,
 				932632752BFD6BDD00A79CA7 /* EnablePushNotifications.swift in Sources */,
-				93E45C6C2C2BA3AD00AC9BFA /* PushPlatform.graphql.swift in Sources */,
-				93E45C7B2C2BA3AD00AC9BFA /* ExtendedSeason.graphql.swift in Sources */,
+				9396D4002C5EDF99007D6C2D /* ExtendedSeason.graphql.swift in Sources */,
+				9396D3F02C5EDF99007D6C2D /* TokenEnv.graphql.swift in Sources */,
+				9396D41C2C5EDF99007D6C2D /* ContentInterface.graphql.swift in Sources */,
 				930F67942BE04B18008C6CF2 /* PersonCard.swift in Sources */,
-				93E45C6A2C2BA3AD00AC9BFA /* TokenEnv.graphql.swift in Sources */,
-				93E45C652C2BA3AD00AC9BFA /* ContentUnion.graphql.swift in Sources */,
-				93E45C3D2C2BA3AD00AC9BFA /* CutGraphQL.graphql.swift in Sources */,
-				93E45C842C2BA3AD00AC9BFA /* WatchListMutationResult.graphql.swift in Sources */,
-				93E45C902C2BA3AD00AC9BFA /* ExtendedContent.graphql.swift in Sources */,
+				9396D3F72C5EDF99007D6C2D /* ProductionCountry.graphql.swift in Sources */,
 				936D63622BF052CC00079E71 /* PosterImage.swift in Sources */,
+				9396D3BB2C5EDF99007D6C2D /* ContentFragment.graphql.swift in Sources */,
 				93796B2F2BAF5D6000091578 /* ProfileImage.swift in Sources */,
-				93E45C832C2BA3AD00AC9BFA /* Work.graphql.swift in Sources */,
-				93E45C312C2BA3AD00AC9BFA /* PersonFragment.graphql.swift in Sources */,
 				93D64BAB2BE83E7F009F5C01 /* Shimmer.swift in Sources */,
+				9396D3D52C5EDF99007D6C2D /* RemoveFromWatchListMutation.graphql.swift in Sources */,
+				9396D3C92C5EDF99007D6C2D /* UploadContactEmailsMutation.graphql.swift in Sources */,
+				9396D4082C5EDF99007D6C2D /* Season.graphql.swift in Sources */,
 				93796B302BAF5D6000091578 /* PrimaryButton.swift in Sources */,
-				93E45C5D2C2BA3AD00AC9BFA /* GetContentQuery.graphql.swift in Sources */,
-				93E45C642C2BA3AD00AC9BFA /* AuthenticationResult.graphql.swift in Sources */,
 				93DE36582BEEF17F0072DF53 /* StringExtensions.swift in Sources */,
+				9396D4192C5EDF99007D6C2D /* EpisodeInterface.graphql.swift in Sources */,
 				9354D3D02BF0053100D28B0C /* Entity.swift in Sources */,
+				9396D3B72C5EDF99007D6C2D /* SeasonFragment.graphql.swift in Sources */,
+				9396D4132C5EDF99007D6C2D /* ContactInput.graphql.swift in Sources */,
 				9354D3D22BF0253300D28B0C /* TruncatedText.swift in Sources */,
-				93E45C472C2BA3AD00AC9BFA /* LogOutMutation.graphql.swift in Sources */,
-				93E45C382C2BA3AD00AC9BFA /* ExtendedPersonFragment.graphql.swift in Sources */,
+				9396D3D72C5EDF99007D6C2D /* SetPushTokenMutation.graphql.swift in Sources */,
 				93796B092BAF5C9E00091578 /* EditAccount.swift in Sources */,
-				93E45C7C2C2BA3AD00AC9BFA /* Mutation.graphql.swift in Sources */,
-				93E45C4D2C2BA3AD00AC9BFA /* RateMutation.graphql.swift in Sources */,
 				930F66E22BD429AF008C6CF2 /* UIViewExtensions.swift in Sources */,
-				93E45C602C2BA3AD00AC9BFA /* GetSeasonQuery.graphql.swift in Sources */,
-				93E45C712C2BA3AD00AC9BFA /* ProductionCountry.graphql.swift in Sources */,
+				9396D4012C5EDF99007D6C2D /* Mutation.graphql.swift in Sources */,
 				93796B0E2BAF5C9E00091578 /* FindFriendsViaContacts.swift in Sources */,
+				9396D3E52C5EDF99007D6C2D /* GetSeasonQuery.graphql.swift in Sources */,
 				93DE35A92BEE433F0072DF53 /* PersonDetailView.swift in Sources */,
 				93541EEC2BF9A48F003F535B /* FollowTable.swift in Sources */,
-				93E45C732C2BA3AD00AC9BFA /* Person.graphql.swift in Sources */,
-				93BF90362BBCFABC00AC0634 /* FavoriteMovieEditorViewController.swift in Sources */,
-				93E45C4C2C2BA3AD00AC9BFA /* FollowMutation.graphql.swift in Sources */,
+				93BF90362BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift in Sources */,
+				9396D3EF2C5EDF99007D6C2D /* Collection.graphql.swift in Sources */,
+				9396D40E2C5EDF99007D6C2D /* ExtendedPerson.graphql.swift in Sources */,
+				9396D3DA2C5EDF99007D6C2D /* SearchAccountsQuery.graphql.swift in Sources */,
 				933E5DFF2B77137500A83602 /* Search.swift in Sources */,
-				93E45C572C2BA3AD00AC9BFA /* WatchListQuery.graphql.swift in Sources */,
-				93E45C4B2C2BA3AD00AC9BFA /* InitiateAuthenticationMutation.graphql.swift in Sources */,
 				930F677D2BD88D47008C6CF2 /* UnknownError.swift in Sources */,
-				93E45C7F2C2BA3AD00AC9BFA /* Trailer.graphql.swift in Sources */,
 				93898E502B6E0A970001D68F /* CutApp.swift in Sources */,
+				9396D3AF2C5EDF99007D6C2D /* ExtendedContentUnionFragment.graphql.swift in Sources */,
 				930F678A2BD89177008C6CF2 /* PlaceholderLayout.swift in Sources */,
-				93E45C492C2BA3AD00AC9BFA /* AnnonymousSignUpMutation.graphql.swift in Sources */,
+				9396D41A2C5EDF99007D6C2D /* PersonInterface.graphql.swift in Sources */,
 				9354D3CC2BF0015900D28B0C /* Person.swift in Sources */,
-				93E45C782C2BA3AD00AC9BFA /* ExtendedEpisode.graphql.swift in Sources */,
-				93E45C552C2BA3AD00AC9BFA /* SearchQuery.graphql.swift in Sources */,
-				93E45C7D2C2BA3AD00AC9BFA /* WatchProvider.graphql.swift in Sources */,
+				9396D3CC2C5EDF99007D6C2D /* UpdateAccountMutation.graphql.swift in Sources */,
+				9396D3C72C5EDF99007D6C2D /* MutableExtendedMovieFragment.graphql.swift in Sources */,
+				9396D3F52C5EDF99007D6C2D /* SeasonPerson.graphql.swift in Sources */,
+				9396D4162C5EDF99007D6C2D /* SchemaMetadata.graphql.swift in Sources */,
+				9396D3B02C5EDF99007D6C2D /* CompleteAccountFragment.graphql.swift in Sources */,
+				9396D3B82C5EDF99007D6C2D /* SeasonPersonFragment.graphql.swift in Sources */,
+				9396D3FD2C5EDF99007D6C2D /* ExtendedEpisode.graphql.swift in Sources */,
 				93796BB22BAFC57400091578 /* Debouncer.swift in Sources */,
-				93E45C452C2BA3AD00AC9BFA /* CompleteAccountMutation.graphql.swift in Sources */,
+				9396D3EA2C5EDF99007D6C2D /* AuthenticationResult.graphql.swift in Sources */,
 				93796B2B2BAF5D6000091578 /* ContentRowViewModel.swift in Sources */,
+				9396D3C12C5EDF99007D6C2D /* ExtendedSeasonFragment.graphql.swift in Sources */,
 				93796B2E2BAF5D6000091578 /* RatingCirlce.swift in Sources */,
 				93796AFF2BAF5C9E00091578 /* CompleteAccountForm.swift in Sources */,
+				9396D3CF2C5EDF99007D6C2D /* AnnonymousSignUpMutation.graphql.swift in Sources */,
 				93DE365A2BEEF19E0072DF53 /* ViewExtensions.swift in Sources */,
-				93E45C3F2C2BA3AD00AC9BFA /* MutableMovieFragment.graphql.swift in Sources */,
+				9396D41B2C5EDF99007D6C2D /* ProfileInterface.graphql.swift in Sources */,
+				9396D3BA2C5EDF99007D6C2D /* ExtendedTVShowFragment.graphql.swift in Sources */,
+				9396D3CB2C5EDF99007D6C2D /* CompleteAccountMutation.graphql.swift in Sources */,
+				9396D3D22C5EDF99007D6C2D /* FollowMutation.graphql.swift in Sources */,
 				930F67842BD88F59008C6CF2 /* PlaceholderCell.swift in Sources */,
-				93E45C802C2BA3AD00AC9BFA /* Header.graphql.swift in Sources */,
+				9396D3B22C5EDF99007D6C2D /* ExtendedEpisodeFragment.graphql.swift in Sources */,
+				9396D3C42C5EDF99007D6C2D /* MutableContentFragment.graphql.swift in Sources */,
+				9396D4142C5EDF99007D6C2D /* PushTokenInput.graphql.swift in Sources */,
+				9396D3C02C5EDF99007D6C2D /* FullProfileFragment.graphql.swift in Sources */,
+				9396D3FB2C5EDF99007D6C2D /* ExtendedMovie.graphql.swift in Sources */,
+				9396D3C82C5EDF99007D6C2D /* UnfollowMutation.graphql.swift in Sources */,
+				9396D3F42C5EDF99007D6C2D /* IncompleteAccount.graphql.swift in Sources */,
+				9396D3D92C5EDF99007D6C2D /* CheckUsernameAvailabilityQuery.graphql.swift in Sources */,
+				9396D3D02C5EDF99007D6C2D /* AddToWatchListMutation.graphql.swift in Sources */,
 				93D64DA02BE86345009F5C01 /* WhereToWatchCarousel.swift in Sources */,
-				93E45C722C2BA3AD00AC9BFA /* Profile.graphql.swift in Sources */,
 				933A6AC02B704715004DE491 /* AuthorizedApolloClient.swift in Sources */,
-				93E45C352C2BA3AD00AC9BFA /* ExtendedTVShowFragment.graphql.swift in Sources */,
-				93E45C5A2C2BA3AD00AC9BFA /* SendTestPushQuery.graphql.swift in Sources */,
-				93E45C5C2C2BA3AD00AC9BFA /* GetFollowersQuery.graphql.swift in Sources */,
-				93E45C762C2BA3AD00AC9BFA /* ExtendedMovie.graphql.swift in Sources */,
 				93796B102BAF5C9E00091578 /* AppDelegate.swift in Sources */,
+				9396D4042C5EDF99007D6C2D /* Query.graphql.swift in Sources */,
 				93C05BBA2C03A56E00C7DBD8 /* OtpCodeTextField.swift in Sources */,
-				93E45C2C2C2BA3AD00AC9BFA /* CompleteAccountFragment.graphql.swift in Sources */,
 				93796B282BAF5D6000091578 /* CutTextField.swift in Sources */,
-				93E45C442C2BA3AD00AC9BFA /* InitiatiteDeleteAccountMutation.graphql.swift in Sources */,
-				93E45C3B2C2BA3AD00AC9BFA /* ExtendedSeasonFragment.graphql.swift in Sources */,
+				9396D3DD2C5EDF99007D6C2D /* WatchListQuery.graphql.swift in Sources */,
 				932632772BFD7C2900A79CA7 /* FindFriends.swift in Sources */,
-				93E45C2F2C2BA3AD00AC9BFA /* CompleteAccountResultFragment.graphql.swift in Sources */,
+				9396D3EB2C5EDF99007D6C2D /* ExtendedContentUnion.graphql.swift in Sources */,
+				9396D3E42C5EDF99007D6C2D /* GetPersonQuery.graphql.swift in Sources */,
+				9396D4062C5EDF99007D6C2D /* Header.graphql.swift in Sources */,
+				9396D3B32C5EDF99007D6C2D /* CompleteAccountResultFragment.graphql.swift in Sources */,
 				93796B0C2BAF5C9E00091578 /* Account.swift in Sources */,
 				930F678E2BDD2D1C008C6CF2 /* KeyboardAnimationViewController.swift in Sources */,
-				93E45C632C2BA3AD00AC9BFA /* ProfileUnion.graphql.swift in Sources */,
-				93E45C862C2BA3AD00AC9BFA /* Genre.graphql.swift in Sources */,
 				93796AFA2BAF5C9E00091578 /* UsernameAvailabilityIndicator.swift in Sources */,
-				93E45C5F2C2BA3AD00AC9BFA /* GetPersonQuery.graphql.swift in Sources */,
+				9396D3B62C5EDF99007D6C2D /* ProfileFragment.graphql.swift in Sources */,
 				93796AFE2BAF5C9E00091578 /* CheckEmailVerification.swift in Sources */,
-				93E45C542C2BA3AD00AC9BFA /* SearchAccountsQuery.graphql.swift in Sources */,
-				93E45C882C2BA3AD00AC9BFA /* ContentResponse.graphql.swift in Sources */,
-				93E45C512C2BA3AD00AC9BFA /* SetPushTokenMutation.graphql.swift in Sources */,
-				93E45C302C2BA3AD00AC9BFA /* WatchProviderFragment.graphql.swift in Sources */,
 				933B79612B8AD5AD009CBC27 /* WrappingHStack.swift in Sources */,
-				933B78B32B89AE42009CBC27 /* DetailView.swift in Sources */,
+				933B78B32B89AE42009CBC27 /* ContentDetailView.swift in Sources */,
+				9396D40D2C5EDF99007D6C2D /* Genre.graphql.swift in Sources */,
 				933B77642B857009009CBC27 /* WatchList.swift in Sources */,
-				93E45C3C2C2BA3AD00AC9BFA /* ExtendedMovieFragment.graphql.swift in Sources */,
-				93E45C812C2BA3AD00AC9BFA /* Device.graphql.swift in Sources */,
-				93E45C6F2C2BA3AD00AC9BFA /* SeasonPerson.graphql.swift in Sources */,
+				9396D3B92C5EDF99007D6C2D /* ExtendedContentInterfaceFragment.graphql.swift in Sources */,
+				9396D3BD2C5EDF99007D6C2D /* EpisodeFragment.graphql.swift in Sources */,
 				930F68CA2BE48812008C6CF2 /* DateScalar.swift in Sources */,
 				93796B122BAF5C9E00091578 /* SessionManager.swift in Sources */,
 				935420962BFAD9BA003F535B /* WelcomeView.swift in Sources */,
+				9396D3BF2C5EDF99007D6C2D /* ProductionCountryFragment.graphql.swift in Sources */,
+				9396D4112C5EDF99007D6C2D /* SchemaConfiguration.swift in Sources */,
 				93796B112BAF5C9E00091578 /* DeepLinkManager.swift in Sources */,
-				93E45C3A2C2BA3AD00AC9BFA /* FullProfileFragment.graphql.swift in Sources */,
+				9396D40A2C5EDF99007D6C2D /* RatingResponse.graphql.swift in Sources */,
 				93796B2C2BAF5D6000091578 /* ContentRow.swift in Sources */,
-				93E45C8C2C2BA3AD00AC9BFA /* ContactInput.graphql.swift in Sources */,
-				93E45C2B2C2BA3AD00AC9BFA /* MovieFragment.graphql.swift in Sources */,
-				93E45C322C2BA3AD00AC9BFA /* ProfileFragment.graphql.swift in Sources */,
+				9396D3BE2C5EDF99007D6C2D /* ExtendedPersonFragment.graphql.swift in Sources */,
+				9396D3E62C5EDF99007D6C2D /* GetProfileByIdQuery.graphql.swift in Sources */,
+				9396D4022C5EDF99007D6C2D /* ExtendedContentResponse.graphql.swift in Sources */,
+				9396D3D42C5EDF99007D6C2D /* ProfileImageUploadResponseMutation.graphql.swift in Sources */,
 				93FBC9742BE7EA9200308C0E /* URLScalar.swift in Sources */,
 				93796B342BAF5D6000091578 /* Color.swift in Sources */,
-				93E45C612C2BA3AD00AC9BFA /* GetProfileByIdQuery.graphql.swift in Sources */,
-				93E45C8E2C2BA3AD00AC9BFA /* UpdateAccountInput.graphql.swift in Sources */,
+				9396D3D12C5EDF99007D6C2D /* InitiateAuthenticationMutation.graphql.swift in Sources */,
+				9396D4092C5EDF99007D6C2D /* Work.graphql.swift in Sources */,
+				9396D3B42C5EDF99007D6C2D /* WatchProviderFragment.graphql.swift in Sources */,
 				930F67792BD88CD2008C6CF2 /* Movie.swift in Sources */,
+				9396D3E22C5EDF99007D6C2D /* GetFollowersQuery.graphql.swift in Sources */,
 				930F67862BD88FE3008C6CF2 /* OneLineCollectionViewLayout.swift in Sources */,
-				93E45C942C2BA3AD00AC9BFA /* PersonInterface.graphql.swift in Sources */,
-				93E45C7E2C2BA3AD00AC9BFA /* Query.graphql.swift in Sources */,
 				930F677F2BD88D79008C6CF2 /* GraphQLResultParser.swift in Sources */,
-				93E45C932C2BA3AD00AC9BFA /* EpisodeInterface.graphql.swift in Sources */,
 				93796B132BAF5C9E00091578 /* SceneDelegate.swift in Sources */,
-				93E45C532C2BA3AD00AC9BFA /* CheckUsernameAvailabilityQuery.graphql.swift in Sources */,
 				93D64DA22BE863BF009F5C01 /* CastCarousel.swift in Sources */,
-				93E45C952C2BA3AD00AC9BFA /* ProfileInterface.graphql.swift in Sources */,
 				93541C792BF913F8003F535B /* ProfileHeader.swift in Sources */,
+				9396D3C22C5EDF99007D6C2D /* ExtendedMovieFragment.graphql.swift in Sources */,
 				93796B332BAF5D6000091578 /* TertiaryButton.swift in Sources */,
+				9396D3FE2C5EDF99007D6C2D /* ExtendedTVShow.graphql.swift in Sources */,
+				9396D3C52C5EDF99007D6C2D /* GetAccountMutationLocalCacheMutation.graphql.swift in Sources */,
 				935890E72C28E3BF0017FC63 /* UpdatePhoneNumber.swift in Sources */,
-				93E45C392C2BA3AD00AC9BFA /* ProductionCountryFragment.graphql.swift in Sources */,
-				93E45C412C2BA3AD00AC9BFA /* MutableExtendedMovieFragment.graphql.swift in Sources */,
-				93E45C742C2BA3AD00AC9BFA /* Movie.graphql.swift in Sources */,
 				93D64C522BE85727009F5C01 /* Formatters.swift in Sources */,
-				93E45C792C2BA3AD00AC9BFA /* ExtendedTVShow.graphql.swift in Sources */,
-				93E45C432C2BA3AD00AC9BFA /* UploadContactEmailsMutation.graphql.swift in Sources */,
-				930F67902BDD2EE9008C6CF2 /* MovieSelectionViewController.swift in Sources */,
-				93E45C622C2BA3AD00AC9BFA /* AccountUnion.graphql.swift in Sources */,
-				93E45C482C2BA3AD00AC9BFA /* DeleteAccountMutation.graphql.swift in Sources */,
-				93E45C592C2BA3AD00AC9BFA /* GetContactMatchesQuery.graphql.swift in Sources */,
-				93E45C332C2BA3AD00AC9BFA /* SeasonFragment.graphql.swift in Sources */,
+				9396D4152C5EDF99007D6C2D /* UpdateAccountInput.graphql.swift in Sources */,
+				9396D3B12C5EDF99007D6C2D /* ProfileInterfaceFragment.graphql.swift in Sources */,
+				9396D3F22C5EDF99007D6C2D /* PushPlatform.graphql.swift in Sources */,
+				9396D3CA2C5EDF99007D6C2D /* InitiatiteDeleteAccountMutation.graphql.swift in Sources */,
+				930F67902BDD2EE9008C6CF2 /* ContentSelectionViewController.swift in Sources */,
 				93796BB02BAFC0DD00091578 /* ProfileRow.swift in Sources */,
-				93E45C562C2BA3AD00AC9BFA /* GetEpisodeQuery.graphql.swift in Sources */,
+				9396D4032C5EDF99007D6C2D /* WatchProvider.graphql.swift in Sources */,
 				935890E92C2904390017FC63 /* RateContentSheet.swift in Sources */,
-				93E45C8F2C2BA3AD00AC9BFA /* SchemaMetadata.graphql.swift in Sources */,
-				93E45C2D2C2BA3AD00AC9BFA /* ProfileInterfaceFragment.graphql.swift in Sources */,
-				93E45C892C2BA3AD00AC9BFA /* CompleteAccount.graphql.swift in Sources */,
+				9396D3DE2C5EDF99007D6C2D /* GetImageUploadUrlQuery.graphql.swift in Sources */,
 				93796B312BAF5D6000091578 /* URLImage.swift in Sources */,
-				93E45C2E2C2BA3AD00AC9BFA /* ExtendedEpisodeFragment.graphql.swift in Sources */,
-				93E45C5E2C2BA3AD00AC9BFA /* MoviesQuery.graphql.swift in Sources */,
 				93541A182BF56612003F535B /* EpisodeDetailView.swift in Sources */,
-				93E45C852C2BA3AD00AC9BFA /* Episode.graphql.swift in Sources */,
-				93E45C462C2BA3AD00AC9BFA /* UpdateAccountMutation.graphql.swift in Sources */,
-				93FBC8322BE7E4A600308C0E /* MovieDetailView.swift in Sources */,
+				93FBC8322BE7E4A600308C0E /* ContentDetailPage.swift in Sources */,
 				930F67922BDEAC9E008C6CF2 /* TVShowDetailView.swift in Sources */,
-				93E45C4E2C2BA3AD00AC9BFA /* ProfileImageUploadResponseMutation.graphql.swift in Sources */,
+				9396D3DB2C5EDF99007D6C2D /* SearchQuery.graphql.swift in Sources */,
+				9396D3E92C5EDF99007D6C2D /* ProfileUnion.graphql.swift in Sources */,
+				9396D3F82C5EDF99007D6C2D /* Profile.graphql.swift in Sources */,
+				9396D3E12C5EDF99007D6C2D /* GetAccountQuery.graphql.swift in Sources */,
+				9396D3F62C5EDF99007D6C2D /* ImageUploadUrl.graphql.swift in Sources */,
+				9396D4052C5EDF99007D6C2D /* Trailer.graphql.swift in Sources */,
+				9396D4102C5EDF99007D6C2D /* CompleteAccount.graphql.swift in Sources */,
 				93796B042BAF5C9E00091578 /* ContactSyncer .swift in Sources */,
 				933B77622B856F57009CBC27 /* Browse.swift in Sources */,
-				93E45C4A2C2BA3AD00AC9BFA /* AddToWatchListMutation.graphql.swift in Sources */,
 				93796AF72BAF5C9E00091578 /* Settings.swift in Sources */,
 				93796B2A2BAF5D6000091578 /* WatchListButton.swift in Sources */,
-				93E45C872C2BA3AD00AC9BFA /* ExtendedPerson.graphql.swift in Sources */,
+				9396D3D32C5EDF99007D6C2D /* RateMutation.graphql.swift in Sources */,
+				9396D40B2C5EDF99007D6C2D /* WatchListMutationResult.graphql.swift in Sources */,
 				936D63682BF1253300079E71 /* IntExtensions.swift in Sources */,
-				93E45C6B2C2BA3AD00AC9BFA /* ContentType.graphql.swift in Sources */,
-				93E45C772C2BA3AD00AC9BFA /* SeasonRole.graphql.swift in Sources */,
+				9396D3FC2C5EDF99007D6C2D /* SeasonRole.graphql.swift in Sources */,
 				93796B082BAF5C9E00091578 /* Profile.swift in Sources */,
-				93E45C702C2BA3AD00AC9BFA /* ImageUploadUrl.graphql.swift in Sources */,
-				93E45C5B2C2BA3AD00AC9BFA /* GetAccountQuery.graphql.swift in Sources */,
-				93E45C2A2C2BA3AD00AC9BFA /* ExtendedContentFragment.graphql.swift in Sources */,
-				93E45C582C2BA3AD00AC9BFA /* GetImageUploadUrlQuery.graphql.swift in Sources */,
+				9396D3D62C5EDF99007D6C2D /* ValidateAuthenticationMutation.graphql.swift in Sources */,
+				9396D3BC2C5EDF99007D6C2D /* PersonInterfaceFragment.graphql.swift in Sources */,
 				935419592BF2ECB0003F535B /* EpisodeCarousel.swift in Sources */,
+				9396D3E82C5EDF99007D6C2D /* AccountUnion.graphql.swift in Sources */,
 				93796AFB2BAF5C9E00091578 /* CompleteAccountBenefits.swift in Sources */,
+				9396D3CE2C5EDF99007D6C2D /* DeleteAccountMutation.graphql.swift in Sources */,
 				936D63642BF054CD00079E71 /* StillCard.swift in Sources */,
-				93E45C342C2BA3AD00AC9BFA /* SeasonPersonFragment.graphql.swift in Sources */,
 				931288912BB9A25B00330315 /* PosterCell.swift in Sources */,
-				93E45C752C2BA3AD00AC9BFA /* EmptyResponse.graphql.swift in Sources */,
 				93796B322BAF5D6000091578 /* Font.swift in Sources */,
+				9396D3FA2C5EDF99007D6C2D /* EmptyResponse.graphql.swift in Sources */,
 				936D62022BF0320800079E71 /* SeasonDetailView.swift in Sources */,
+				9396D4182C5EDF99007D6C2D /* SeasonInterface.graphql.swift in Sources */,
+				9396D3DC2C5EDF99007D6C2D /* GetEpisodeQuery.graphql.swift in Sources */,
+				9396D3B52C5EDF99007D6C2D /* PersonFragment.graphql.swift in Sources */,
+				9396D3C32C5EDF99007D6C2D /* CutGraphQL.graphql.swift in Sources */,
 				93796B0D2BAF5C9E00091578 /* IncompleteAccount.swift in Sources */,
-				93E45C822C2BA3AD00AC9BFA /* Season.graphql.swift in Sources */,
+				9396D3FF2C5EDF99007D6C2D /* CompleteAccountResult.graphql.swift in Sources */,
 				931288932BB9A46B00330315 /* PosterGrid.swift in Sources */,
-				93E45C362C2BA3AD00AC9BFA /* PersonInterfaceFragment.graphql.swift in Sources */,
-				93E45C7A2C2BA3AD00AC9BFA /* CompleteAccountResult.graphql.swift in Sources */,
+				9396D40F2C5EDF99007D6C2D /* Content.graphql.swift in Sources */,
+				9396D3F12C5EDF99007D6C2D /* ContentType.graphql.swift in Sources */,
+				9396D3EE2C5EDF99007D6C2D /* FollowDirection.graphql.swift in Sources */,
+				9396D3E72C5EDF99007D6C2D /* GetContentCollectionQuery.graphql.swift in Sources */,
+				9396D4172C5EDF99007D6C2D /* ExtendedContentInterface.graphql.swift in Sources */,
+				9396D4072C5EDF99007D6C2D /* Device.graphql.swift in Sources */,
 				93796B2D2BAF5D6000091578 /* ImageStack.swift in Sources */,
-				93E45C692C2BA3AD00AC9BFA /* Collection.graphql.swift in Sources */,
-				93E45C422C2BA3AD00AC9BFA /* UnfollowMutation.graphql.swift in Sources */,
-				93E45C8D2C2BA3AD00AC9BFA /* PushTokenInput.graphql.swift in Sources */,
-				93E45C6E2C2BA3AD00AC9BFA /* IncompleteAccount.graphql.swift in Sources */,
-				93E45C682C2BA3AD00AC9BFA /* FollowDirection.graphql.swift in Sources */,
-				93E45C912C2BA3AD00AC9BFA /* MovieInterface.graphql.swift in Sources */,
+				9396D3E32C5EDF99007D6C2D /* GetContentQuery.graphql.swift in Sources */,
 				930F67822BD88F18008C6CF2 /* PosterCollectionViewCell.swift in Sources */,
-				93E45C402C2BA3AD00AC9BFA /* WatchListMutationLocalCacheMutation.graphql.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

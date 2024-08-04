@@ -10,16 +10,16 @@ import Apollo
 import ApolloAPI
 
 class ContentRowViewModel: ObservableObject {
-    let movie: CutGraphQL.MovieFragment
+    let content: Content
 
-    init(movie: CutGraphQL.MovieFragment) {
-        self.movie = movie
+    init(content: Content) {
+        self.content = content
     }
 
-    var imageUrl: URL? { movie.poster_url }
-    var title: String { movie.title }
+    var imageUrl: URL? { content.poster_url }
+    var title: String { content.title }
 
     var subtitle: String? {
-        return movie.mainGenre?.name ?? movie.genres.first?.name
+        return content.mainGenre?.name ?? content.genres.first?.name
     }
 }

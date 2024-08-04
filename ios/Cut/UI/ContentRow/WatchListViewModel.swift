@@ -11,13 +11,13 @@ import SwiftUI
 @Observable
 class WatchListViewModel {
     private(set) var isOnWatchList: Bool
-    let movie: Movie
+    let content: Content
     let index: Int?
     private var currentRequest: Apollo.Cancellable?
 
-    init(movie: Movie, index: Int? = nil) {
-        self.movie = movie
-        self.isOnWatchList = movie.isOnWatchList
+    init(content: Content, index: Int? = nil) {
+        self.content = content
+        self.isOnWatchList = content.isOnWatchList
         self.index = index
     }
 
@@ -27,41 +27,48 @@ class WatchListViewModel {
         currentRequest?.cancel()
         if originalIsOnWatchList {
             currentRequest = AuthorizedApolloClient.shared.client
-                .perform(mutation: CutGraphQL.RemoveFromWatchListMutation(movieId: movie.id)) { [weak self] result in
+                .perform(mutation: CutGraphQL.RemoveFromWatchListMutation(contentId: content.id)) { [weak self] result in
                     guard let self = self else { return }
                     guard case .success(let data) = result, let newId = data.data?.removeFromWatchList.id else {
                         self.isOnWatchList = originalIsOnWatchList
                         return
                     }
-                    updateCache(add: false, movieId: newId)
+                    updateCache(add: false, contentId: newId)
                 }
         } else {
             currentRequest = AuthorizedApolloClient.shared.client
-                .perform(mutation: CutGraphQL.AddToWatchListMutation(movieId: movie.id)) { [weak self] result in
+                .perform(mutation: CutGraphQL.AddToWatchListMutation(contentId: content.id)) { [weak self] result in
                     guard let self = self else { return }
                     guard case .success(let data) = result, let newId = data.data?.addToWatchList.id else {
                         self.isOnWatchList = originalIsOnWatchList
                         return
                     }
-                    updateCache(add: true, movieId: newId)
+                    updateCache(add: true, contentId: newId)
                 }
         }
     }
 
-    private func updateCache(add: Bool, movieId: String) {
+    private func updateCache(add: Bool, contentId: String) {
         // capture locally
-        let movie = movie
+        let content = content
         let index = index
         AuthorizedApolloClient.shared.client.store.withinReadWriteTransaction { txn in
             do {
-                try txn.updateObject(ofType: CutGraphQL.MutableMovieFragment.self, withKey: "Movie:\(movieId)", { set in
+                try txn.updateObject(ofType: CutGraphQL.MutableContentFragment.self, withKey: "Content:\(contentId)", { set in
                     set.isOnWatchList = add
                 })
             } catch {
                 print(error)
             }
             do {
-                try txn.updateObject(ofType: CutGraphQL.MutableExtendedMovieFragment.self, withKey: "ExtendedMovie:\(movieId)") { set in
+                try txn.updateObject(ofType: CutGraphQL.MutableExtendedMovieFragment.self, withKey: "ExtendedMovie:\(contentId)") { set in
+                    set.isOnWatchList = add
+                }
+            } catch {
+                print(error)
+            }
+            do {
+                try txn.updateObject(ofType: CutGraphQL.MutableExtendedMovieFragment.self, withKey: "ExtendedTVShow:\(contentId)") { set in
                     set.isOnWatchList = add
                 }
             } catch {
@@ -71,20 +78,20 @@ class WatchListViewModel {
                 try txn.update(CutGraphQL.WatchListMutationLocalCacheMutation()) { set in
                     if add {
                         set.watchList.append(CutGraphQL.WatchListMutationLocalCacheMutation.Data.WatchList(
-                            title: movie.title,
-                            id: movieId,
-                            allIds: movie.allIds,
-                            poster_url: movie.poster_url,
-                            url: movie.url,
-                            type: movie.type,
-                            genres: movie.genres,
+                            title: content.title,
+                            id: contentId,
+                            allIds: content.allIds,
+                            poster_url: content.poster_url,
+                            url: content.url,
+                            type: content.type,
+                            genres: content.genres,
                             isOnWatchList: true
                         ))
                     } else {
                         let findIndex = {
                             let existing = try txn.read(query: CutGraphQL.WatchListQuery())
                             return existing.watchList.firstIndex{ item in
-                                item.id == movieId || item.allIds.contains(movieId)
+                                item.id == contentId || item.allIds.contains(contentId)
                             }!
                         }
                         let finalIndex = try index ?? findIndex()

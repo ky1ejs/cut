@@ -9,8 +9,8 @@ import SwiftUI
 import Apollo
 import Kingfisher
 
-struct DetailView: View {
-    let content: Movie
+struct ContentDetailView: View {
+    let content: Content
     @State var extendedContent: CutGraphQL.GetContentQuery.Data.Content?
     @State var watched: Apollo.GraphQLQueryWatcher<CutGraphQL.GetContentQuery>?
 
@@ -19,10 +19,10 @@ struct DetailView: View {
         ZStack {
             if case .case(.movie) = type {
                 let movie = extendedContent != nil ? extendedContent!.result.asExtendedMovie!.fragments.extendedMovieFragment : nil
-                MovieDetailView(movie: content, extendedMovie: movie)
+                ContentDetailPage(content: content, extendedMovie: movie)
             } else if case .case(.tvShow) = type {
                 let tvShow = extendedContent != nil ? extendedContent!.result.asExtendedTVShow!.fragments.extendedTVShowFragment : nil
-                TVShowDetailView(movie: content, tvShow: tvShow)
+                TVShowDetailView(content: content, tvShow: tvShow)
             } else {
                 fatalError("Unknown content")
             }
@@ -43,9 +43,9 @@ struct DetailView: View {
     }
 }
 
-struct DetailViewContainer<C: View>: View {
+struct ContentDetailViewContainer<C: View>: View {
     @Environment(\.theme) var theme
-    let content: Movie
+    let content: Content
     @ViewBuilder let child: (CGFloat) -> C
     @State var ratingViewPresented = false
 
@@ -65,7 +65,7 @@ struct DetailViewContainer<C: View>: View {
                     Spacer()
                     HStack(spacing: 18) {
                         Spacer()
-                        CircleWatchListButton(movie: content)
+                        CircleWatchListButton(content: content)
                         CircleButton(kind: .watched) {
                             ratingViewPresented = true
                         }
@@ -102,5 +102,5 @@ struct DetailViewContainer<C: View>: View {
 }
 
 #Preview {
-    DetailView(content: Mocks.movie)
+    ContentDetailView(content: Mocks.content)
 }

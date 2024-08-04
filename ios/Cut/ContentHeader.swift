@@ -18,13 +18,13 @@ struct VisualEffectView: UIViewRepresentable {
 struct ContentHeader: View {
     @Environment(\.theme) var theme
     @Environment(\.openURL) private var openURL
-    let content: Movie
+    let content: Content
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
     let movie: CutGraphQL.ExtendedMovieFragment?
     let width: CGFloat
     var isLoading: Bool { tvShow == nil && movie == nil }
-    var extendedContent: CutGraphQL.ExtendedContentFragment? {
-        tvShow?.fragments.extendedContentFragment ?? movie?.fragments.extendedContentFragment
+    var extendedContent: CutGraphQL.ExtendedContentInterfaceFragment? {
+        tvShow?.fragments.extendedContentInterfaceFragment ?? movie?.fragments.extendedContentInterfaceFragment
     }
 
     var subtitle: String {
@@ -140,7 +140,7 @@ struct ContentHeader: View {
 #Preview {
     GeometryReader { proxy in
         VStack {
-            ContentHeader(content: Mocks.movie, tvShow: nil, movie: nil, width: proxy.size.width)
+            ContentHeader(content: Mocks.content, tvShow: nil, movie: nil, width: proxy.size.width)
                 .background(.black)
         }
         .safeAreaPadding(.horizontal, 20)
@@ -150,7 +150,7 @@ struct ContentHeader: View {
 #Preview {
     GeometryReader { proxy in
         VStack {
-            ContentHeader(content: Mocks.movie, tvShow: Mocks.extendedTvShow, movie: nil, width: proxy.size.width)
+            ContentHeader(content: Mocks.content, tvShow: Mocks.extendedTvShow, movie: nil, width: proxy.size.width)
         }
         .safeAreaPadding(.horizontal, 20)
         .backgroundStyle(.black)

@@ -19,7 +19,7 @@ struct Mocks {
         }
     }
 
-    static var movie: Movie {
+    static var content: Content {
         let json = """
             {
                 "__typename": "Movie",

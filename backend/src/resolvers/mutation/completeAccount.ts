@@ -53,7 +53,7 @@ export const completeAccountResolver: MutationResolvers["completeAccount"] = asy
         watchList: {
           createMany: {
             data: existingWatchList.map(w => ({
-              movieId: w.movieId,
+              contentId: w.contentId,
               createdAt: w.createdAt
             })),
             skipDuplicates: false

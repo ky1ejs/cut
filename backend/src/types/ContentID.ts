@@ -64,7 +64,7 @@ export default class ContentID {
     if (this.provider === Provider.TMDB) {
       return this.id;
     }
-    const content = await prisma.movie.findUnique({
+    const content = await prisma.content.findUnique({
       where: {
         id: this.id
       }

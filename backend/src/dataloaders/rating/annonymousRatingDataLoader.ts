@@ -18,7 +18,7 @@ export default class AnnonymousRatingDataLoader {
       {
         where: {
           OR: ids.map((id) => {
-            const contentId = ContentID.fromString(id.movieId);
+            const contentId = ContentID.fromString(id.contentId);
             let movieWhere: Prisma.AnnonymousRatingWhereInput = {
               userId: id.userId,
             };
@@ -26,7 +26,7 @@ export default class AnnonymousRatingDataLoader {
               case Provider.TMDB:
                 movieWhere = {
                   ...movieWhere,
-                  movie: {
+                  content: {
                     tmdbId: parseInt(contentId.id)
                   }
                 };
@@ -34,7 +34,7 @@ export default class AnnonymousRatingDataLoader {
               default:
                 movieWhere = {
                   ...movieWhere,
-                  movieId: contentId.id
+                  contentId: contentId.id
                 }
                 break;
             }
@@ -42,15 +42,15 @@ export default class AnnonymousRatingDataLoader {
           }),
         },
         include: {
-          movie: true
+          content: true
         }
       }
     )
-    let moviesById = new Map(result.map((r) => [r.movieId, r.rating]));
-    let moviesByTmdbId = new Map(result.map((r) => [r.movie.tmdbId, r.rating]));
+    let contentById = new Map(result.map((r) => [r.contentId, r.rating]));
+    let contentByTmdbId = new Map(result.map((r) => [r.content.tmdbId, r.rating]));
     return ids.map((id) => {
-      const contentId = ContentID.fromString(id.movieId);
-      return (contentId.provider === Provider.TMDB ? moviesByTmdbId.get(parseInt(contentId.id)) : moviesById.get(contentId.id)) || null;
+      const contentId = ContentID.fromString(id.contentId);
+      return (contentId.provider === Provider.TMDB ? contentByTmdbId.get(parseInt(contentId.id)) : contentById.get(contentId.id)) || null;
     });
   })
 
