@@ -4,11 +4,10 @@ import contentDbToGqlMapper, { contentInclude } from "../mappers/contentDbToGqlM
 import ContentID from "../../types/ContentID";
 
 const rate: MutationResolvers['rate'] = async (_, args, context) => {
-  console.log("CALLING RATE")
   const rating = Math.max(0, Math.min(5, args.rating))
   const contentId = ContentID.fromString(args.contentId)
   if (context.userDevice) {
-    const watchListDelete = prisma.watchList.delete({
+    await prisma.rating.delete({
       where: {
         contentId_userId: {
           contentId: contentId.id,
@@ -16,7 +15,7 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     }).catch(() => { }) // ignore error
-    const ratingCreate = prisma.rating.create({
+    const newRating = await prisma.rating.create({
       data: {
         contentId: contentId.id,
         userId: context.userDevice.user.id,
@@ -28,16 +27,15 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     })
-    const [_, { content }] = await Promise.all([watchListDelete, ratingCreate])
     return {
       content: {
-        ...contentDbToGqlMapper(content),
+        ...contentDbToGqlMapper(newRating.content),
         isOnWatchList: false,
         rating: rating
       }
     }
   } else if (context.annonymousUserDevice) {
-    const watchListDelete = prisma.annonymousWatchList.delete({
+    await prisma.annonymousRating.delete({
       where: {
         contentId_userId: {
           contentId: contentId.id,
@@ -45,7 +43,7 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     }).catch(() => { }) // ignore error
-    const ratingCreate = prisma.annonymousRating.create({
+    const newRating = await prisma.annonymousRating.create({
       data: {
         contentId: contentId.id,
         userId: context.annonymousUserDevice.id,
@@ -57,11 +55,9 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     })
-    const [_, { content }] = await Promise.all([watchListDelete, ratingCreate])
-    console.log("FINISHED")
     return {
       content: {
-        ...contentDbToGqlMapper(content),
+        ...contentDbToGqlMapper(newRating.content),
         isOnWatchList: false,
         rating: rating
       }

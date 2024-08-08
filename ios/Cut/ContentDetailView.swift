@@ -10,7 +10,7 @@ import Apollo
 import Kingfisher
 
 struct ContentDetailView: View {
-    let content: Content
+    @State var content: Content
     @State var extendedContent: CutGraphQL.GetContentQuery.Data.Content?
     @State var watched: Apollo.GraphQLQueryWatcher<CutGraphQL.GetContentQuery>?
 
@@ -19,7 +19,7 @@ struct ContentDetailView: View {
         ZStack {
             if case .case(.movie) = type {
                 let movie = extendedContent != nil ? extendedContent!.result.asExtendedMovie!.fragments.extendedMovieFragment : nil
-                ContentDetailPage(content: content, extendedMovie: movie)
+                MovieDetailView(content: content, extendedMovie: movie)
             } else if case .case(.tvShow) = type {
                 let tvShow = extendedContent != nil ? extendedContent!.result.asExtendedTVShow!.fragments.extendedTVShowFragment : nil
                 TVShowDetailView(content: content, tvShow: tvShow)
@@ -34,6 +34,10 @@ struct ContentDetailView: View {
             watched = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetContentQuery(id: content.id)) { result in
                 switch result.parseGraphQL() {
                 case .success(let data):
+                    if let content =
+                        data.content.result.fragments.extendedContentUnionFragment.asContentInterface?.fragments.contentFragment {
+                        self.content = content
+                    }
                     extendedContent = data.content
                 case .failure(let error):
                     print(error.localizedDescription)

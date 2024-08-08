@@ -21,6 +21,7 @@ fragment ContentFragment on ContentInterface {
 }
 
 fragment ExtendedContentUnionFragment on ExtendedContentUnion {
+  ...ContentFragment
   ... on ExtendedMovie {
     ...ExtendedMovieFragment
   }

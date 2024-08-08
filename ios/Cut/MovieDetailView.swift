@@ -8,7 +8,7 @@
 import SwiftUI
 import Apollo
 
-struct ContentDetailPage: View {
+struct MovieDetailView: View {
     let content: Content
     let extendedMovie: CutGraphQL.ExtendedMovieFragment?
 
@@ -27,5 +27,5 @@ struct ContentDetailPage: View {
 }
 
 #Preview {
-    ContentDetailPage(content: Mocks.content, extendedMovie: nil)
+    MovieDetailView(content: Mocks.content, extendedMovie: nil)
 }

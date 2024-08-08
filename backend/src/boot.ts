@@ -55,7 +55,7 @@ import { deleteAccount, generateDeleteAccountCode } from './resolvers/mutation/d
 import RatingDataLoader from './dataloaders/rating/ratingDataLoader';
 import AnnonymousRatingDataLoader from './dataloaders/rating/annonymousRatingDataLoader';
 import ratingResolver from './resolvers/query/ratingResolver';
-import rate from './resolvers/mutation/rateMovie';
+import rate from './resolvers/mutation/rate';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
