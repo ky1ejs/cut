@@ -30,7 +30,7 @@ struct ProfileImage: View {
             case .loaded(let url):
                 KFImage(url)
                     .resizable()
-                    .placeholder { Color.orange }
+                    .placeholder { Image.placeHolderAvatar }
                     .aspectRatio(contentMode: .fit)
             case .uploading(let image):
                 Image(uiImage: image)

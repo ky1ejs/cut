@@ -91,7 +91,7 @@ struct CompleteAccountForm: View {
                 }
                 VStack(spacing: 24) {
                     VStack {
-                        Image("avatar_placeholder")
+                        Image.placeHolderAvatar
                             .frame(width: 88, height: 88)
                             .overlay {
                                 HStack {

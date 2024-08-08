@@ -199,6 +199,7 @@
 		93B3F72C2C652F4D0048C63C /* PersonInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F6BD2C652F4C0048C63C /* PersonInterface.graphql.swift */; };
 		93B3F72D2C652F4D0048C63C /* ProfileInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F6BE2C652F4C0048C63C /* ProfileInterface.graphql.swift */; };
 		93B3F72E2C652F4D0048C63C /* ContentInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F6BF2C652F4C0048C63C /* ContentInterface.graphql.swift */; };
+		93B3F7312C65396C0048C63C /* Image+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F7302C65396C0048C63C /* Image+Helpers.swift */; };
 		93BF90342BBCF32800AC0634 /* CoverShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90332BBCF32800AC0634 /* CoverShelf.swift */; };
 		93BF90362BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */; };
 		93C05BBA2C03A56E00C7DBD8 /* OtpCodeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C05BB92C03A56E00C7DBD8 /* OtpCodeTextField.swift */; };
@@ -429,6 +430,7 @@
 		93B3F6BD2C652F4C0048C63C /* PersonInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonInterface.graphql.swift; sourceTree = "<group>"; };
 		93B3F6BE2C652F4C0048C63C /* ProfileInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInterface.graphql.swift; sourceTree = "<group>"; };
 		93B3F6BF2C652F4C0048C63C /* ContentInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentInterface.graphql.swift; sourceTree = "<group>"; };
+		93B3F7302C65396C0048C63C /* Image+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Helpers.swift"; sourceTree = "<group>"; };
 		93BF90332BBCF32800AC0634 /* CoverShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverShelf.swift; sourceTree = "<group>"; };
 		93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteContentEditorViewController.swift; sourceTree = "<group>"; };
 		93C05BB92C03A56E00C7DBD8 /* OtpCodeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpCodeTextField.swift; sourceTree = "<group>"; };
@@ -605,6 +607,7 @@
 				93796B242BAF5D6000091578 /* Font.swift */,
 				93796B252BAF5D6000091578 /* TertiaryButton.swift */,
 				93796B262BAF5D6000091578 /* Color.swift */,
+				93B3F7302C65396C0048C63C /* Image+Helpers.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1128,6 +1131,7 @@
 				93B3F6C92C652F4C0048C63C /* SeasonPersonFragment.graphql.swift in Sources */,
 				93796BB22BAFC57400091578 /* Debouncer.swift in Sources */,
 				93796B2B2BAF5D6000091578 /* ContentRowViewModel.swift in Sources */,
+				93B3F7312C65396C0048C63C /* Image+Helpers.swift in Sources */,
 				93B3F6D22C652F4C0048C63C /* ExtendedSeasonFragment.graphql.swift in Sources */,
 				93B3F71C2C652F4D0048C63C /* RatingResponse.graphql.swift in Sources */,
 				93B3F7032C652F4D0048C63C /* ContentType.graphql.swift in Sources */,

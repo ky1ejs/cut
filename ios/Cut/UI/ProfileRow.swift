@@ -29,10 +29,10 @@ struct ProfileRow: View {
         HStack(spacing: 16) {
             KFImage(profile.imageUrl)
                 .resizable()
+                .placeholder { Image.placeHolderAvatar.resizable() }
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 50, height: 50)
                 .mask { Circle() }
-
             VStack(alignment: .leading) {
                 Text(profile.name).font(.cut_headline)
                 Text(profile.username).font(.cut_footnote)
