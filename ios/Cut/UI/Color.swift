@@ -36,10 +36,12 @@ protocol Themeable {
     var skeletonGradient: Gradient { get }
 
     var primaryButtonBackground: UIColor { get }
+    var primaryButtonBackgroundDepressed: UIColor { get }
     var primaryButtonText: UIColor { get }
     var primaryDisabledBackground: UIColor { get }
     var primaryDisabledText: UIColor { get }
     var secondaryButtonBackground: UIColor { get }
+    var secondaryButtonBackgroundDepressed: UIColor { get }
     var secondaryButtonText: UIColor { get }
     var secondaryDisabledBackground: UIColor { get }
     var secondaryDisabledText: UIColor { get }
@@ -91,10 +93,12 @@ struct LightTheme: Themeable {
 
     // Button
     var primaryButtonBackground: UIColor { .cut_black }
+    var primaryButtonBackgroundDepressed: UIColor { .gray25 }
     var primaryButtonText: UIColor { .white }
     var primaryDisabledBackground: UIColor { .gray70 }
     var primaryDisabledText: UIColor { .gray25 }
     var secondaryButtonBackground: UIColor { .gray20 }
+    var secondaryButtonBackgroundDepressed: UIColor { .gray40 }
     var secondaryButtonText: UIColor { .white }
     var secondaryDisabledBackground: UIColor { .gray05 }
     var secondaryDisabledText: UIColor { .gray50 }
@@ -119,10 +123,12 @@ struct DarkTheme: Themeable {
     
     // Buttons
     var primaryButtonBackground: UIColor { .white }
+    var primaryButtonBackgroundDepressed: UIColor { .gray85 }
     var primaryButtonText: UIColor { .cut_black }
     var primaryDisabledBackground: UIColor { .gray30 }
     var primaryDisabledText: UIColor { .gray70 }
     var secondaryButtonBackground: UIColor { .gray20 }
+    var secondaryButtonBackgroundDepressed: UIColor { .gray40 }
     var secondaryButtonText: UIColor { .white }
     var secondaryDisabledBackground: UIColor { .gray15 }
     var secondaryDisabledText: UIColor { .gray50 }
