@@ -10,13 +10,13 @@ import Apollo
 
 struct WatchList: View {
     @Environment(\.theme) var theme
-    @State var movies: [Movie] = []
+    @State var content: [Content] = []
     @State private var watcher: GraphQLQueryWatcher<CutGraphQL.WatchListQuery>?
-    @State private var presentedContent: Movie?
+    @State private var presentedContent: Content?
 
     var body: some View {
         NavigationStack {
-            if movies.isEmpty {
+            if content.isEmpty {
                 VStack {
                     Spacer()
                     Text("Nothing on your list")
@@ -31,11 +31,11 @@ struct WatchList: View {
                 .padding(.horizontal, 32)
             } else {
                 List {
-                    ForEach(movies, id: \.id) { m in
+                    ForEach(content, id: \.id) { c in
                         Button(action: {
-                            presentedContent = m
+                            presentedContent = c
                         }, label: {
-                            ContentRow(movie: m)
+                            ContentRow(content: c)
                         })
                     }
                 }
@@ -43,20 +43,20 @@ struct WatchList: View {
             }
         }
         .sheet(item: $presentedContent, content: { c in
-            DetailView(content: c)
+            ContentDetailView(content: c)
         })
         .task {
             self.watcher?.cancel()
             self.watcher = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.WatchListQuery(), resultHandler: { result in
                 switch result.parseGraphQL() {
                 case .success(let data):
-                    self.movies = data.watchList.map { $0.fragments.movieFragment }
+                    self.content = data.watchList.map { $0.fragments.contentFragment }
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             })
         }
-        .animation(.linear, value: movies)
+        .animation(.linear, value: content)
     }
 }
 

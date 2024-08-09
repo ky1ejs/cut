@@ -83,7 +83,7 @@ struct Profile: View {
     @State private var state = ListState.rated
     @State private var editAccount = false
     @State private var isEditingFavoriteMovies = false
-    @State private var presentedMovie: Movie?
+    @State private var presentedContent: Content?
 
     enum ListState: CaseIterable, Identifiable {
         var id: Self { self }
@@ -130,21 +130,21 @@ struct Profile: View {
                         }
                         switch profile {
                         case .completeAccount(let account):
-                            coverShelf(movies: account.favoriteMovies.map { $0.fragments.movieFragment })
+                            coverShelf(content: account.favoriteContent.map { $0.fragments.contentFragment })
                         case .profile:
                             ProgressView()
                         case .fullProfile(let profile):
-                            coverShelf(movies: profile.favoriteMovies.map { $0.fragments.movieFragment })
+                            coverShelf(content: profile.favoriteContent.map { $0.fragments.contentFragment })
                         }
                     }
                 case .watchList:
                     switch profile {
                     case .completeAccount(let account):
-                        PosterGrid(movies: account.watchList.map { $0.fragments.movieFragment })
+                        PosterGrid(content: account.watchList.map { $0.fragments.contentFragment })
                     case .profile:
                         ProgressView()
                     case .fullProfile(let profile):
-                        PosterGrid(movies: profile.watchList.map { $0.fragments.movieFragment })
+                        PosterGrid(content: profile.watchList.map { $0.fragments.contentFragment })
                     }
                 }
             }
@@ -162,18 +162,18 @@ struct Profile: View {
                 fatalError("tried to present edit account on another user")
             }
         })
-        .sheet(item: $presentedMovie, content: { m in
+        .sheet(item: $presentedContent, content: { m in
             NavigationStack {
-                DetailView(content: m)
+                ContentDetailView(content: m)
             }
         })
     }
 
-    func coverShelf(movies: [Movie]) -> some View {
+    func coverShelf(content: [Content]) -> some View {
         CoverShelf(
-            movies: movies,
-            movieTapped: { m in
-                presentedMovie = m
+            content: content,
+            contentTapped: { m in
+                presentedContent = m
             },
             isEditable: profile.profileInterface.isCurrentUser, isEditing: $isEditingFavoriteMovies
         )

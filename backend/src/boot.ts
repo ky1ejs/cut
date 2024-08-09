@@ -7,8 +7,8 @@ import http from 'http';
 import cors from 'cors';
 import { Resolvers } from './__generated__/graphql';
 import { readFileSync } from 'fs';
-import moviesResolver from './resolvers/query/movies';
-import searchResolver from './resolvers/query/search-resolver';
+import contentCollectionResolver from './resolvers/query/movies';
+import searchResolver from './resolvers/query/searchResolver';
 import prisma from './prisma';
 import addToWatchList from './resolvers/mutation/addToWatchlist';
 import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
@@ -33,10 +33,10 @@ import isFollowing from './resolvers/query/isFollowing';
 import { getProfileById, getProfileByUsername } from './resolvers/query/getProfile';
 import setPushToken from './resolvers/mutation/setPushToken';
 import sendTestPush from './resolvers/query/sendTestPush';
-import MovieDataLoader from './dataloaders/MovieDataLoader';
+import ContentDataLoader from './dataloaders/MovieDataLoader';
 import UserDataLoader from './dataloaders/UserDataLoader';
-import favoriteMovies from './resolvers/query/favoriteMovies';
-import contentResolver from './resolvers/query/content/content';
+import favoriteContent from './resolvers/query/favoriteContent';
+import contentResolver, { getContent } from './resolvers/query/content/content';
 import TMDB from './datasources/TMDB';
 import dateScalar from './graphql/scalars/DateScalar';
 import urlScalar from './graphql/scalars/UrlScalar';
@@ -52,6 +52,10 @@ import initiateAuthentication from './resolvers/mutation/initiateAuthentication'
 import validateAuthentication from './resolvers/mutation/validateAuthentication';
 import annonymousSignUp from './resolvers/mutation/annonymousSignUp';
 import { deleteAccount, generateDeleteAccountCode } from './resolvers/mutation/deleteAccount';
+import RatingDataLoader from './dataloaders/rating/ratingDataLoader';
+import AnnonymousRatingDataLoader from './dataloaders/rating/annonymousRatingDataLoader';
+import ratingResolver from './resolvers/query/ratingResolver';
+import rate from './resolvers/mutation/rate';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -63,7 +67,7 @@ const boot = async () => {
     URL: urlScalar,
     Query: {
       account: getAccount,
-      movies: moviesResolver,
+      contentCollection: contentCollectionResolver,
       search: searchResolver,
       watchList: unknownAccountWatchList,
       content: contentResolver,
@@ -95,28 +99,34 @@ const boot = async () => {
       logOut,
       annonymousSignUp,
       deleteAccount,
-      generateDeleteAccountCode
+      generateDeleteAccountCode,
+      rate
     },
-    MovieInterface: {
+    ContentInterface: {
       __resolveType: (movie) => {
         if (movie.__typename === 'ExtendedMovie') {
           return 'ExtendedMovie';
         }
-        return 'Movie';
+        return 'ExtendedTVShow';
       },
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     ExtendedMovie: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     ExtendedTVShow: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
-    Movie: {
-      isOnWatchList: isOnWatchlistResolver
+    Content: {
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     Work: {
-      isOnWatchList: isOnWatchlistResolver
+      isOnWatchList: isOnWatchlistResolver,
+      rating: ratingResolver
     },
     AccountUnion: {
       __resolveType: (parent) => parent.__typename!
@@ -124,9 +134,21 @@ const boot = async () => {
     IncompleteAccount: {
       watchList: incompleteAccountWatchList
     },
+    RatingResponse: {
+      extendedContent: async (parent) => {
+        if (!parent.content?.id) {
+          throw new GraphQLError('Content not found');
+        }
+        const response = await getContent(parent.content.id, TMDB.instance);
+        if (!response.result) {
+          throw new GraphQLError('Content not found');
+        }
+        return response.result
+      }
+    },
     Profile: {
       isFollowing,
-      favoriteMovies,
+      favoriteContent,
       watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info),
       followers: followersResolver,
       following: followingResolver
@@ -135,7 +157,7 @@ const boot = async () => {
       __resolveType: (parent) => parent.__typename!,
     },
     CompleteAccount: {
-      favoriteMovies,
+      favoriteContent,
       watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info),
       followers: followersResolver,
       following: followingResolver
@@ -166,8 +188,10 @@ const boot = async () => {
           dataSources: {
             watchList: new WatchListDataLoader(prisma),
             annonymousWatchList: new AnnonymousWatchListDataLoader(prisma),
+            ratingDataLoader: new RatingDataLoader(prisma),
+            annonymousRatingDataLoader: new AnnonymousRatingDataLoader(prisma),
             isFollowing: new IsFollowingDataLoader(),
-            movies: new MovieDataLoader(),
+            content: new ContentDataLoader(),
             users: new UserDataLoader(),
             tmdb: TMDB.instance,
           }

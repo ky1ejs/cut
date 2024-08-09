@@ -1,5 +1,5 @@
 import { QueryResolvers, Work } from "../../__generated__/graphql";
-import tmdbMovieToGqlMapper from "../mappers/tmdbMovieToGqlMapper";
+import contentTmdbToGqlMapper from "../mappers/tmdbMovieToGqlMapper";
 
 const personResolver: QueryResolvers["person"] = async (_, args, { dataSources: { tmdb } }) => {
   const person = await tmdb.fetchPerson(args.id);
@@ -15,7 +15,7 @@ const personResolver: QueryResolvers["person"] = async (_, args, { dataSources: 
   let works: Work[] = []
   // only map the first 10 works
   works.push(...person.combined_credits.cast.slice(0, 10).map(async (work: any) => {
-    const movie = await tmdbMovieToGqlMapper(work)
+    const movie = await contentTmdbToGqlMapper(work)
     return {
       ...movie,
       role: work.character
@@ -23,7 +23,7 @@ const personResolver: QueryResolvers["person"] = async (_, args, { dataSources: 
   })
   )
   works.push(...person.combined_credits.crew.slice(0, 10).map(async (work: any) => {
-    const movie = await tmdbMovieToGqlMapper(work)
+    const movie = await contentTmdbToGqlMapper(work)
     return {
       ...movie,
       role: work.job

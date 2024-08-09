@@ -1,12 +1,9 @@
-import { Genre as DbGenre, Movie as DbMovie, MovieImage, LocalizedGenre, MovieGenre } from "@prisma/client";
-import { Genre, IncompleteAccountResolvers, Movie, ProfileInterface, QueryResolvers } from "../../__generated__/graphql";
+import { IncompleteAccountResolvers, Content, ProfileInterface, QueryResolvers } from "../../__generated__/graphql";
 import { GraphQLContext } from "../../graphql/GraphQLContext";
 import prisma from "../../prisma";
 import { GraphQLError, GraphQLResolveInfo } from "graphql";
-import dbMovieToGqlMovie, { movieInclude } from "../mappers/dbMovieToGqlMovie";
+import contentDbToGqlMapper, { contentInclude } from "../mappers/contentDbToGqlMapper";
 import { DeepPartial } from "utility-types";
-import Provider from "../../types/providers";
-import dbContentTypeToGqlContentType from "../mappers/dbContentTypeToGqlContentType";
 
 enum UserType {
   INCOMPLETE,
@@ -29,7 +26,7 @@ export const incompleteAccountWatchList: IncompleteAccountResolvers["watchList"]
   return watchList(context.annonymousUserDevice.userId, UserType.INCOMPLETE);
 }
 
-export async function completeAccountWatchList(parent: DeepPartial<ProfileInterface>, context: GraphQLContext, info: GraphQLResolveInfo): Promise<DeepPartial<Movie>[]> {
+export async function completeAccountWatchList(parent: DeepPartial<ProfileInterface>, context: GraphQLContext, info: GraphQLResolveInfo): Promise<DeepPartial<Content>[]> {
   if (info.path.prev?.key === "account" || info.path.prev?.key === undefined) {
     if (context.userDevice) {
       return watchList(context.userDevice.userId, UserType.COMPLETE);
@@ -54,7 +51,7 @@ export async function completeAccountWatchList(parent: DeepPartial<ProfileInterf
 }
 
 export default async function watchList(userId: string, type: UserType) {
-  const include = { movie: { include: movieInclude } }
+  const include = { content: { include: contentInclude } }
 
   switch (type) {
     case UserType.COMPLETE:
@@ -62,14 +59,14 @@ export default async function watchList(userId: string, type: UserType) {
         where: { userId },
         include
       }).then((watchList) => watchList.map((watchListItem) => {
-        return dbMovieToGqlMovie(watchListItem.movie);
+        return contentDbToGqlMapper(watchListItem.content);
       }));
     case UserType.INCOMPLETE:
       return prisma.annonymousWatchList.findMany({
         where: { userId },
         include
       }).then((watchList) => watchList.map((watchListItem) => {
-        return dbMovieToGqlMovie(watchListItem.movie);
+        return contentDbToGqlMapper(watchListItem.content);
       }));
   }
 }

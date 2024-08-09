@@ -19,11 +19,11 @@ fragment ProfileFragment on Profile {
 
 fragment FullProfileFragment on Profile {
   ...ProfileFragment
-  favoriteMovies {
-    ...MovieFragment
+  favoriteContent {
+    ...ContentFragment
   }
   watchList {
-    ...MovieFragment
+    ...ContentFragment
   }
 }
 
@@ -31,11 +31,11 @@ fragment FullProfileFragment on Profile {
 fragment CompleteAccountFragment on CompleteAccount {
   ...ProfileInterfaceFragment
   phoneNumber
-  favoriteMovies {
-    ...MovieFragment
+  favoriteContent {
+    ...ContentFragment
   }
   watchList {
-    ...MovieFragment
+    ...ContentFragment
   }
 }
 

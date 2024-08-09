@@ -46,20 +46,20 @@ struct PersonDetailView: View {
                     Text("Appears In")
                         .font(.cut_title1)
                     LazyVStack {
-                        if let movies = extendedPerson?.works {
-                            ForEach(movies, id: \.id) { m in
+                        if let content = extendedPerson?.works {
+                            ForEach(content, id: \.id) { c in
                                 let entity = Entity(
-                                    id: m.id,
-                                    title: m.title,
-                                    subtitle: m.role,
-                                    imageUrl: m.poster_url
+                                    id: c.id,
+                                    title: c.title,
+                                    subtitle: c.role,
+                                    imageUrl: c.poster_url
                                 )
                                 NavigationLink {
-                                    DetailView(content: m.fragments.movieFragment)
+                                    ContentDetailView(content: c.fragments.contentFragment)
                                 } label: {
                                     EntityRow(
                                         entity: entity,
-                                        accessory: SmallWatchListButton(movie: m.fragments.movieFragment)
+                                        accessory: SmallWatchListButton(content: c.fragments.contentFragment)
                                     )
                                 }
                             }

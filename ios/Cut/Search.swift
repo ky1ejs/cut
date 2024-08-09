@@ -12,7 +12,7 @@ import Apollo
 // inspired by: https://designcode.io/swiftui-advanced-handbook-search-feature
 class SearchViewModel: ObservableObject {
     @Published var searchTerm = ""
-    @Published var contentState = State<Movie>.results([])
+    @Published var contentState = State<Content>.results([])
     @Published var accountState = State<CutGraphQL.ProfileFragment>.results([])
     private var bag = [AnyCancellable]()
 
@@ -61,7 +61,7 @@ class SearchViewModel: ObservableObject {
                     let request = AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.SearchQuery(term: term)) { [weak self] result in
                         switch result.parseGraphQL() {
                         case .success(let data):
-                            self?.contentState = .results(data.search.map { $0.fragments.movieFragment})
+                            self?.contentState = .results(data.search.map { $0.fragments.contentFragment})
                         case .failure(let error):
                             self?.contentState = .error(error)
                         }
@@ -98,7 +98,7 @@ class SearchViewModel: ObservableObject {
 
 struct Search: View {
     @ObservedObject private var viewModel = SearchViewModel(searchEntities: SearchViewModel.Entity.allCases)
-    @State var presentedContent: Movie?
+    @State var presentedContent: Content?
     @State var presentedProfile: CutGraphQL.ProfileFragment?
     @State var entity = SearchViewModel.Entity.content
 
@@ -120,11 +120,11 @@ struct Search: View {
                     case .searching:
                         ProgressView()
                     case .results(let results):
-                        ForEach(results, id: \.id) { movie in
+                        ForEach(results, id: \.id) { content in
                             Button {
-                                presentedContent = movie
+                                presentedContent = content
                             } label: {
-                                ContentRow(movie: movie)
+                                ContentRow(content: content)
                             }
                         }
                     case .error(let error):
@@ -153,7 +153,7 @@ struct Search: View {
         .searchable(text: $viewModel.searchTerm, prompt: "Look for something")
         .sheet(item: $presentedContent) { m in
             NavigationStack {
-                DetailView(content: m)
+                ContentDetailView(content: m)
             }
         }
         .sheet(item: $presentedProfile) { p in

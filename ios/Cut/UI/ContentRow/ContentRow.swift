@@ -8,26 +8,26 @@
 import SwiftUI
 
 struct ContentRow<Accessory: View>: View {
-    let movie: Movie
+    let content: Content
     let accessory: Accessory?
 
-    init(movie: Movie, accessory: Accessory?) {
-        self.movie = movie
+    init(content: Content, accessory: Accessory?) {
+        self.content = content
         self.accessory = accessory
     }
 
     var body: some View {
         EntityRow(
-            entity: Entity.from(movie),
+            entity: Entity.from(content),
             accessory: accessory
         )
     }
 }
 
 extension ContentRow where Accessory == SmallWatchListButton {
-    init(movie: Movie, index: Int? = nil) {
-        self.movie = movie
-        self.accessory = SmallWatchListButton(movie: movie, index: index)
+    init(content: Content, index: Int? = nil) {
+        self.content = content
+        self.accessory = SmallWatchListButton(content: content, index: index)
     }
 }
 
@@ -68,9 +68,9 @@ extension EntityRow where Accessory == EmptyView {
 }
 
 class EntityRowCell: UITableViewCell {
-    func set(_ movie: Movie) {
+    func set(_ content: Content) {
         let content = UIHostingConfiguration {
-            EntityRow(entity: Entity.from(movie))
+            EntityRow(entity: Entity.from(content))
         }
         contentConfiguration = content
     }
@@ -91,5 +91,5 @@ class EntityRowCell: UITableViewCell {
 }
 
 #Preview {
-    return ContentRow(movie: Mocks.movie)
+    return ContentRow(content: Mocks.content)
 }

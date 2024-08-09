@@ -18,13 +18,13 @@ struct VisualEffectView: UIViewRepresentable {
 struct ContentHeader: View {
     @Environment(\.theme) var theme
     @Environment(\.openURL) private var openURL
-    let content: Movie
+    let content: Content
     let tvShow: CutGraphQL.ExtendedTVShowFragment?
     let movie: CutGraphQL.ExtendedMovieFragment?
     let width: CGFloat
     var isLoading: Bool { tvShow == nil && movie == nil }
-    var extendedContent: CutGraphQL.ExtendedContentFragment? {
-        tvShow?.fragments.extendedContentFragment ?? movie?.fragments.extendedContentFragment
+    var extendedContent: CutGraphQL.ExtendedContentInterfaceFragment? {
+        tvShow?.fragments.extendedContentInterfaceFragment ?? movie?.fragments.extendedContentInterfaceFragment
     }
 
     var subtitle: String {
@@ -103,18 +103,20 @@ struct ContentHeader: View {
             Text(content.title)
                 .font(.cut_largeTitle)
                 .foregroundColor(theme.text.color)
-            //                .blendMode(.colorDodge)
             HStack(spacing: 16) {
-                //                                HStack(spacing: 4) {
-                //                                    ImageStack(urls: ["https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg", "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg", "https://image.tmdb.org/t/p/original/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg"])
-                //                                        .fixedSize(horizontal: false, vertical: true)
-                //                                    Text("9.9")
-                //                                }
                 if let tvShow = tvShow {
                     rating(tvShow.userRating)
                 }
                 if let movie = movie {
                     rating(movie.userRating)
+                }
+                if let rating = content.rating {
+                    HStack {
+                        Image(rating > 3 ? "gold_rating" : "silver_rating")
+                            .resizable()
+                            .frame(width: 16, height: 18.3333333333)
+                        Text("\(rating)/5")
+                    }
                 }
             }
             LongText(extendedContent?.overview ?? .placeholder(length: 300))
@@ -138,7 +140,7 @@ struct ContentHeader: View {
 #Preview {
     GeometryReader { proxy in
         VStack {
-            ContentHeader(content: Mocks.movie, tvShow: nil, movie: nil, width: proxy.size.width)
+            ContentHeader(content: Mocks.content, tvShow: nil, movie: nil, width: proxy.size.width)
                 .background(.black)
         }
         .safeAreaPadding(.horizontal, 20)
@@ -148,7 +150,7 @@ struct ContentHeader: View {
 #Preview {
     GeometryReader { proxy in
         VStack {
-            ContentHeader(content: Mocks.movie, tvShow: Mocks.extendedTvShow, movie: nil, width: proxy.size.width)
+            ContentHeader(content: Mocks.content, tvShow: Mocks.extendedTvShow, movie: nil, width: proxy.size.width)
         }
         .safeAreaPadding(.horizontal, 20)
         .backgroundStyle(.black)

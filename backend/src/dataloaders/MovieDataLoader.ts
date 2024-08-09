@@ -1,21 +1,21 @@
 
 import DataLoader from "dataloader";
 import prisma from "../prisma";
-import { ResolvedMovie, movieInclude } from "../resolvers/mappers/dbMovieToGqlMovie";
+import { ResolvedContent, contentInclude } from "../resolvers/mappers/contentDbToGqlMapper";
 
-export default class MovieDataLoader {
-  private batchMovieFetch = new DataLoader<string, ResolvedMovie | undefined>(async (ids) => {
-    const movies = await prisma.movie.findMany({
+export default class ContentDataLoader {
+  private batchContentFetch = new DataLoader<string, ResolvedContent | undefined>(async (ids) => {
+    const content = await prisma.content.findMany({
       where: {
         OR: ids.map((id) => ({ id }))
       },
-      include: movieInclude
+      include: contentInclude
     })
-    const keyedMovies = new Map(movies.map(m => [m.id, m]))
-    return ids.map(id => keyedMovies.get(id))
+    const keyedContent = new Map(content.map(m => [m.id, m]))
+    return ids.map(id => keyedContent.get(id))
   })
 
-  async getMovie(id: string) {
-    return this.batchMovieFetch.load(id)
+  async getContent(id: string) {
+    return this.batchContentFetch.load(id)
   }
 }

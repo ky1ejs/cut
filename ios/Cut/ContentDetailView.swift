@@ -9,8 +9,8 @@ import SwiftUI
 import Apollo
 import Kingfisher
 
-struct DetailView: View {
-    let content: Movie
+struct ContentDetailView: View {
+    @State var content: Content
     @State var extendedContent: CutGraphQL.GetContentQuery.Data.Content?
     @State var watched: Apollo.GraphQLQueryWatcher<CutGraphQL.GetContentQuery>?
 
@@ -19,10 +19,10 @@ struct DetailView: View {
         ZStack {
             if case .case(.movie) = type {
                 let movie = extendedContent != nil ? extendedContent!.result.asExtendedMovie!.fragments.extendedMovieFragment : nil
-                MovieDetailView(movie: content, extendedMovie: movie)
+                MovieDetailView(content: content, extendedMovie: movie)
             } else if case .case(.tvShow) = type {
                 let tvShow = extendedContent != nil ? extendedContent!.result.asExtendedTVShow!.fragments.extendedTVShowFragment : nil
-                TVShowDetailView(movie: content, tvShow: tvShow)
+                TVShowDetailView(content: content, tvShow: tvShow)
             } else {
                 fatalError("Unknown content")
             }
@@ -34,6 +34,10 @@ struct DetailView: View {
             watched = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetContentQuery(id: content.id)) { result in
                 switch result.parseGraphQL() {
                 case .success(let data):
+                    if let content =
+                        data.content.result.fragments.extendedContentUnionFragment.asContentInterface?.fragments.contentFragment {
+                        self.content = content
+                    }
                     extendedContent = data.content
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -43,10 +47,11 @@ struct DetailView: View {
     }
 }
 
-struct DetailViewContainer<C: View>: View {
+struct ContentDetailViewContainer<C: View>: View {
     @Environment(\.theme) var theme
-    let content: Movie
+    let content: Content
     @ViewBuilder let child: (CGFloat) -> C
+    @State var ratingViewPresented = false
 
     var body: some View {
         GeometryReader { proxy in
@@ -64,9 +69,9 @@ struct DetailViewContainer<C: View>: View {
                     Spacer()
                     HStack(spacing: 18) {
                         Spacer()
-                        CircleWatchListButton(movie: content)
+                        CircleWatchListButton(content: content)
                         CircleButton(kind: .watched) {
-
+                            ratingViewPresented = true
                         }
                         ShareLink(item: content.url) {
                             Image("paper_airplane")
@@ -93,10 +98,13 @@ struct DetailViewContainer<C: View>: View {
                     .aspectRatio(contentMode: .fill)
                     .ignoresSafeArea()
             }
+            .sheet(isPresented: $ratingViewPresented) {
+                RateContentSheet(contentId: content.id)
+            }
         }
     }
 }
 
 #Preview {
-    DetailView(content: Mocks.movie)
+    ContentDetailView(content: Mocks.content)
 }

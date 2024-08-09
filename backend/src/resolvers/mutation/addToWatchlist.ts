@@ -1,7 +1,7 @@
 
 import { GraphQLError } from "graphql";
 import { ContentType, MutationResolvers } from "../../__generated__/graphql";
-import importTmbdMovie from "../../db/tmdbImporter";
+import importTmbdContent from "../../db/tmdbImporter";
 import prisma from "../../prisma";
 import ContentID from "../../types/ContentID";
 import Provider from "../../types/providers";
@@ -11,7 +11,7 @@ const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, cont
     throw new GraphQLError('Unauthorized');
   }
 
-  const id = ContentID.fromString(args.movieId);
+  const id = ContentID.fromString(args.contentId);
   let cutId: string;
   if (id.provider === Provider.TMDB) {
     let content: any
@@ -25,21 +25,21 @@ const addToWatchList: MutationResolvers["addToWatchList"] = async (_, args, cont
       default:
         throw new GraphQLError(`Invalid type ${id.type}`);
     }
-    cutId = (await importTmbdMovie(content, "en", "US", id.dbContentType())).id;
+    cutId = (await importTmbdContent(content, "en", "US", id.dbContentType())).id;
   } else {
     cutId = id.id;
   }
 
   if (context.userDevice) {
     await prisma.watchList.upsert({
-      where: { movieId_userId: { movieId: cutId, userId: context.userDevice.user.id } },
-      create: { userId: context.userDevice.user.id, movieId: cutId },
+      where: { contentId_userId: { contentId: cutId, userId: context.userDevice.user.id } },
+      create: { userId: context.userDevice.user.id, contentId: cutId },
       update: {}
     });
   } else if (context.annonymousUserDevice) {
     await prisma.annonymousWatchList.upsert({
-      where: { movieId_userId: { movieId: cutId, userId: context.annonymousUserDevice.user.id } },
-      create: { userId: context.annonymousUserDevice.user.id, movieId: cutId },
+      where: { contentId_userId: { contentId: cutId, userId: context.annonymousUserDevice.user.id } },
+      create: { userId: context.annonymousUserDevice.user.id, contentId: cutId },
       update: {}
     });
   } else {

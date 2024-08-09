@@ -76,7 +76,7 @@ public struct Shimmer: ViewModifier {
         }
     }
 
-    public func body(content: Content) -> some View {
+    public func body(content: Self.Content) -> some View {
         content
             .mask(LinearGradient(gradient: gradient, startPoint: startPoint, endPoint: endPoint))
             .animation(animation, value: isInitialState)

@@ -22,25 +22,26 @@ model AnonymousUser {
 
   devices   AnnonymousDevice[]
   watchList AnnonymousWatchList[]
+  ratings   AnnonymousRating[]
 }
 
 model User {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  username          String   @unique @db.Citext
-  email             String   @unique @db.Citext
-  hashedEmail       String   @unique
-  name              String
-  bio               String?
-  url               String?
-  countryCode       String?  @db.Citext
-  phoneNumber       String?  @db.Citext
-  hashedPhoneNumber String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now())
-  favoriteMovies    String[] @db.Uuid
-  followerCount     Int      @default(0)
-  followingCount    Int      @default(0)
-  imageId           String?
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username           String   @unique @db.Citext
+  email              String   @unique @db.Citext
+  hashedEmail        String   @unique
+  name               String
+  bio                String?
+  url                String?
+  countryCode        String?  @db.Citext
+  phoneNumber        String?  @db.Citext
+  hashedPhoneNumber  String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  favoriteContentIds String[] @db.Uuid
+  followerCount      Int      @default(0)
+  followingCount     Int      @default(0)
+  imageId            String?
 
   devices       Device[]
   watchList     WatchList[]
@@ -49,6 +50,7 @@ model User {
   phoneContacts PhoneContact[]
   emailContacts EmailContact[]
   notifications SentNotification[]
+  ratings       Rating[]
 }
 
 model AutheticationRequest {
@@ -167,13 +169,30 @@ model WatchList {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  movieId String @db.Uuid
-  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  contentId String  @db.Uuid
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   userId String @db.Uuid
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@unique([movieId, userId])
+  @@unique([contentId, userId])
+}
+
+model Rating {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  contentId String  @db.Uuid
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  rating Int
+  note   String?
+
+  @@unique([contentId, userId])
 }
 
 model AnnonymousWatchList {
@@ -181,24 +200,41 @@ model AnnonymousWatchList {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  movieId String @db.Uuid
-  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  contentId String  @db.Uuid
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   userId String        @db.Uuid
   user   AnonymousUser @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@unique([movieId, userId])
+  @@unique([contentId, userId])
+}
+
+model AnnonymousRating {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  contentId String  @db.Uuid
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  userId String        @db.Uuid
+  user   AnonymousUser @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  rating Int
+  note   String?
+
+  @@unique([contentId, userId])
 }
 
 // -----------------------------------------------------------
-// Movie metadata
+// Content metadata
 // -----------------------------------------------------------
 enum ContentType {
   MOVIE
   TV_SHOW
 }
 
-model Movie {
+model Content {
   id               String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @default(now())
@@ -217,15 +253,17 @@ model Movie {
   fandangoId String? @unique
 
   // Relations
-  images              MovieImage[]
+  images              ContentImage[]
   WatchList           WatchList[]
-  MovieTranslation    MovieTranslation[]
-  MovieCollection     MovieCollection[]
-  genres              MovieGenre[]
+  translations        ContentTranslation[]
+  collections         ContentCollection[]
+  genres              ContentGenre[]
   AnnonymousWatchList AnnonymousWatchList[]
+  ratings             Rating[]
+  annonymousRatings   AnnonymousRating[]
 }
 
-model MovieTranslation {
+model ContentTranslation {
   id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title              String
   synopsis           String
@@ -233,21 +271,21 @@ model MovieTranslation {
   country_ISO_3166_1 String
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
-  movieId            String   @db.Uuid
-  movie              Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contentId          String   @db.Uuid
+  content            Content  @relation(fields: [contentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model MovieGenre {
-  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  movieId String @db.Uuid
-  genreId Int
-  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+model ContentGenre {
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  contentId String  @db.Uuid
+  genreId   Int
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  genre     Genre   @relation(fields: [genreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  @@unique([movieId, genreId])
+  @@unique([contentId, genreId])
 }
 
 enum ImageType {
@@ -256,7 +294,7 @@ enum ImageType {
   STILL
 }
 
-model MovieImage {
+model ContentImage {
   id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   url                String    @unique
   type               ImageType
@@ -265,8 +303,8 @@ model MovieImage {
   language_ISO_639_1 String
   country_ISO_3166_1 String
 
-  movieId String @db.Uuid
-  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contentId String  @db.Uuid
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 enum CollectionType {
@@ -278,15 +316,15 @@ enum CollectionType {
   TRENDING_WEEKLY
 }
 
-model MovieCollection {
+model ContentCollection {
   id        String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type      CollectionType
   createdAt DateTime       @default(now())
   updatedAt DateTime       @default(now())
-  movieId   String         @db.Uuid
-  movie     Movie          @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contentId String         @db.Uuid
+  content   Content        @relation(fields: [contentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@unique([type, movieId])
+  @@unique([type, contentId])
 }
 
 // -----------------------------------------------------------
@@ -299,9 +337,9 @@ model Genre {
 
   tmdbId Int? @unique
 
-  MovieGenre MovieGenre[]
-  locales    LocalizedGenre[]
-  mainMovies Movie[]
+  ContentGenre ContentGenre[]
+  locales      LocalizedGenre[]
+  mainContent  Content[]
 }
 
 model LocalizedGenre {

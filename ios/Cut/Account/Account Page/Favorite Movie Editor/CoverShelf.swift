@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct CoverShelf: UIViewControllerRepresentable {
-    let movies: [Movie]
-    let movieTapped: (Movie) -> Void
+    let content: [Content]
+    let contentTapped: (Content) -> Void
     let isEditable: Bool
     @Binding var isEditing: Bool
 
-    typealias UIViewControllerType = FavoriteMovieEditorViewController
+    typealias UIViewControllerType = FavoriteContentEditorViewController
 
-    func makeUIViewController(context: Context) -> FavoriteMovieEditorViewController {
-        FavoriteMovieEditorViewController(
-            movies: movies,
-            movieTapped: movieTapped,
+    func makeUIViewController(context: Context) -> FavoriteContentEditorViewController {
+        FavoriteContentEditorViewController(
+            content: content,
+            contentTapped: contentTapped,
             isEditable: isEditable
         )
     }
 
-    func updateUIViewController(_ uiViewController: FavoriteMovieEditorViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: FavoriteContentEditorViewController, context: Context) {
         uiViewController.isWobbling = isEditing
     }
 }
 
 #Preview {
-    CoverShelf(movies: [Mocks.movie, Mocks.movie, Mocks.movie], movieTapped: { _ in
+    CoverShelf(content: [Mocks.content, Mocks.content, Mocks.content], contentTapped: { _ in
 
     }, isEditable: true, isEditing: .constant(false))
 }

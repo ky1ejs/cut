@@ -1,9 +1,9 @@
 
 import { Prisma, PrismaClient } from '@prisma/client';
 import DataLoader from 'dataloader';
-import { WatchListCacheKey } from './watchListDataLoader';
 import ContentID from '../../types/ContentID';
 import Provider from '../../types/providers';
+import { WatchListCacheKey } from './watchListCacheKey';
 
 // TODO - this is a dupe of watchListDataLoader, refactor to one file
 export default class AnnonymousWatchListDataLoader {
@@ -18,39 +18,39 @@ export default class AnnonymousWatchListDataLoader {
       {
         where: {
           OR: ids.map((id) => {
-            const contentId = ContentID.fromString(id.movieId);
-            let movieWhere: Prisma.AnnonymousWatchListWhereInput = {
+            const contentId = ContentID.fromString(id.contentId);
+            let contentWhere: Prisma.AnnonymousWatchListWhereInput = {
               userId: id.userId,
             };
             switch (contentId.provider) {
               case Provider.TMDB:
-                movieWhere = {
-                  ...movieWhere,
-                  movie: {
+                contentWhere = {
+                  ...contentWhere,
+                  content: {
                     tmdbId: parseInt(contentId.id)
                   }
                 };
                 break;
               default:
-                movieWhere = {
-                  ...movieWhere,
-                  movieId: contentId.id
+                contentWhere = {
+                  ...contentWhere,
+                  contentId: contentId.id
                 }
                 break;
             }
-            return movieWhere;
+            return contentWhere;
           }),
         },
         include: {
-          movie: true
+          content: true
         }
       }
     )
-    let movieIds = result.map((r) => r.movieId);
-    let tmdbIds = result.map((r) => r.movie.tmdbId);
+    let contentIds = result.map((r) => r.contentId);
+    let tmdbIds = result.map((r) => r.content.tmdbId);
     return ids.map((id) => {
-      const contentId = ContentID.fromString(id.movieId);
-      return contentId.provider === Provider.TMDB ? tmdbIds.includes(parseInt(contentId.id)) : movieIds.includes(contentId.id);
+      const contentId = ContentID.fromString(id.contentId);
+      return contentId.provider === Provider.TMDB ? tmdbIds.includes(parseInt(contentId.id)) : contentIds.includes(contentId.id);
     });
   })
 

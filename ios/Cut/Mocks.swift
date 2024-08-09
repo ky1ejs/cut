@@ -19,7 +19,7 @@ struct Mocks {
         }
     }
 
-    static var movie: Movie {
+    static var content: Content {
         let json = """
             {
                 "__typename": "Movie",
@@ -49,7 +49,8 @@ struct Mocks {
                     "id": 5
                   }
                 ],
-                "isOnWatchList": false
+                "isOnWatchList": false,
+                "rating": 4
               }
         """
         return parse(json)

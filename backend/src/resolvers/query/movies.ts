@@ -1,19 +1,19 @@
 import { QueryResolvers } from '../../__generated__/graphql';
 import prisma from '../../prisma';
-import dbMovieToGqlMovie, { movieInclude } from '../mappers/dbMovieToGqlMovie';
+import contentDbToGqlMapper, { contentInclude } from '../mappers/contentDbToGqlMapper';
 
-const moviesResolver: QueryResolvers["movies"] = async (_, args) => {
-  const result = await prisma.movieCollection.findMany({
+const contentCollectionResolver: QueryResolvers["contentCollection"] = async (_, args) => {
+  const result = await prisma.contentCollection.findMany({
     where: {
       type: args.collection
     },
     include: {
-      movie: {
-        include: movieInclude
+      content: {
+        include: contentInclude
       }
     }
   });
-  return result.map((collectionEntry) => dbMovieToGqlMovie(collectionEntry.movie));
+  return result.map((collectionEntry) => contentDbToGqlMapper(collectionEntry.content));
 }
 
-export default moviesResolver;
+export default contentCollectionResolver;

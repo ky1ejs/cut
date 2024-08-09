@@ -1,4 +1,4 @@
 export type WatchListCacheKey = {
-  movieId: string;
+  contentId: string;
   userId: string;
 };
