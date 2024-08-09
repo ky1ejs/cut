@@ -50,6 +50,7 @@ struct ProfileContainer: View {
     let profile: CutGraphQL.ProfileFragment
     @State var input: ProfileInput
     @State var error: Error?
+    @State var watch: Apollo.Cancellable?
 
     init(profile: CutGraphQL.ProfileFragment) {
         self.profile = profile
@@ -59,7 +60,8 @@ struct ProfileContainer: View {
     var body: some View {
         Profile(profile: input)
             .task {
-                AuthorizedApolloClient.shared.client.fetch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id)) { result in
+                watch?.cancel()
+                watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id)) { result in
                     switch result.parseGraphQL() {
                     case .success(let response):
                         if let profile = response.profileById.asProfile?.fragments.fullProfileFragment {

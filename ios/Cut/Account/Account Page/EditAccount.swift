@@ -68,12 +68,13 @@ struct EditAccount: View {
 
     private func updateAccount() {
         guard inFlightRequest == nil else { return }
+        let bioUrl = URL(string: self.bioUrl)
         inFlightRequest = AuthorizedApolloClient.shared.client.perform(mutation: CutGraphQL.UpdateAccountMutation(params: CutGraphQL.UpdateAccountInput(
             username: .some(username),
             phoneNumber: .some(phoneNumber),
             name: .some(name),
             bio: .some(bio),
-            url: .some(URL(string: bioUrl)!))
+            url: bioUrl != nil ? .some(bioUrl!) : .null)
         ), resultHandler: { result in
             switch result.parseGraphQL() {
             case .success:

@@ -41,7 +41,7 @@ struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         FilledButtonStyle(
             backgroundColor: theme.primaryButtonBackground.color,
-            depressedColor: theme.lightgray.color,
+            depressedColor: theme.primaryButtonBackgroundDepressed.color,
             textColor: theme.primaryButtonText.color,
             disabledBackgroundColor: theme.primaryDisabledBackground.color,
             disabledTextColor: theme.primaryDisabledText.color
@@ -55,7 +55,7 @@ struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         FilledButtonStyle(
             backgroundColor: theme.secondaryButtonBackground.color,
-            depressedColor: theme.darkGray.color,
+            depressedColor: theme.secondaryButtonBackgroundDepressed.color,
             textColor: theme.secondaryButtonText.color,
             disabledBackgroundColor: theme.secondaryDisabledBackground.color,
             disabledTextColor: theme.secondaryDisabledText.color
