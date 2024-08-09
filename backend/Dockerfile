@@ -1,5 +1,5 @@
 # This stage requires all deps in order to build the dist folder
-FROM node:20-alpine3.18 AS builder
+FROM node:22-alpine3.19 AS builder
 
 RUN npm install -g pnpm
 WORKDIR /app
@@ -25,7 +25,7 @@ RUN pnpm codegen:graphql && pnpm run build
 # layers. This can lead to a larger image size, especially if node_modules contains 
 # a lot of files.
 
-FROM node:20-alpine3.18 as deps
+FROM node:22-alpine3.19 as deps
 
 ENV NODE_ENV production
 WORKDIR /app
