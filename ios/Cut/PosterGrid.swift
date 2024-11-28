@@ -13,7 +13,6 @@ struct PosterGrid: View {
 
     var body: some View {
         if content.count > 0 {
-            ScrollView {
                 LazyVGrid(
                     columns: Array(
                         repeating: .init(.flexible(minimum: 100), spacing: 0),
@@ -29,7 +28,6 @@ struct PosterGrid: View {
                         }
                     }
                 }
-            }
             .sheet(item: $presentedContent) { c in
                 ContentDetailView(content: c)
             }

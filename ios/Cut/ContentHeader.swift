@@ -116,6 +116,7 @@ struct ContentHeader: View {
                             .resizable()
                             .frame(width: 16, height: 18.3333333333)
                         Text("\(rating)/5")
+                            .foregroundStyle(.white)
                     }
                 }
             }

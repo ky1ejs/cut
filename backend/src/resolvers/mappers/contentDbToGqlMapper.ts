@@ -1,4 +1,4 @@
-import { Genre, Content, ContentGenre, ContentImage, Prisma } from "@prisma/client";
+import { Genre, Content, ContentGenre, ContentImage } from "@prisma/client";
 import { ContentInterface } from "../../__generated__/graphql";
 import Provider from "../../types/providers";
 import { DeepPartial } from "utility-types";

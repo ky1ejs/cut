@@ -25,6 +25,9 @@ fragment FullProfileFragment on Profile {
   watchList {
     ...ContentFragment
   }
+  ratings {
+    ...ContentFragment
+  }
 }
 
 
@@ -35,6 +38,9 @@ fragment CompleteAccountFragment on CompleteAccount {
     ...ContentFragment
   }
   watchList {
+    ...ContentFragment
+  }
+  ratings {
     ...ContentFragment
   }
 }

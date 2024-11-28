@@ -58,30 +58,46 @@ struct ProfileContainer: View {
     }
 
     var body: some View {
-        Profile(profile: input)
+        Profile(profile: input, refreshHandler: {
+            await fetch()
+        })
             .task {
-                watch?.cancel()
-                watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id)) { result in
-                    switch result.parseGraphQL() {
-                    case .success(let response):
-                        if let profile = response.profileById.asProfile?.fragments.fullProfileFragment {
-                            input = .fullProfile(profile)
-                        } else if let account = response.profileById.asCompleteAccount?.fragments.completeAccountFragment {
-                            input = .completeAccount(account)
-                        } else {
-                            fatalError("data missing")
-                        }
-                    case .failure(let error):
-                        self.error = error
-                    }
-                }
+                await fetch()
             }
             .errorAlert(error: $error)
+    }
+
+    private func fetch() async {
+        watch?.cancel()
+        watch = nil
+        await withCheckedContinuation { cont in
+            watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetProfileByIdQuery(id: profile.id)) { result in
+                parseResult(result)
+                cont.resume()
+            }
+        }
+    }
+
+    private func parseResult(_ result: Result<GraphQLResult<CutGraphQL.GetProfileByIdQuery.Data>, Error>) {
+        switch result.parseGraphQL() {
+        case .success(let response):
+            if let profile = response.profileById.asProfile?.fragments.fullProfileFragment {
+                input = .fullProfile(profile)
+            } else if let account = response.profileById.asCompleteAccount?.fragments.completeAccountFragment {
+                input = .completeAccount(account)
+            } else {
+                fatalError("data missing")
+            }
+        case .failure(let error):
+            self.error = error
+        }
     }
 }
 
 struct Profile: View {
+    typealias RefreshHandler = () async -> ()
     let profile: ProfileInput
+    let refreshHandler: RefreshHandler
     @State private var state = ListState.rated
     @State private var editAccount = false
     @State private var isEditingFavoriteMovies = false
@@ -101,23 +117,26 @@ struct Profile: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
-                ProfileHeader(profile: profile.profileInterface)
-                HStack {
-                    cta()
-                    ShareLink(item: profile.profileInterface.share_url) {
-                        Text("Share")
+            VStack(spacing: 0) {
+                VStack(spacing: 24) {
+                    ProfileHeader(profile: profile.profileInterface)
+                    HStack {
+                        cta()
+                        ShareLink(item: profile.profileInterface.share_url) {
+                            Text("Share")
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
                     }
-                    .buttonStyle(SecondaryButtonStyle())
-                }
-                Picker(selection: $state) {
-                    ForEach(ListState.allCases) { s in
-                        Text(s.title).tag(s)
+                    Picker(selection: $state) {
+                        ForEach(ListState.allCases) { s in
+                            Text(s.title).tag(s)
+                        }
+                    } label: {
+                        Text("Ignored")
                     }
-                } label: {
-                    Text("Ignored")
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
+                .padding(.horizontal, 16)
                 switch state {
                 case .rated:
                     VStack(alignment: .leading) {
@@ -130,13 +149,18 @@ struct Profile: View {
                                 }
                             }
                         }
+                        .padding(.horizontal, 16)
                         switch profile {
                         case .completeAccount(let account):
                             coverShelf(content: account.favoriteContent.map { $0.fragments.contentFragment })
+                                .padding(.horizontal, 16)
+                            PosterGrid(content: account.ratings.map { $0.fragments.contentFragment })
                         case .profile:
                             ProgressView()
                         case .fullProfile(let profile):
                             coverShelf(content: profile.favoriteContent.map { $0.fragments.contentFragment })
+                                .padding(.horizontal, 16)
+                            PosterGrid(content: profile.ratings.map { $0.fragments.contentFragment })
                         }
                     }
                 case .watchList:
@@ -150,10 +174,12 @@ struct Profile: View {
                     }
                 }
             }
-            .padding(.horizontal, 16)
         }
         .scrollBounceBehavior(.basedOnSize)
         .scrollClipDisabled()
+        .refreshable {
+            await refreshHandler()
+        }
         .sheet(isPresented: $editAccount, content: {
             switch profile {
             case .completeAccount(let account):
@@ -203,7 +229,7 @@ struct Profile: View {
 
 #Preview {
     NavigationStack {
-        Profile(profile: .completeAccount(Mocks.completeAccount))
+        Profile(profile: .completeAccount(Mocks.completeAccount)) {}
     }
 }
 

@@ -71,8 +71,9 @@ struct RateContentSheet: View {
                 )
             ) { result in
                 switch result.parseGraphQL() {
-                case .success:
-                    
+                case .success(let data):
+                    let content = data.rate.content.fragments.contentFragment
+                    WatchListCacheUpdate.updateCache(add: false, maybeIndex: nil, newContentId: content.id, content: content)
                     dismiss()
                 case .failure(let error):
                     self.error = error

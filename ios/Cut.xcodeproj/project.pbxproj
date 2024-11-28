@@ -200,6 +200,7 @@
 		93B3F72D2C652F4D0048C63C /* ProfileInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F6BE2C652F4C0048C63C /* ProfileInterface.graphql.swift */; };
 		93B3F72E2C652F4D0048C63C /* ContentInterface.graphql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F6BF2C652F4C0048C63C /* ContentInterface.graphql.swift */; };
 		93B3F7312C65396C0048C63C /* Image+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F7302C65396C0048C63C /* Image+Helpers.swift */; };
+		93B3F7332C66E1DE0048C63C /* WatchListCacheUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3F7322C66E1DE0048C63C /* WatchListCacheUpdate.swift */; };
 		93BF90342BBCF32800AC0634 /* CoverShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90332BBCF32800AC0634 /* CoverShelf.swift */; };
 		93BF90362BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */; };
 		93C05BBA2C03A56E00C7DBD8 /* OtpCodeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C05BB92C03A56E00C7DBD8 /* OtpCodeTextField.swift */; };
@@ -431,6 +432,7 @@
 		93B3F6BE2C652F4C0048C63C /* ProfileInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInterface.graphql.swift; sourceTree = "<group>"; };
 		93B3F6BF2C652F4C0048C63C /* ContentInterface.graphql.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentInterface.graphql.swift; sourceTree = "<group>"; };
 		93B3F7302C65396C0048C63C /* Image+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Helpers.swift"; sourceTree = "<group>"; };
+		93B3F7322C66E1DE0048C63C /* WatchListCacheUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListCacheUpdate.swift; sourceTree = "<group>"; };
 		93BF90332BBCF32800AC0634 /* CoverShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverShelf.swift; sourceTree = "<group>"; };
 		93BF90352BBCFABC00AC0634 /* FavoriteContentEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteContentEditorViewController.swift; sourceTree = "<group>"; };
 		93C05BB92C03A56E00C7DBD8 /* OtpCodeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpCodeTextField.swift; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 			isa = PBXGroup;
 			children = (
 				93796B1B2BAF5D6000091578 /* WatchListViewModel.swift */,
+				93B3F7322C66E1DE0048C63C /* WatchListCacheUpdate.swift */,
 				93796B1C2BAF5D6000091578 /* WatchListButton.swift */,
 				93796B1D2BAF5D6000091578 /* ContentRowViewModel.swift */,
 				93796B1E2BAF5D6000091578 /* ContentRow.swift */,
@@ -1217,6 +1220,7 @@
 				93B3F6E82C652F4C0048C63C /* ValidateAuthenticationMutation.graphql.swift in Sources */,
 				93D64C522BE85727009F5C01 /* Formatters.swift in Sources */,
 				93B3F6C22C652F4C0048C63C /* ProfileInterfaceFragment.graphql.swift in Sources */,
+				93B3F7332C66E1DE0048C63C /* WatchListCacheUpdate.swift in Sources */,
 				930F67902BDD2EE9008C6CF2 /* ContentSelectionViewController.swift in Sources */,
 				93B3F6DB2C652F4C0048C63C /* UploadContactEmailsMutation.graphql.swift in Sources */,
 				93B3F71E2C652F4D0048C63C /* Episode.graphql.swift in Sources */,

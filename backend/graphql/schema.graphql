@@ -6,6 +6,7 @@ type Query {
   search(term: String!): [Content!]!
   searchUsers(term: String!): [Profile!]!
   watchList: [Content!]!
+  ratings: [Content!]!
   content(id: String!): ExtendedContentResponse!
 
   contactMatches: [Profile!]!
@@ -118,6 +119,7 @@ interface ProfileInterface {
   imageUrl: URL
   favoriteContent: [Content!]!
   watchList: [Content!]!
+  ratings: [ContentRating!]!
   followerCount: Int!
   followingCount: Int!
   followers: [Profile!]!
@@ -136,6 +138,7 @@ type Profile implements ProfileInterface {
   imageUrl: URL
   favoriteContent: [Content!]!
   watchList: [Content!]!
+  ratings: [ContentRating!]!
   followerCount: Int!
   followingCount: Int!
   followers: [Profile!]!
@@ -148,10 +151,11 @@ type Profile implements ProfileInterface {
 type IncompleteAccount {
   id: String!
   watchList: [Content!]!
+  ratings: [Content!]!
 }
 
 type CompleteAccount implements ProfileInterface {
-  # Profile
+  # ProfileInterface
   id: String!
   username: String!
   name: String!
@@ -161,6 +165,7 @@ type CompleteAccount implements ProfileInterface {
   imageUrl: URL
   favoriteContent: [Content!]!
   watchList: [Content!]!
+  ratings: [ContentRating!]!
   followerCount: Int!
   followingCount: Int!
   followers: [Profile!]!
@@ -210,7 +215,20 @@ interface ContentInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
-  rating: Int
+  currentUserRating: Int
+  followingRatings: [UserRating!]!
+}
+
+# When you already know what the content is, you just need who rated it and what
+type UserRating {
+  user: Profile!
+  rating: Float!
+}
+
+# When you already know who the user is, you need the content that's rated
+type ContentRating {
+  content: Content!
+  rating: Float!
 }
 
 type Content implements ContentInterface {
@@ -224,7 +242,8 @@ type Content implements ContentInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
-  rating: Int
+  currentUserRating: Int
+  followingRatings: [UserRating!]!
 }
 
 interface ExtendedContentInterface {
@@ -248,7 +267,8 @@ type ExtendedMovie implements ContentInterface & ExtendedContentInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
-  rating: Int
+  currentUserRating: Int
+  followingRatings: [UserRating!]!
 
   # ExtendedContentInterface fields
   overview: String!
@@ -312,7 +332,8 @@ type Work implements ContentInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
-  rating: Int
+  currentUserRating: Int
+  followingRatings: [UserRating!]!
 
   role: String!
 }
@@ -352,7 +373,8 @@ type ExtendedTVShow implements ContentInterface & ExtendedContentInterface {
   allIds: [String!]!
   url: URL!
   type: ContentType!
-  rating: Int
+  currentUserRating: Int
+  followingRatings: [UserRating!]!
 
   # ExtendedContentInterface fields
   overview: String!

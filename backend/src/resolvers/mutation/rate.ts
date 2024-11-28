@@ -15,7 +15,17 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     }).catch(() => { }) // ignore error
-    const newRating = await prisma.rating.create({
+    const deleteWatchList = prisma.watchList.delete(
+      {
+        where: {
+          contentId_userId: {
+            contentId: contentId.id,
+            userId: context.userDevice.user.id
+          }
+        }
+      }
+    ).catch(() => { }) // ignore error
+    const rateMovie = prisma.rating.create({
       data: {
         contentId: contentId.id,
         userId: context.userDevice.user.id,
@@ -27,11 +37,12 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     })
+    const [, newRating] = await Promise.all([deleteWatchList, rateMovie])
     return {
       content: {
         ...contentDbToGqlMapper(newRating.content),
         isOnWatchList: false,
-        rating: rating
+        rating
       }
     }
   } else if (context.annonymousUserDevice) {
@@ -43,7 +54,17 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     }).catch(() => { }) // ignore error
-    const newRating = await prisma.annonymousRating.create({
+    const deleteWatchList = prisma.annonymousWatchList.delete(
+      {
+        where: {
+          contentId_userId: {
+            contentId: contentId.id,
+            userId: context.annonymousUserDevice.id
+          }
+        }
+      }
+    ).catch(() => { }) // ignore error
+    const rateMovie = prisma.annonymousRating.create({
       data: {
         contentId: contentId.id,
         userId: context.annonymousUserDevice.id,
@@ -55,11 +76,12 @@ const rate: MutationResolvers['rate'] = async (_, args, context) => {
         }
       }
     })
+    const [, newRating] = await Promise.all([deleteWatchList, rateMovie])
     return {
       content: {
         ...contentDbToGqlMapper(newRating.content),
         isOnWatchList: false,
-        rating: rating
+        rating
       }
     }
   } else {

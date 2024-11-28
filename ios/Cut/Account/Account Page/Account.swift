@@ -61,7 +61,9 @@ struct Account: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 12)
-                Profile(profile: .completeAccount(account))
+                Profile(profile: .completeAccount(account)) {
+                    await fetch()
+                }
             case .incomplete:
                 IncompleteAccount {
                     presentOnboarding = true
@@ -79,21 +81,7 @@ struct Account: View {
             }
         })
         .task {
-            watch?.cancel()
-            watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery()) { result in
-                switch result.parseGraphQL() {
-                case .success(let data):
-                    if let completeAccount = data.account.asCompleteAccount {
-                        state = .complete(completeAccount.fragments.completeAccountFragment)
-                    } else if let incompleteAccount = data.account.asIncompleteAccount {
-                        state = .incomplete(incompleteAccount)
-                    } else {
-                        state = .error("Unknown")
-                    }
-                case .failure(let error):
-                    state = .error(error.localizedDescription)
-                }
-            }
+            await fetch()
         }
         .animation(.linear(duration: 0.1), value: state)
         .sheet(isPresented: $isAccountExplainerPresented, content: {
@@ -109,7 +97,28 @@ struct Account: View {
             .environment(\.onboardingCompletion) {
                 presentOnboarding = false
             }
-        })
+        }) 
+    }
+
+    private func fetch() async {
+        await withCheckedContinuation { cont in
+            watch?.cancel()
+            watch = AuthorizedApolloClient.shared.client.watch(query: CutGraphQL.GetAccountQuery(), cachePolicy: .fetchIgnoringCacheData) { result in
+                switch result.parseGraphQL() {
+                case .success(let data):
+                    if let completeAccount = data.account.asCompleteAccount {
+                        state = .complete(completeAccount.fragments.completeAccountFragment)
+                    } else if let incompleteAccount = data.account.asIncompleteAccount {
+                        state = .incomplete(incompleteAccount)
+                    } else {
+                        state = .error("Unknown")
+                    }
+                case .failure(let error):
+                    state = .error(error.localizedDescription)
+                }
+                cont.resume()
+            }
+        }
     }
 }
 

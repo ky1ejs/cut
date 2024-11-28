@@ -1,9 +1,9 @@
 import { GraphQLError } from "graphql";
 import { ContentInterfaceResolvers } from "../../__generated__/graphql";
 
-const ratingResolver: ContentInterfaceResolvers["rating"] = async (content, _, context) => {
-  if (content.rating !== undefined) {
-    return content.rating
+const ratingResolver: ContentInterfaceResolvers["currentUserRating"] = async (content, _, context) => {
+  if (content.currentUserRating !== undefined) {
+    return content.currentUserRating
   }
   if (context.userDevice) {
     if (!content.id) {
@@ -17,7 +17,7 @@ const ratingResolver: ContentInterfaceResolvers["rating"] = async (content, _, c
     }
     return await context.dataSources.annonymousRatingDataLoader.getRating({ contentId: content.id, userId: context.annonymousUserDevice.user.id });
   }
-  throw new GraphQLError("Unauthorized")
+  return null;
 }
 
 export default ratingResolver;

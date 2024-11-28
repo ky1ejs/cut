@@ -3,6 +3,10 @@ import DataLoader from 'dataloader';
 import ContentID from '../../types/ContentID';
 import Provider from '../../types/providers';
 import { RatingCacheKey } from './ratingCacheKey';
+import { UserRating } from '../../__generated__/graphql';
+import { mapProfile } from '../../resolvers/mappers/profileMapper';
+import { contentInclude } from '../../resolvers/mappers/contentDbToGqlMapper';
+import { DeepPartial } from 'utility-types';
 
 export default class RatingDataLoader {
   private prisma: PrismaClient;

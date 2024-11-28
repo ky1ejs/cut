@@ -65,6 +65,19 @@ public class SessionManager: ObservableObject {
                             isOnWatchList: m.isOnWatchList
                         )
                     }),
+                    ratings: account.ratings.map({ m in
+                        CutGraphQL.GetAccountMutationLocalCacheMutation.Data.Account.AsCompleteAccount.Rating(
+                            title: m.title,
+                            id: m.id,
+                            allIds: m.allIds,
+                            poster_url: m.poster_url,
+                            url: m.url,
+                            type: m.type,
+                            mainGenre: m.mainGenre,
+                            genres: m.genres,
+                            isOnWatchList: m.isOnWatchList
+                        )
+                    }),
                     id: account.id,
                     name: account.name,
                     username: account.username,

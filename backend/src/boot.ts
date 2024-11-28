@@ -15,7 +15,7 @@ import isOnWatchlistResolver from './resolvers/query/isOnWatchListResolver';
 import WatchListDataLoader from './dataloaders/watchlist/watchListDataLoader';
 import { GraphQLError } from 'graphql';
 import removeFromWatchList from './resolvers/mutation/removeFromWatchList';
-import { completeAccountWatchList, incompleteAccountWatchList, unknownAccountWatchList } from './resolvers/query/watchList';
+import { completeAccountWatchList, incompleteAccountWatchList, currentUserWatchList } from './resolvers/query/watchList';
 import { GraphQLContext } from './graphql/GraphQLContext';
 import importGenres from './tmbd/import-genres';
 import completeAccount from './resolvers/mutation/completeAccount';
@@ -56,6 +56,8 @@ import RatingDataLoader from './dataloaders/rating/ratingDataLoader';
 import AnnonymousRatingDataLoader from './dataloaders/rating/annonymousRatingDataLoader';
 import ratingResolver from './resolvers/query/ratingResolver';
 import rate from './resolvers/mutation/rate';
+import { completeAccountRatings, currentUserRatings } from './resolvers/query/ratings';
+import followingRatings from './resolvers/query/followingRatings';
 
 const boot = async () => {
   if (!OFFLINE) await importGenres();
@@ -69,7 +71,7 @@ const boot = async () => {
       account: getAccount,
       contentCollection: contentCollectionResolver,
       search: searchResolver,
-      watchList: unknownAccountWatchList,
+      watchList: currentUserWatchList,
       content: contentResolver,
       isUsernameAvailable,
       contactMatches,
@@ -82,6 +84,7 @@ const boot = async () => {
       imageUploadUrl: imageUploadUrl,
       searchUsers,
       profileFollow: profileFollowResolver,
+      ratings: currentUserRatings
     },
     Mutation: {
       initiateAuthentication,
@@ -110,23 +113,28 @@ const boot = async () => {
         return 'ExtendedTVShow';
       },
       isOnWatchList: isOnWatchlistResolver,
-      rating: ratingResolver
+      currentUserRating: ratingResolver,
+      followingRatings
     },
     ExtendedMovie: {
       isOnWatchList: isOnWatchlistResolver,
-      rating: ratingResolver
+      currentUserRating: ratingResolver,
+      followingRatings
     },
     ExtendedTVShow: {
       isOnWatchList: isOnWatchlistResolver,
-      rating: ratingResolver
+      currentUserRating: ratingResolver,
+      followingRatings
     },
     Content: {
       isOnWatchList: isOnWatchlistResolver,
-      rating: ratingResolver
+      currentUserRating: ratingResolver,
+      followingRatings
     },
     Work: {
       isOnWatchList: isOnWatchlistResolver,
-      rating: ratingResolver
+      currentUserRating: ratingResolver,
+      followingRatings
     },
     AccountUnion: {
       __resolveType: (parent) => parent.__typename!
@@ -150,6 +158,7 @@ const boot = async () => {
       isFollowing,
       favoriteContent,
       watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info),
+      ratings: (parent, args, context, info) => completeAccountRatings(parent, context, info),
       followers: followersResolver,
       following: followingResolver
     },
@@ -159,6 +168,7 @@ const boot = async () => {
     CompleteAccount: {
       favoriteContent,
       watchList: (parent, args, context, info) => completeAccountWatchList(parent, context, info),
+      ratings: (parent, args, context, info) => completeAccountRatings(parent, context, info),
       followers: followersResolver,
       following: followingResolver
     },

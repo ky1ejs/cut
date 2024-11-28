@@ -92,5 +92,5 @@ struct EditAccount: View {
 }
 
 #Preview {
-    Profile(profile: .completeAccount(Mocks.completeAccount))
+    Profile(profile: .completeAccount(Mocks.completeAccount)) {}
 }
