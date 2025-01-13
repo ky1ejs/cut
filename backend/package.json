@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.10.0",
-    "@prisma/client": "5.22.0",
+    "@prisma/client": "6.2.1",
     "@uploadcare/rest-client": "^6.14.1",
     "@uploadcare/signed-uploads": "^6.14.1",
     "axios": "^1.6.7",
